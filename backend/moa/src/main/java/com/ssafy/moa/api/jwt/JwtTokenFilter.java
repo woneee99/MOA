@@ -3,6 +3,7 @@ package com.ssafy.moa.api.jwt;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -35,6 +36,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         // accessToken이 만료되었을 때
         else if(jwt != null && jwtTokenProvider.validateToken(jwt) == JwtTokenProvider.JwtCode.EXPIRED) {
+            log.info("accessToken has expired.");
             String refresh = resolveToken(request, REFRESH_HEADER);
             // refreshToken을 확인해서 재발급해준다.
             if(refresh != null && jwtTokenProvider.validateToken(refresh) == JwtTokenProvider.JwtCode.ACCESS) {
@@ -44,11 +46,27 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
                     // accessToken 생성
                     Authentication authentication = jwtTokenProvider.getAuthentication(refresh);
-                    response.setHeader(AUTHORIZATION_HEADER, "Bearer " + jwtTokenProvider.createAccessToken(authentication));
+                    String newAccessToken = jwtTokenProvider.createAccessToken(authentication);
+                    response.setHeader(AUTHORIZATION_HEADER, "Bearer " + newAccessToken);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    log.info("reissue refresh Token & access Token");
+                    log.info("Issued a new accessToken through refreshToken.");
+
+//                    // 새로운 accessToken을 사용하여 원래 요청 다시 시도
+//                    HttpServletRequestWrapper requestWrapper = new HttpServletRequestWrapper(request) {
+//                        @Override
+//                        public String getHeader(String name) {
+//                            if(AUTHORIZATION_HEADER.equalsIgnoreCase(name)) {
+//                                return "Bearer " + newAccessToken;
+//                            }
+//                            return super.getHeader(name);
+//                        }
+//                    };
+//
+//                    filterChain.doFilter(requestWrapper, response);
+//                    return;
                 }
             }
+            // 만료된 AccessToken 처리, AccessToken 만료되었음을 클라이언트에게 알리기.
         }
         else {
             log.info("no valid JWT token found, uri: {}", request.getRequestURI());
