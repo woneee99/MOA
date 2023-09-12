@@ -1,9 +1,13 @@
 package com.ssafy.moa.api.entity;
 
+import com.ssafy.moa.api.entity.key.InterestKey;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -12,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class Member {
 
     @Id
+    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
@@ -29,6 +34,9 @@ public class Member {
 
     @Column(columnDefinition = "INT DEFAULT 0")
     private Integer memberExp;
+
+    @OneToMany(mappedBy = "interestKey.memberId")
+    private List<Interest> interestKey;
 
     @Builder
     public Member(String memberEmail, String memberPassword, String memberName, Boolean memberGender, Boolean memberIsForeigner, Integer memberExp) {
