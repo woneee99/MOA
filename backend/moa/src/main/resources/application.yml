@@ -7,3 +7,8 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true
+
+jwt:
+  secret-key: WGmDjeValRGtlGnSOLmXPW8Ht36zv571HcMi1HnG9TTsAzG5q5SW8cGkLJKf7L2CTWqI7K27tmdFgakdhBtoFQ==
+  token-validity-in-sec: 3600 #1시간
+  refresh-token-validity-in-sec: 604800 #1주

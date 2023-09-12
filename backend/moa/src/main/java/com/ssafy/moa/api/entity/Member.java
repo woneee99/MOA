@@ -27,11 +27,11 @@ public class Member {
 
     private Boolean memberIsForeigner;
 
+    @Column(columnDefinition = "INT DEFAULT 0")
     private Integer memberExp;
 
     @Builder
-    public Member(Long memberId, String memberEmail, String memberPassword, String memberName, Boolean memberGender, Boolean memberIsForeigner, Integer memberExp) {
-        this.memberId = memberId;
+    public Member(String memberEmail, String memberPassword, String memberName, Boolean memberGender, Boolean memberIsForeigner, Integer memberExp) {
         this.memberEmail = memberEmail;
         this.memberPassword = memberPassword;
         this.memberName = memberName;
