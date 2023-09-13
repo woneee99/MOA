@@ -2,14 +2,20 @@ package com.ssafy.moa.api.controller;
 
 import com.ssafy.moa.api.jwt.JwtTokenProvider;
 import com.ssafy.moa.api.service.MemberService;
+import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
 import com.ssafy.moa.dto.LoginReqDto;
 import com.ssafy.moa.dto.MemberSignUpDto;
 import com.ssafy.moa.dto.TokenRespDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
+
+import static com.ssafy.moa.common.utils.ApiUtils.error;
+import static com.ssafy.moa.common.utils.ApiUtils.success;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,32 +27,24 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<MemberSignUpDto> signUp(@RequestBody MemberSignUpDto memberSignUpReqDto) {
+    public ApiResult<MemberSignUpDto> signUp(@RequestBody MemberSignUpDto memberSignUpReqDto) {
         MemberSignUpDto memberSignUpRespDto = memberService.signUp(memberSignUpReqDto);
-        return ResponseEntity.ok(memberSignUpRespDto);
+        return success(memberSignUpRespDto);
     }
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<TokenRespDto> login(@RequestBody LoginReqDto loginReqDto) {
+    public ApiResult<TokenRespDto> login(@RequestBody LoginReqDto loginReqDto) {
         TokenRespDto tokenRespDto = memberService.login(loginReqDto);
-        return ResponseEntity.ok(tokenRespDto);
+        return success(tokenRespDto);
     }
 
     // 테스트
     @GetMapping("/test")
-    public ResponseEntity<?> test(@RequestHeader("Authorization") String header) {
+    public ApiResult<?> test(@RequestHeader("Authorization") String header) {
         String token = header.substring(7);
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
-
-        if (authentication != null) {
-            // 인증 및 권한 검사 통과
-            // 원하는 동작 수행
-            return ResponseEntity.ok(authentication.getName() + "님은 접근 가능합니다.");
-        } else {
-            // 인증 및 권한 검사 실패
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
-        }
+        return success(authentication.getName() + "은 접근 가능합니다.");
     }
 
 

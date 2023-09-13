@@ -1,5 +1,7 @@
 package com.ssafy.moa.api.jwt;
 
+import com.ssafy.moa.common.exception.AccessTokenExpiredException;
+import com.ssafy.moa.common.exception.NotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,34 +40,18 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         else if(jwt != null && jwtTokenProvider.validateToken(jwt) == JwtTokenProvider.JwtCode.EXPIRED) {
             log.info("accessToken has expired.");
             String refresh = resolveToken(request, REFRESH_HEADER);
-            // refreshToken을 확인해서 재발급해준다.
+            // refreshToken 만료 여부를 확인해서 만약 만료되지 않은 refreshToken일 경우 재발급해준다.
             if(refresh != null && jwtTokenProvider.validateToken(refresh) == JwtTokenProvider.JwtCode.ACCESS) {
-                String newRefresh = jwtTokenProvider.reissueRefreshToken(refresh);
-                if(newRefresh != null) {
-                    response.setHeader(REFRESH_HEADER, "Bearer "+newRefresh);
+                response.setHeader(REFRESH_HEADER, "Bearer " + refresh);
 
-                    // accessToken 생성
-                    Authentication authentication = jwtTokenProvider.getAuthentication(refresh);
-                    String newAccessToken = jwtTokenProvider.createAccessToken(authentication);
-                    response.setHeader(AUTHORIZATION_HEADER, "Bearer " + newAccessToken);
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                    log.info("Issued a new accessToken through refreshToken.");
-
-//                    // 새로운 accessToken을 사용하여 원래 요청 다시 시도
-//                    HttpServletRequestWrapper requestWrapper = new HttpServletRequestWrapper(request) {
-//                        @Override
-//                        public String getHeader(String name) {
-//                            if(AUTHORIZATION_HEADER.equalsIgnoreCase(name)) {
-//                                return "Bearer " + newAccessToken;
-//                            }
-//                            return super.getHeader(name);
-//                        }
-//                    };
-//
-//                    filterChain.doFilter(requestWrapper, response);
-//                    return;
-                }
+                // accessToken 생성
+                Authentication authentication = jwtTokenProvider.getAuthentication(refresh);
+                String newAccessToken = jwtTokenProvider.createAccessToken(authentication);
+                response.setHeader(AUTHORIZATION_HEADER, "Bearer " + newAccessToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                log.info("Issued a new accessToken through refreshToken.");
             }
+            throw new AccessTokenExpiredException("accessTokenExpired");
             // 만료된 AccessToken 처리, AccessToken 만료되었음을 클라이언트에게 알리기.
         }
         else {

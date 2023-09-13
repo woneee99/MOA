@@ -1,8 +1,6 @@
 package com.ssafy.moa.api.config;
 
-import com.ssafy.moa.api.jwt.JwtAccessDeniedHandler;
-import com.ssafy.moa.api.jwt.JwtTokenFilterConfigurer;
-import com.ssafy.moa.api.jwt.JwtTokenProvider;
+import com.ssafy.moa.api.jwt.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+//    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,8 +27,6 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling((exceptionHandling) ->
-                        exceptionHandling.accessDeniedHandler(jwtAccessDeniedHandler))
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
                                 .requestMatchers("/member/signup").permitAll()
