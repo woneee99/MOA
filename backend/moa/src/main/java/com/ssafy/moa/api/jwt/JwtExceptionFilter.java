@@ -2,7 +2,7 @@ package com.ssafy.moa.api.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.moa.common.exception.AccessTokenExpiredException;
-import com.ssafy.moa.common.exception.InvalidAccessTokenException;
+import com.ssafy.moa.common.exception.InvalidTokenException;
 import com.ssafy.moa.common.utils.ApiUtils;
 import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
 import jakarta.servlet.FilterChain;
@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -30,7 +29,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
         try{
             filterChain.doFilter(request, response);
-        } catch (AccessTokenExpiredException | InvalidAccessTokenException e) {
+        } catch (AccessTokenExpiredException | InvalidTokenException e) {
             setErrorResponse(HttpStatus.UNAUTHORIZED ,response, e);
         }
     }

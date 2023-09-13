@@ -104,6 +104,7 @@ public class JwtTokenProvider implements InitializingBean {
         }
     }
 
+
     @Transactional
     public String issueRefreshToken(Authentication authentication) {
         String newRefreshToken = createRefreshToken(authentication);
