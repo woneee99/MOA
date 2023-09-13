@@ -3,6 +3,7 @@ package com.ssafy.moa.api.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.moa.common.exception.AccessTokenExpiredException;
 import com.ssafy.moa.common.exception.InvalidTokenException;
+import com.ssafy.moa.common.exception.RefreshTokenExpiredException;
 import com.ssafy.moa.common.utils.ApiUtils;
 import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
 import jakarta.servlet.FilterChain;
@@ -29,7 +30,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
         try{
             filterChain.doFilter(request, response);
-        } catch (AccessTokenExpiredException | InvalidTokenException e) {
+        } catch (AccessTokenExpiredException | InvalidTokenException | RefreshTokenExpiredException e) {
             setErrorResponse(HttpStatus.UNAUTHORIZED ,response, e);
         }
     }

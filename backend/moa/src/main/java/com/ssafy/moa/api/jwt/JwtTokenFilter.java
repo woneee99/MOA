@@ -2,6 +2,7 @@ package com.ssafy.moa.api.jwt;
 
 import com.ssafy.moa.common.exception.AccessTokenExpiredException;
 import com.ssafy.moa.common.exception.InvalidTokenException;
+import com.ssafy.moa.common.exception.RefreshTokenExpiredException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,6 +54,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 response.setHeader(AUTHORIZATION_HEADER, "Bearer " + newAccessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 log.info("Issued a new accessToken through refreshToken.");
+                // 만료된 AccessToken 처리, AccessToken 만료되었음을 클라이언트에게 알리기.
+                throw new AccessTokenExpiredException("accessTokenExpired");
             }
             // 유효하지 않은 refreshToken을 입력받았을 때
             // 이때는 accessToken, refreshToken을 재발급 X
@@ -60,10 +63,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 throw new InvalidTokenException("invalidRefreshToken");
             }
             else if(jwtTokenProvider.validateToken(refresh) == JwtTokenProvider.JwtCode.EXPIRED) {
-                log.info("refreshToken이 만료되었어요. 새로운 refreshToken 발급이 필요합니다!!! ");
+                log.info("refreshToken이 만료되었어요. 로그아웃 처리가 필요합니다.");
+                throw new RefreshTokenExpiredException("refreshTokenExpired");
             }
-            // 만료된 AccessToken 처리, AccessToken 만료되었음을 클라이언트에게 알리기.
-            throw new AccessTokenExpiredException("accessTokenExpired");
         }
         // 입력받은 accessToken이 valid하지 않을 때
         else if(jwt != null && jwtTokenProvider.validateToken(jwt) == JwtTokenProvider.JwtCode.DENIED){
