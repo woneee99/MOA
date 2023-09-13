@@ -1,32 +1,25 @@
 package com.ssafy.moa.api.entity;
 
-import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 
-@Entity
-@NoArgsConstructor
+@RedisHash(timeToLive = 120)
 @Getter
+@ToString
 public class RefreshToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private Long refreshTokenId;
-
     private String memberEmail;
-    private String token;
+    private String refreshToken;
 
-    private RefreshToken(String email, String token) {
-        memberEmail = email; // 이게 몰까나? 이건 왜 this를 안해줬지 ???
-        this.token = token;
+    @Builder
+    public RefreshToken(String refreshToken, String memberEmail) {
+        this.refreshToken = refreshToken;
+        this.memberEmail = memberEmail;
     }
 
-    public static RefreshToken createToken(String memberEmail, String token) {
-        return new RefreshToken(memberEmail, token);
-    }
 
-    public void changeToken(String token) {
-        this.token = token;
-    }
 }

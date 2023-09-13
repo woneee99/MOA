@@ -62,8 +62,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             else if(jwtTokenProvider.validateToken(refresh) == JwtTokenProvider.JwtCode.EXPIRED) {
                 log.info("refreshToken이 만료되었어요. 새로운 refreshToken 발급이 필요합니다!!! ");
             }
-            throw new AccessTokenExpiredException("accessTokenExpired");
             // 만료된 AccessToken 처리, AccessToken 만료되었음을 클라이언트에게 알리기.
+            throw new AccessTokenExpiredException("accessTokenExpired");
         }
         // 입력받은 accessToken이 valid하지 않을 때
         else if(jwt != null && jwtTokenProvider.validateToken(jwt) == JwtTokenProvider.JwtCode.DENIED){

@@ -6,7 +6,9 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -89,19 +91,22 @@ public class JwtTokenProvider implements InitializingBean {
     public String reissueRefreshToken(String refreshToken) throws RuntimeException  {
         // 현재 받은 refreshToken을 DB의 refreshToken과 비교하기
        Authentication authentication = getAuthentication(refreshToken);
-        RefreshToken findRefreshToken = refreshTokenRepository.findByMemberEmail(authentication.getName())
+
+       // Redis에서 해당 멤버의 RefreshToken을 가져온다.
+        RefreshToken findRefreshToken = refreshTokenRepository.findById(authentication.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("memberEmail이 " + authentication.getName() + "인 refreshToken은 존재하지 않습니다."));
 
-        if(findRefreshToken.getToken().equals(refreshToken)) {
-            // 새로운 refreshToken 생성
+        if(findRefreshToken.getRefreshToken().equals(refreshToken)) {
+            // 새로운 RefreshToken 생성
             String newRefreshToken = createRefreshToken(authentication);
-            findRefreshToken.changeToken(newRefreshToken);
+            refreshTokenRepository.save(new RefreshToken(newRefreshToken, authentication.getName()));
             return newRefreshToken;
         }
         else {
             log.info("refreshToken이 일치하지 않습니다.");
             return null;
         }
+
     }
 
 
@@ -109,15 +114,8 @@ public class JwtTokenProvider implements InitializingBean {
     public String issueRefreshToken(Authentication authentication) {
         String newRefreshToken = createRefreshToken(authentication);
 
-        // 기존 것이 존재한다면 바꿔주고, 없다면 만들어준다.
-        refreshTokenRepository.findByMemberEmail(authentication.getName())
-                .ifPresentOrElse(
-                        r-> {r.changeToken(newRefreshToken);},
-                        () -> {
-                            RefreshToken token = RefreshToken.createToken(authentication.getName(), newRefreshToken);
-                            refreshTokenRepository.save(token);
-                        }
-                );
+        // Redis에 RefreshToken 저장
+        refreshTokenRepository.save(new RefreshToken(newRefreshToken, authentication.getName()));
         return newRefreshToken;
     }
 
