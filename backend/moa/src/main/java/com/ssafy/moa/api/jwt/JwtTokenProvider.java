@@ -80,7 +80,7 @@ public class JwtTokenProvider implements InitializingBean {
             // 만료된 경우에는 refresh Token 확인
             return JwtCode.EXPIRED;
         } catch (JwtException | IllegalArgumentException e) {
-            log.info("jwtException: {}", e);
+            log.info("jwtException: " +  e);
         }
         return JwtCode.DENIED;
     }

@@ -1,6 +1,7 @@
 package com.ssafy.moa.api.jwt;
 
 import com.ssafy.moa.common.exception.AccessTokenExpiredException;
+import com.ssafy.moa.common.exception.InvalidAccessTokenException;
 import com.ssafy.moa.common.exception.NotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -54,8 +55,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throw new AccessTokenExpiredException("accessTokenExpired");
             // 만료된 AccessToken 처리, AccessToken 만료되었음을 클라이언트에게 알리기.
         }
+        // 입력받은 accessToken이 valid하지 않을 때
         else {
             log.info("no valid JWT token found, uri: {}", request.getRequestURI());
+            throw new InvalidAccessTokenException("invalidAccessToken");
         }
         filterChain.doFilter(request, response);
     }
