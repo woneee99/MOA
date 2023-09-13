@@ -39,6 +39,15 @@ public class MemberController {
         return success(tokenRespDto);
     }
 
+    // 로그아웃
+    @DeleteMapping("/logout")
+    public ApiResult<String> logout(@RequestHeader("Authorization") String header) {
+        String token = header.substring(7);
+        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        memberService.logout(authentication);
+        return success("로그아웃 성공");
+    }
+
     // 테스트
     @GetMapping("/test")
     public ApiResult<?> test(@RequestHeader("Authorization") String header) {

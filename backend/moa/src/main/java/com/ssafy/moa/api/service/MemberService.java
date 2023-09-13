@@ -1,9 +1,11 @@
 package com.ssafy.moa.api.service;
 
 import com.ssafy.moa.api.entity.Member;
+import com.ssafy.moa.api.entity.RefreshToken;
 import com.ssafy.moa.api.jwt.JwtTokenProvider;
 import com.ssafy.moa.api.jwt.MyUserDetailsService;
 import com.ssafy.moa.api.repository.MemberRepository;
+import com.ssafy.moa.api.repository.RefreshTokenRepository;
 import com.ssafy.moa.dto.LoginReqDto;
 import com.ssafy.moa.dto.MemberSignUpDto;
 import com.ssafy.moa.dto.TokenRespDto;
@@ -17,11 +19,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+
     private final PasswordEncoder passwordEncoder;
     private final MyUserDetailsService myUserDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -59,5 +65,15 @@ public class MemberService {
                 "Bearer " + jwtTokenProvider.createAccessToken(authentication),
                 "Bearer " + jwtTokenProvider.issueRefreshToken(authentication)
         );
+    }
+
+    // 로그아웃
+    public void logout(Authentication authentication) {
+        String memberEmail = authentication.getName();
+
+        Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findById(memberEmail);
+        if(findRefreshToken.isPresent()) {
+            refreshTokenRepository.delete(findRefreshToken.get());
+        }
     }
 }
