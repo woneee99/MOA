@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class Foreigner {
 
     @Id
+    @GeneratedValue
     @Column(name = "foreigner_id")
     private Long foreignerId;
 
@@ -32,6 +33,12 @@ public class Foreigner {
 
     public void update(int foreignerLikeGender) {
         this.foreignerLikeGender = foreignerLikeGender;
+    }
+
+    //회원가입 시 사용할 Foreigner Builder
+    public Foreigner(Member member, NationCode nationCode) {
+        this.member = member;
+        this.nationCode = nationCode;
     }
 
 }

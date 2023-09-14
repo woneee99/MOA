@@ -13,6 +13,7 @@ public class MemberSignUpDto {
     private String memberName;
     private Integer memberGender;
     private Boolean memberIsForeigner;
+    private String nationName; // 외국인 유학생일 경우 국가 이름 필요
 
     @Builder
     public MemberSignUpDto(Member member) {
