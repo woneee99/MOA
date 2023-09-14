@@ -58,20 +58,15 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
 
         // 유학생일 경우 유학생 테이블에도 정보 추가해주기
-        /* 나중에 리팩토링 필요 ㅠㅠ
         if(memberIsForeigner) {
             // 나라 정보 찾기
             String nationName = memberSignUpReqDto.getNationName();
             NationCode nationCode = nationRepository.findByNationName(nationName)
                     .orElseThrow(() -> new NotFoundException("Not Found Nation Name : " + nationName));
-            log.info(member.toString());
-            log.info(nationCode.toString());
             Foreigner newForeigner = new Foreigner(member, nationCode);
-            log.info(newForeigner.getMember().toString());
-            log.info(newForeigner.getNationCode().toString());
             foreignerRepository.save(newForeigner);
         }
-         */
+
 
         return new MemberSignUpDto(member);
     }

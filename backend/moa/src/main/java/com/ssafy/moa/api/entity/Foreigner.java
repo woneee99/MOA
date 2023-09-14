@@ -20,11 +20,11 @@ public class Foreigner {
     private int foreignerLikeGender;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id", insertable = false, updatable = false)
+    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "nation_code", referencedColumnName = "nation_code", insertable = false, updatable = false)
+    @JoinColumn(name = "nation_code", referencedColumnName = "nation_code")
     private NationCode nationCode;
 
     @OneToOne
