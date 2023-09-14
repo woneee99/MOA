@@ -8,36 +8,43 @@ function SignUp(props) {
       <div className='signUpContainer'>
         <div>
           <label htmlFor="password" className="inputTitle">나는</label>
-          <input type="radio" id="" name=""/>외국인
-          <input type="radio" id="" name=""/>한국인
+          <input type="radio" id="foreigner" name="foreigner"/>외국인
+          <input type="radio" id="korean" name="korean"/>한국인
         </div>
 
         <div className="inputForm">
           <label htmlFor="password" className="inputTitle">이름</label>
-          <input type="text" id="" name=""/>
+          <input type="text" id="name" name="name"/>
         </div>
 
         <div className="inputForm">
-          <label htmlFor="password" className="inputTitle">출신국가</label>
-          <input type="text" id="" name=""/>
+          <label htmlFor="password" className="inputTitle">국적</label>
+          <select name="region">
+            <option value="한국">한국</option>
+            <option value="미국">미국</option>
+          </select>
         </div>
+        {/* <div className="inputForm">
+          <label htmlFor="password" className="inputTitle">국적</label>
+          <input type="text" id="region" name="region"/>
+        </div> */}
 
         <div className="inputForm">
           <label htmlFor="password" className="inputTitle">성별</label>
-          <input type="radio" id="" name=""/>남자
-          <input type="radio" id="" name=""/>여자
+          <input type="radio" id="man" name="man"/>남자
+          <input type="radio" id="woman" name="woman"/>여자
         </div>
 
         <div className="inputForm">
           <label htmlFor="password" className="inputTitle">이메일</label>
-          <input type="text" id="" name=""/>
+          <input type="text" id="email" name="email"/>
         </div>
 
         <button>인증번호 전송</button>
 
         <div className="inputForm">
           <label htmlFor="password" className="inputTitle">비밀번호</label>
-          <input type="password" id="" name=""/>
+          <input type="password" id="password" name="password"/>
         </div>
 
 
