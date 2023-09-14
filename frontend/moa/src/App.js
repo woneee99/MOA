@@ -8,10 +8,10 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import KoreanLearning from './pages/KoreanLearning';
 import Quiz from './pages/Quiz';
-import WithBuddy from './pages/WithBuddy';
-import ExchangeDiary from './pages/ExchangeDiary';
-import BalanceGame from './pages/BalanceGame';
-import KoreaTour from './pages/KoreaTour';
+import WithBuddy from './pages/WithBuddy/WithBuddy';
+import ExchangeDiary from './pages/WithBuddy/ExchangeDiary';
+import BalanceGame from './pages/WithBuddy/BalanceGame';
+import KoreaTour from './pages/WithBuddy/KoreaTour';
 import NotFound404 from './pages/NotFound404';
 
 function App() {
