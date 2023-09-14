@@ -1,6 +1,7 @@
 package com.ssafy.moa.api.dto.member;
 
 import com.ssafy.moa.api.entity.Member;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 @Getter
@@ -8,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class MemberSignUpDto {
 
+    @Email
     private String memberEmail;
     private String memberPassword;
     private String memberName;

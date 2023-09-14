@@ -14,6 +14,7 @@ import com.ssafy.moa.api.service.MemberService;
 import com.ssafy.moa.api.dto.member.LoginReqDto;
 import com.ssafy.moa.api.dto.member.MemberSignUpDto;
 import com.ssafy.moa.api.dto.member.TokenRespDto;
+import com.ssafy.moa.common.exception.EmailDuplicateException;
 import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,10 @@ public class MemberServiceImpl implements MemberService {
         String encodedPassword = passwordEncoder.encode(memberSignUpReqDto.getMemberPassword());
 
         String memberEmail = memberSignUpReqDto.getMemberEmail();
+        if(memberRepository.existsByMemberEmail(memberEmail)) {
+            throw new EmailDuplicateException("중복된 이메일을 입력하였습니다.");
+        }
+
         String memberName = memberSignUpReqDto.getMemberName();
         Integer memberGender = memberSignUpReqDto.getMemberGender();
         Boolean memberIsForeigner = memberSignUpReqDto.getMemberIsForeigner();

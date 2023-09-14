@@ -6,6 +6,7 @@ import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
 import com.ssafy.moa.api.dto.member.LoginReqDto;
 import com.ssafy.moa.api.dto.member.MemberSignUpDto;
 import com.ssafy.moa.api.dto.member.TokenRespDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ApiResult<MemberSignUpDto> signUp(@RequestBody MemberSignUpDto memberSignUpReqDto) {
+    public ApiResult<MemberSignUpDto> signUp(@RequestBody @Valid MemberSignUpDto memberSignUpReqDto) {
         MemberSignUpDto memberSignUpRespDto = memberService.signUp(memberSignUpReqDto);
         return success(memberSignUpRespDto);
     }
