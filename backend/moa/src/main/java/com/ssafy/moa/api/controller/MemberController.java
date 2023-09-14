@@ -3,15 +3,11 @@ package com.ssafy.moa.api.controller;
 import com.ssafy.moa.api.jwt.JwtTokenProvider;
 import com.ssafy.moa.api.service.MemberService;
 import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
-import com.ssafy.moa.dto.LoginReqDto;
-import com.ssafy.moa.dto.MemberSignUpDto;
-import com.ssafy.moa.dto.TokenRespDto;
+import com.ssafy.moa.api.dto.member.LoginReqDto;
+import com.ssafy.moa.api.dto.member.MemberSignUpDto;
+import com.ssafy.moa.api.dto.member.TokenRespDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import static com.ssafy.moa.common.utils.ApiUtils.error;
