@@ -24,6 +24,8 @@ public class QBalanceGame extends EntityPathBase<BalanceGame> {
 
     public final NumberPath<Long> balanceGameId = createNumber("balanceGameId", Long.class);
 
+    public final ListPath<BalanceGameList, QBalanceGameList> balanceGameList = this.<BalanceGameList, QBalanceGameList>createList("balanceGameList", BalanceGameList.class, QBalanceGameList.class, PathInits.DIRECT2);
+
     public final NumberPath<Integer> balanceGameTime = createNumber("balanceGameTime", Integer.class);
 
     public final StringPath balanceGameTitle = createString("balanceGameTitle");

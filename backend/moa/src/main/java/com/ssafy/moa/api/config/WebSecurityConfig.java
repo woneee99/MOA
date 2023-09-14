@@ -31,6 +31,7 @@ public class WebSecurityConfig {
                         authorizeHttpRequests
                                 .requestMatchers("/member/signup").permitAll()
                                 .requestMatchers("/member/login").permitAll()
+                                .requestMatchers("/balance/**").permitAll()
                                 .anyRequest().authenticated())
                 .apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
 

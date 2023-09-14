@@ -38,18 +38,18 @@ public class BalanceGame {
     @JoinColumn(name = "member_id", referencedColumnName = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "balance_game")
+    @OneToMany(mappedBy = "balanceGame")
     private List<BalanceGameList> balanceGameList;
 
-    @Builder
-    public BalanceGame(Long balanceGameId, String balanceGameTitle, Integer balanceGameTime, LocalDateTime createdAt, LocalDateTime updatedAt, Member member) {
-        this.balanceGameId = balanceGameId;
-        this.balanceGameTitle = balanceGameTitle;
-        this.balanceGameTime = balanceGameTime;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.member = member;
-    }
+//    @Builder
+//    public BalanceGame(Long balanceGameId, String balanceGameTitle, Integer balanceGameTime, LocalDateTime createdAt, LocalDateTime updatedAt, Member member) {
+//        this.balanceGameId = balanceGameId;
+//        this.balanceGameTitle = balanceGameTitle;
+//        this.balanceGameTime = balanceGameTime;
+//        this.createdAt = createdAt;
+//        this.updatedAt = updatedAt;
+//        this.member = member;
+//    }
 
     @Builder
     public BalanceGame(Long balanceGameId, String balanceGameTitle, Integer balanceGameTime, Member member) {
