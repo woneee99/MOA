@@ -10,6 +10,7 @@ import KoreanLearning from './pages/KoreanLearning';
 import Quiz from './pages/Quiz';
 import WithBuddy from './pages/WithBuddy/WithBuddy';
 import ExchangeDiary from './pages/WithBuddy/ExchangeDiary';
+import ExchangeDiaryDetail from './pages/WithBuddy/ExchangeDiaryDetail';
 import BalanceGame from './pages/WithBuddy/BalanceGame';
 import KoreaTour from './pages/WithBuddy/KoreaTour';
 import NotFound404 from './pages/NotFound404';
@@ -38,6 +39,7 @@ function App() {
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/withbuddy" element={<WithBuddy />} />
           <Route path="/withbuddy/exchangediary" element={<ExchangeDiary />} />
+          <Route path="/withbuddy/exchangediary/:id" element={<ExchangeDiaryDetail />} />
           <Route path="/withbuddy/balancegame" element={<BalanceGame />} />
           <Route path="/withbuddy/koreatour" element={<KoreaTour />} />
           
