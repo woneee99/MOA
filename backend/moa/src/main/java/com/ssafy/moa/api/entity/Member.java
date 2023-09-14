@@ -34,13 +34,13 @@ public class Member {
     @Column(columnDefinition = "INT DEFAULT 0")
     private Integer memberExp;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Interest> interest;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Foreigner> foreigner;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Korean> korean;
 
     private LocalDateTime createdAt;

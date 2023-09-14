@@ -14,9 +14,11 @@ public class Buddy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long buddyId;
 
-    @OneToOne(mappedBy = "buddy")
+    @OneToOne
+    @JoinColumn(name = "foreigner_id")
     private Foreigner foreigner;
 
-    @OneToOne(mappedBy = "buddy")
+    @OneToOne
+    @JoinColumn(name = "korean_id")
     private Korean korean;
 }

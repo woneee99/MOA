@@ -48,6 +48,7 @@ public class BuddyServiceImpl implements BuddyService {
                     .interestCode(interestCode).build();
             interestRepository.save(interest);
         }
+
         return koreanRepository.save(korean).getKoreanId();
     }
 
@@ -90,7 +91,7 @@ public class BuddyServiceImpl implements BuddyService {
         Member member = memberRepository.findByMemberId(buddyMatchingRequest.getMemberId())
                 .orElseThrow(() -> new NotFoundException("Not Found User"));
 
-        List<Interest> interestList = interestRepository.findByMemberId(member.getMemberId());
+        List<Interest> interestList = interestRepository.findByInterestId(member.getMemberId());
 
         // 외국인이면
         if(member.getMemberIsForeigner()) {
