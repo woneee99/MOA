@@ -1,9 +1,7 @@
 import React from 'react';
 
 function DiaryItem(props) {
-  const id = props.id;
   const title = props.title;
-  const content = props.content;
   const image = props.image;
   const date = props.date;
   const time = props.time;
@@ -15,11 +13,11 @@ function DiaryItem(props) {
       </div>
       <div>
         <div>
-        <h1>{ title }</h1>
+          <h1>{ title }</h1>
         </div>
         <div>
-        <h4>{ date }</h4>
-        <h5>{ time }</h5>
+          <h4>{ date }</h4>
+          <h5>{ time }</h5>
         </div>
       </div>
       <hr />

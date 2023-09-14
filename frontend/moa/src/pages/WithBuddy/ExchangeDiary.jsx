@@ -24,7 +24,7 @@ function ExchangeDiary(props) {
 
       {/* 검색 필터 */}
       <div>
-        <label htmlFor="searchInput">검색</label>
+        <label htmlFor="searchInput">검색 | </label>
         <input type="text" id="searchInput" />
       </div>
 
@@ -36,9 +36,7 @@ function ExchangeDiary(props) {
         return (
           <div key={index} onClick={() => handleDiaryClick(diary)}>
             <DiaryItem
-              id={diary.id}
               title={diary.title}
-              content={diary.content}
               image={diary.image}
               date={diary.date}
               time={diary.time}

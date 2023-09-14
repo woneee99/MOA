@@ -16,7 +16,6 @@ function ExchangeDiaryDetail(props) {
 
   return (
     <div>
-      <p>ExchangeDiaryDetail</p>
       {id} 번 다이어리
       <div>
         {image}
