@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/moa
+    url: jdbc:mysql://3.38.179.92:3306/moa
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: root
+    password: ssafy
   jpa:
     generate-ddl: true
     show-sql: true
@@ -11,8 +11,13 @@ spring:
     port: 6379
     host: localhost
 
-
 jwt:
   secret-key: WGmDjeValRGtlGnSOLmXPW8Ht36zv571HcMi1HnG9TTsAzG5q5SW8cGkLJKf7L2CTWqI7K27tmdFgakdhBtoFQ==
   token-validity-in-sec: 3600 #1시간
   refresh-token-validity-in-sec: 604800 #1주
+
+server:
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: ssafy
+    key-store-type: PKCS12
