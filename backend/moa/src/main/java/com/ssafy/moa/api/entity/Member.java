@@ -43,6 +43,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Korean> korean;
 
+    @OneToMany(mappedBy = "member")
+    private List<BalanceGame> balanceGame;
+
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
