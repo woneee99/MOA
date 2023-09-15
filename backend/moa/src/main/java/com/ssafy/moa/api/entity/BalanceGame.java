@@ -1,5 +1,6 @@
 package com.ssafy.moa.api.entity;
 
+import com.ssafy.moa.api.dto.BalanceGameDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -59,5 +60,24 @@ public class BalanceGame {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         this.member = member;
+    }
+
+    public void change(BalanceGameDto bg){
+        this.balanceGameTitle = bg.getBalanceGameTitle();
+        this.balanceGameTime = bg.getBalanceGameTime();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "BalanceGame{" +
+                "balanceGameId=" + balanceGameId +
+                ", balanceGameTitle='" + balanceGameTitle + '\'' +
+                ", balanceGameTime=" + balanceGameTime +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", member=" + member +
+                ", balanceGameList=" + balanceGameList +
+                '}';
     }
 }

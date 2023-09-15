@@ -2,7 +2,7 @@ package com.ssafy.moa.api.service.impl;
 
 import com.ssafy.moa.api.dto.BalanceGameDto;
 import com.ssafy.moa.api.dto.BalanceGameReqDto;
-import com.ssafy.moa.api.dto.BalanceGameListDto;
+import com.ssafy.moa.api.dto.BalanceGameListReqDto;
 import com.ssafy.moa.api.dto.BalanceGameResDto;
 import com.ssafy.moa.api.entity.BalanceGame;
 import com.ssafy.moa.api.entity.BalanceGameList;
@@ -13,14 +13,17 @@ import com.ssafy.moa.api.repository.MemberRepository;
 import com.ssafy.moa.api.service.BalanceGameService;
 import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BalanceGameServiceImpl implements BalanceGameService {
 
     private final MemberRepository memberRepository;
@@ -39,11 +42,11 @@ public class BalanceGameServiceImpl implements BalanceGameService {
                 .member(member)
                 .build();
 
-        for (BalanceGameListDto balanceGameListDto : balanceGameReqDto.getBalanceGameList()){
+        for (BalanceGameListReqDto balanceGameListReqDto : balanceGameReqDto.getBalanceGameList()){
             BalanceGameList balanceGameList = BalanceGameList.builder()
-                    .balanceGameOne(balanceGameListDto.getBalanceGameOne())
-                    .balanceGameTwo(balanceGameListDto.getBalanceGameTwo())
-                    .balanceOrder(balanceGameListDto.getBalanceOrder())
+                    .balanceGameOne(balanceGameListReqDto.getBalanceGameOne())
+                    .balanceGameTwo(balanceGameListReqDto.getBalanceGameTwo())
+                    .balanceOrder(balanceGameListReqDto.getBalanceOrder())
                     .balanceGame(balanceGame)
                     .build();
             balanceGameListRepository.save(balanceGameList);
@@ -71,5 +74,25 @@ public class BalanceGameServiceImpl implements BalanceGameService {
     @Transactional
     public Long deleteBalanceGame(Long balanceGameId) {
         return balanceGameRepository.deleteByBalanceGameId(balanceGameId);
+    }
+
+    @Override
+    @Transactional
+    public Long updateBalanceGame(BalanceGameDto balanceGameDto) {
+        Optional<BalanceGame> balanceGameOptional = balanceGameRepository.findById(balanceGameDto.getBalanceGameId());
+        
+        // BalanceGame 테이블 수정
+        BalanceGame balanceGame = balanceGameOptional.orElseThrow(() -> new NotFoundException("Not Found Balance Game"));
+        log.info(String.valueOf(balanceGame));
+        balanceGame.change(balanceGameDto);
+        
+        // BalanceGameList 테이블 수정
+        List<BalanceGameList> balanceGameList = balanceGame.getBalanceGameList();
+        for(int i=0; i<balanceGameList.size(); i++){
+            BalanceGameList balanceGameListItem = balanceGameList.get(i);
+            balanceGameListItem.change(balanceGameDto.getBalanceGameList().get(i));
+        }
+        
+        return balanceGame.getBalanceGameId();
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class BalanceGameReqDto {
     private String balanceGameTitle;
     private Integer balanceGameTime;
-    private List<BalanceGameListDto> balanceGameList;
+    private List<BalanceGameListReqDto> balanceGameList;
 
     @Override
     public String toString() {
