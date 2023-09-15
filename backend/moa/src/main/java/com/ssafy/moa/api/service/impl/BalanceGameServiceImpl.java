@@ -2,6 +2,7 @@ package com.ssafy.moa.api.service.impl;
 
 import com.ssafy.moa.api.dto.BalanceGameDto;
 import com.ssafy.moa.api.dto.BalanceGameListDto;
+import com.ssafy.moa.api.dto.BalanceGameResDto;
 import com.ssafy.moa.api.entity.BalanceGame;
 import com.ssafy.moa.api.entity.BalanceGameList;
 import com.ssafy.moa.api.entity.Member;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,5 +49,15 @@ public class BalanceGameServiceImpl implements BalanceGameService {
         }
 
         return balanceGameRepository.save(balanceGame).getBalanceGameId();
+    }
+
+    @Override
+    public List<BalanceGameResDto> getAllBalanceGame() {
+        List<BalanceGame> balanceGameList = balanceGameRepository.findAllByOrderByCreatedAtDesc().orElseThrow(() -> new NotFoundException("Not Found Member"));
+        List<BalanceGameResDto> result = new ArrayList<>();
+        balanceGameList.forEach(e -> {
+            result.add(BalanceGameResDto.from(e));
+        });
+        return result;
     }
 }
