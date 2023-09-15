@@ -37,11 +37,11 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Interest> interest;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Foreigner> foreigner;
+    @OneToOne(mappedBy = "member")
+    private Foreigner foreigner;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Korean> korean;
+    @OneToOne(mappedBy = "member")
+    private Korean korean;
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

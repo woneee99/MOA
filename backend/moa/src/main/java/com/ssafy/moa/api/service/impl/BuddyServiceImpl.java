@@ -55,12 +55,8 @@ public class BuddyServiceImpl implements BuddyService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long saveForeignerBuddyInfo(ForeignerBuddyPostRequest foreignerBuddyPostRequest) {
-        NationCode nationCode = nationRepository.findByNationCode(foreignerBuddyPostRequest.getNationCode())
-                .orElseThrow(() -> new NotFoundException("Not Found Nation Code"));
-
         Member member = memberRepository.findByMemberId(foreignerBuddyPostRequest.getMemberId())
                 .orElseThrow(() -> new NotFoundException("Not Found Member"));
-
 
         // Foreigner 를 찾기
         Foreigner foreigner = foreignerRepository.findByForeignerId(foreignerBuddyPostRequest.getMemberId())
@@ -86,43 +82,96 @@ public class BuddyServiceImpl implements BuddyService {
     }
 
     @Override
-    public Integer findMatchingBuddy(BuddyMatchingRequest buddyMatchingRequest) {
+    public Long findMatchingBuddy(BuddyMatchingRequest buddyMatchingRequest) {
         // memberId로 외국인인지 판별
         Member member = memberRepository.findByMemberId(buddyMatchingRequest.getMemberId())
                 .orElseThrow(() -> new NotFoundException("Not Found User"));
 
-        List<Interest> interestList = interestRepository.findByInterestId(member.getMemberId());
-
         // 외국인이면
         if(member.getMemberIsForeigner()) {
-//            List<Korean> koreanBuddy = koreanRepository.findKoreanBuddy(member.getMemberId());
-//            if(koreanBuddy.isEmpty()) {
-//                return null;
-//            }
-//            // TODO: 관심사와 국적이 맞는 한국인 찾기
-//            if(!interestList.isEmpty()) {
-//                for(Interest interest : interestList) {
-//                    InterestCode interestCode = interest.getInterestCode();
-//                    for(Korean k : koreanBuddy) {
-//                        List<Interest> koreanInterestList = interestRepository.findByMemberId(k.getKoreanId());
-//                        for(Interest koreanInterest : koreanInterestList) {
-//
-//                        }
-//                    }
-//                }
-//            }
+            Foreigner foreigner = foreignerRepository.findByForeignerId(member.getMemberId())
+                    .orElseThrow(() -> new NotFoundException("Not Found Foreigner"));
+
+            List<Korean> koreanBuddyGenderAndNation = memberRepository.findKoreanBuddyGenderAndNation(member.getMemberId());
+            if(!koreanBuddyGenderAndNation.isEmpty()) {
+                for(Korean korean : koreanBuddyGenderAndNation) {
+                    Integer count = interestRepository.countByInterest(member.getMemberId(), korean.getMember().getMemberId());
+                    if(count > 0) {
+                        Buddy buddy = Buddy.builder()
+                                .korean(korean)
+                                .foreigner(foreigner).build();
+                        return buddyRepository.save(buddy).getBuddyId();
+                    }
+                }
+
+                Buddy buddy = Buddy.builder()
+                        .korean(koreanBuddyGenderAndNation.get(0))
+                        .foreigner(foreigner).build();
+                return buddyRepository.save(buddy).getBuddyId();
+            }
+
+            // 2순위: 성별, 관심사(무관)
+            List<Korean> koreanBuddyGender = memberRepository.findKoreanBuddyGender(member.getMemberId());
+            if(!koreanBuddyGender.isEmpty()) {
+                for(Korean korean : koreanBuddyGenderAndNation) {
+                    Integer count = interestRepository.countByInterest(member.getMemberId(), korean.getMember().getMemberId());
+                    if(count > 0) {
+                        Buddy buddy = Buddy.builder()
+                                .korean(korean)
+                                .foreigner(foreigner).build();
+                        return buddyRepository.save(buddy).getBuddyId();
+                    }
+                }
+
+                Buddy buddy = Buddy.builder()
+                        .korean(koreanBuddyGenderAndNation.get(0))
+                        .foreigner(foreigner).build();
+                return buddyRepository.save(buddy).getBuddyId();
+            }
 
         }
         else { // 한국인이면
-//            List<Foreigner> foreignerBuddy = foreignerRepository.findForeignerBuddy(member.getMemberId());
-//            if(foreignerBuddy.isEmpty()) {
-//                return null;
-//            }
-            // TODO: 관심사와 국적이 맞는 외국인 찾기
+            // 1순위: 성별 & 국적, 관심사(무관)
+            Korean korean = koreanRepository.findByMember(member)
+                    .orElseThrow(() -> new NotFoundException("Not Found Korean"));
 
+            List<Foreigner> foreignerBuddyGenderAndNation = memberRepository.findForeignerBuddyGenderAndNation(member.getMemberId());
+            if(!foreignerBuddyGenderAndNation.isEmpty()) {
+                for(Foreigner foreigner : foreignerBuddyGenderAndNation) {
+                    Integer count = interestRepository.countByInterest(member.getMemberId(), foreigner.getMember().getMemberId());
+                    if(count > 0) {
+                        Buddy buddy = Buddy.builder()
+                                .korean(korean)
+                                .foreigner(foreigner).build();
+                        return buddyRepository.save(buddy).getBuddyId();
+                    }
+                }
+
+                Buddy buddy = Buddy.builder()
+                        .korean(korean)
+                        .foreigner(foreignerBuddyGenderAndNation.get(0)).build();
+                return buddyRepository.save(buddy).getBuddyId();
+            }
+
+            // 2순위: 성별, 관심사(무관)
+            List<Foreigner> foreignerBuddyGender = memberRepository.findForeignerBuddyGender(member.getMemberId());
+            if(!foreignerBuddyGender.isEmpty()) {
+                for(Foreigner foreigner : foreignerBuddyGender) {
+                    Integer count = interestRepository.countByInterest(member.getMemberId(), foreigner.getMember().getMemberId());
+                    if(count > 0) {
+                        Buddy buddy = Buddy.builder()
+                                .korean(korean)
+                                .foreigner(foreigner).build();
+                        return buddyRepository.save(buddy).getBuddyId();
+                    }
+                }
+
+                Buddy buddy = Buddy.builder()
+                        .korean(korean)
+                        .foreigner(foreignerBuddyGenderAndNation.get(0)).build();
+                return buddyRepository.save(buddy).getBuddyId();
+            }
         }
-
-
         return null;
     }
 }

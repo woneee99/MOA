@@ -19,8 +19,8 @@ public class Foreigner {
     private String foreignerKoreaName;
     private int foreignerLikeGender;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    @OneToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)

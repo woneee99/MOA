@@ -16,8 +16,8 @@ public class Korean {
     private Long koreanId;
     private int koreanLikeGender;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    @OneToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -30,4 +30,9 @@ public class BuddyController {
         return success(buddyService.saveForeignerBuddyInfo(foreignerBuddyPostRequest));
     }
 
+    @PostMapping("/match")
+    public ApiResult<Long> createForeignerBuddy(@RequestBody BuddyMatchingRequest buddyMatchingRequest) {
+        return success(buddyService.findMatchingBuddy(buddyMatchingRequest));
+    }
+
 }
