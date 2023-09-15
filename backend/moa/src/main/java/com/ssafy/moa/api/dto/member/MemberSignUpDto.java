@@ -2,6 +2,7 @@ package com.ssafy.moa.api.dto.member;
 
 import com.ssafy.moa.api.entity.Member;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Getter
@@ -11,6 +12,8 @@ public class MemberSignUpDto {
 
     @Email
     private String memberEmail;
+
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[0-9])(?=.*\\W)(?=\\S+$).{8,16}$", message = "비밀번호는 8~16자 영문 소문자, 숫자, 특수문자를 사용하세요.")
     private String memberPassword;
     private String memberName;
     private Integer memberGender;
