@@ -64,6 +64,7 @@ function BalanceGame(props) {
 
   return (
     <div>
+      <BackButton />
       <p>밸런스 게임</p>
 
       <div>
@@ -106,9 +107,6 @@ function BalanceGame(props) {
           )
         })}
       </div>
-
-
-      <BackButton />
     </div>
   );
 }
