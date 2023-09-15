@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -24,6 +26,9 @@ public class Level {
 
     @NotNull
     private Integer levelGrade;
+
+    @OneToMany(mappedBy = "memberLevel")
+    private List<Member> memberList;
 
     @Override
     public String toString() {

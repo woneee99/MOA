@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -24,6 +25,8 @@ public class QLevel extends EntityPathBase<Level> {
     public final NumberPath<Long> levelId = createNumber("levelId", Long.class);
 
     public final StringPath levelName = createString("levelName");
+
+    public final ListPath<Member, QMember> memberList = this.<Member, QMember>createList("memberList", Member.class, QMember.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> requiredExp = createNumber("requiredExp", Integer.class);
 

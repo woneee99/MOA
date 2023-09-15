@@ -18,6 +18,8 @@ public class QMember extends EntityPathBase<Member> {
 
     private static final long serialVersionUID = -1346489765L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QMember member = new QMember("member1");
 
     public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
@@ -38,6 +40,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final BooleanPath memberIsForeigner = createBoolean("memberIsForeigner");
 
+    public final QLevel memberLevel;
+
     public final StringPath memberName = createString("memberName");
 
     public final StringPath memberPassword = createString("memberPassword");
@@ -45,15 +49,24 @@ public class QMember extends EntityPathBase<Member> {
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = createDateTime("modifiedAt", java.time.LocalDateTime.class);
 
     public QMember(String variable) {
-        super(Member.class, forVariable(variable));
+        this(Member.class, forVariable(variable), INITS);
     }
 
     public QMember(Path<? extends Member> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QMember(PathMetadata metadata) {
-        super(Member.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QMember(PathMetadata metadata, PathInits inits) {
+        this(Member.class, metadata, inits);
+    }
+
+    public QMember(Class<? extends Member> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.memberLevel = inits.isInitialized("memberLevel") ? new QLevel(forProperty("memberLevel")) : null;
     }
 
 }
