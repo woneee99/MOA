@@ -8,12 +8,14 @@ import com.ssafy.moa.api.dto.member.MemberSignUpDto;
 import com.ssafy.moa.api.dto.member.TokenRespDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import static com.ssafy.moa.common.utils.ApiUtils.error;
 import static com.ssafy.moa.common.utils.ApiUtils.success;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
@@ -50,6 +52,8 @@ public class MemberController {
     public ApiResult<?> test(@RequestHeader("Authorization") String header) {
         String token = header.substring(7);
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
+//        log.info("member의 Id는 " + jwtTokenProvider.extractMemberId(token).toString());
+
         return success(authentication.getName() + "은 접근 가능합니다.");
     }
 

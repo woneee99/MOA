@@ -80,6 +80,10 @@ public class MemberServiceImpl implements MemberService {
     public TokenRespDto login(LoginReqDto loginReqDto) {
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(loginReqDto.getMemberEmail());
 
+        // memberId도 토큰을 만들 때 사용하기 위해서
+        Member member = memberRepository.findByMemberEmail(loginReqDto.getMemberEmail())
+                .orElseThrow(() -> new NotFoundException(loginReqDto.getMemberEmail() + "의 이메일을 가진 사용자가 없습니다."));
+
         if(!passwordEncoder.matches(loginReqDto.getMemberPassword(), userDetails.getPassword())) {
             throw new BadCredentialsException(userDetails.getUsername() + "Invalid Password");
         }
@@ -88,8 +92,9 @@ public class MemberServiceImpl implements MemberService {
                 userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities()
         );
 
+
         return new TokenRespDto(
-                "Bearer " + jwtTokenProvider.createAccessToken(authentication),
+                "Bearer " + jwtTokenProvider.createAccessToken(authentication, member.getMemberId()),
                 "Bearer " + jwtTokenProvider.issueRefreshToken(authentication)
         );
     }
