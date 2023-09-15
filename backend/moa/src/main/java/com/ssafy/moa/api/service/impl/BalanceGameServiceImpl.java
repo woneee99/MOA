@@ -1,6 +1,7 @@
 package com.ssafy.moa.api.service.impl;
 
 import com.ssafy.moa.api.dto.BalanceGameDto;
+import com.ssafy.moa.api.dto.BalanceGameReqDto;
 import com.ssafy.moa.api.dto.BalanceGameListDto;
 import com.ssafy.moa.api.dto.BalanceGameResDto;
 import com.ssafy.moa.api.entity.BalanceGame;
@@ -28,17 +29,17 @@ public class BalanceGameServiceImpl implements BalanceGameService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long createBalanceGame(Long memberId, BalanceGameDto balanceGameDto) {
+    public Long createBalanceGame(Long memberId, BalanceGameReqDto balanceGameReqDto) {
         Member member = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new NotFoundException("Not Found Member"));
 
         BalanceGame balanceGame = BalanceGame.builder()
-                .balanceGameTitle(balanceGameDto.getBalanceGameTitle())
-                .balanceGameTime(balanceGameDto.getBalanceGameTime())
+                .balanceGameTitle(balanceGameReqDto.getBalanceGameTitle())
+                .balanceGameTime(balanceGameReqDto.getBalanceGameTime())
                 .member(member)
                 .build();
 
-        for (BalanceGameListDto balanceGameListDto : balanceGameDto.getBalanceGameList()){
+        for (BalanceGameListDto balanceGameListDto : balanceGameReqDto.getBalanceGameList()){
             BalanceGameList balanceGameList = BalanceGameList.builder()
                     .balanceGameOne(balanceGameListDto.getBalanceGameOne())
                     .balanceGameTwo(balanceGameListDto.getBalanceGameTwo())
@@ -53,11 +54,16 @@ public class BalanceGameServiceImpl implements BalanceGameService {
 
     @Override
     public List<BalanceGameResDto> getAllBalanceGame() {
-        List<BalanceGame> balanceGameList = balanceGameRepository.findAllByOrderByCreatedAtDesc().orElseThrow(() -> new NotFoundException("Not Found Member"));
+        List<BalanceGame> balanceGameList = balanceGameRepository.findAllByOrderByCreatedAtDesc().orElseThrow(() -> new NotFoundException("Not Found Balance Game"));
         List<BalanceGameResDto> result = new ArrayList<>();
         balanceGameList.forEach(e -> {
             result.add(BalanceGameResDto.from(e));
         });
         return result;
+    }
+
+    @Override
+    public BalanceGameDto getBalanceGame(Long balanceGameId) {
+        return balanceGameRepository.findBalanceGame(balanceGameId).orElseThrow(() -> new NotFoundException("Not Found Balance Game Detail"));
     }
 }
