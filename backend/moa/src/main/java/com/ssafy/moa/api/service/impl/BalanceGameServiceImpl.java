@@ -66,4 +66,10 @@ public class BalanceGameServiceImpl implements BalanceGameService {
     public BalanceGameDto getBalanceGame(Long balanceGameId) {
         return balanceGameRepository.findBalanceGame(balanceGameId).orElseThrow(() -> new NotFoundException("Not Found Balance Game Detail"));
     }
+
+    @Override
+    @Transactional
+    public Long deleteBalanceGame(Long balanceGameId) {
+        return balanceGameRepository.deleteByBalanceGameId(balanceGameId);
+    }
 }

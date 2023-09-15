@@ -12,4 +12,6 @@ public interface BalanceGameService {
     List<BalanceGameResDto> getAllBalanceGame();
 
     BalanceGameDto getBalanceGame(Long balanceGameId);
+
+    Long deleteBalanceGame(Long balanceGameId);
 }

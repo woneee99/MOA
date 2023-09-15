@@ -44,4 +44,10 @@ public class BalanceGameController {
     public ApiResult<BalanceGameDto> getBalanceGame(@PathVariable("balanceGameId") Long balanceGameId){
         return success(balanceGameService.getBalanceGame(balanceGameId));
     }
+
+    @Operation(summary = "밸런스게임 삭제", description = "선택한 밸런스게임을 삭제할 수 있습니다.", tags = { "BalanceGame Controller" })
+    @DeleteMapping("/{balanceGameId}")
+    public ApiResult<Long> deleteBalanceGame(@PathVariable("balanceGameId") Long balanceGameId){
+        return success(balanceGameService.deleteBalanceGame(balanceGameId));
+    }
 }

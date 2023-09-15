@@ -38,7 +38,7 @@ public class BalanceGame {
     @JoinColumn(name = "member_id", referencedColumnName = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "balanceGame")
+    @OneToMany(mappedBy = "balanceGame", cascade = CascadeType.ALL)
     private List<BalanceGameList> balanceGameList;
 
 //    @Builder

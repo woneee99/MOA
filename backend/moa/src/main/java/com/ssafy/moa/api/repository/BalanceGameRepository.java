@@ -12,5 +12,5 @@ import java.util.Optional;
 @Repository
 public interface BalanceGameRepository extends JpaRepository<BalanceGame, Long>, BalanceGameRepositoryCustom {
     Optional<List<BalanceGame>> findAllByOrderByCreatedAtDesc();
-
+    Long deleteByBalanceGameId(Long balanceGameId);
 }

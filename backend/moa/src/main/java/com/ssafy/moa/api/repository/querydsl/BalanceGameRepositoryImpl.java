@@ -16,7 +16,6 @@ import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
 
 @RequiredArgsConstructor
-@Slf4j
 public class BalanceGameRepositoryImpl implements BalanceGameRepositoryCustom{
     private final JPAQueryFactory queryFactory;
 
