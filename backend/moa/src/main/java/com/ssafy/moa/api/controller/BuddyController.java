@@ -4,10 +4,7 @@ import com.ssafy.moa.api.dto.BuddyDto.*;
 import com.ssafy.moa.api.service.BuddyService;
 import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.ssafy.moa.common.utils.ApiUtils.success;
 
@@ -33,6 +30,11 @@ public class BuddyController {
     @PostMapping("/match")
     public ApiResult<Long> createForeignerBuddy(@RequestBody BuddyMatchingRequest buddyMatchingRequest) {
         return success(buddyService.findMatchingBuddy(buddyMatchingRequest));
+    }
+
+    @DeleteMapping("/{memberId}")
+    public ApiResult<Integer> deleteBuddy(@PathVariable Long memberId) {
+        return success(buddyService.deleteBuddy(memberId));
     }
 
 }

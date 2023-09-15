@@ -6,4 +6,5 @@ public interface BuddyService {
     Long saveKoreanBuddyInfo(KoreanBuddyPostRequest koreanBuddyPostRequest);
     Long saveForeignerBuddyInfo(ForeignerBuddyPostRequest foreignerBuddyPostRequest);
     Long findMatchingBuddy(BuddyMatchingRequest buddyMatchingRequest);
+    Integer deleteBuddy(Long memberId);
 }

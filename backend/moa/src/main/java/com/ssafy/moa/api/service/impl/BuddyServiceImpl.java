@@ -59,7 +59,7 @@ public class BuddyServiceImpl implements BuddyService {
                 .orElseThrow(() -> new NotFoundException("Not Found Member"));
 
         // Foreigner 를 찾기
-        Foreigner foreigner = foreignerRepository.findByForeignerId(foreignerBuddyPostRequest.getMemberId())
+        Foreigner foreigner = foreignerRepository.findByMember(member)
                 .orElseThrow(() -> new NotFoundException("Not Found Foreigner"));
 
         // 선호하는 성별 저장
@@ -89,7 +89,7 @@ public class BuddyServiceImpl implements BuddyService {
 
         // 외국인이면
         if(member.getMemberIsForeigner()) {
-            Foreigner foreigner = foreignerRepository.findByForeignerId(member.getMemberId())
+            Foreigner foreigner = foreignerRepository.findByMember(member)
                     .orElseThrow(() -> new NotFoundException("Not Found Foreigner"));
 
             List<Korean> koreanBuddyGenderAndNation = memberRepository.findKoreanBuddyGenderAndNation(member.getMemberId());
@@ -173,5 +173,22 @@ public class BuddyServiceImpl implements BuddyService {
             }
         }
         return null;
+    }
+
+    @Override
+    @Transactional
+    public Integer deleteBuddy(Long memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException("Not Found User"));
+        if(member.getMemberIsForeigner()) {
+            Foreigner foreigner = foreignerRepository.findByMember(member)
+                    .orElseThrow(() -> new NotFoundException("Not Found Foreigner"));
+            return buddyRepository.deleteByForeigner(foreigner);
+        }
+        else {
+            Korean korean = koreanRepository.findByMember(member)
+                    .orElseThrow(() -> new NotFoundException("Not Found Korean"));
+            return buddyRepository.deleteByKorean(korean);
+        }
     }
 }
