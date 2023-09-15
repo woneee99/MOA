@@ -13,7 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Foreigner {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "foreigner_id")
     private Long foreignerId;
 
