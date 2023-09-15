@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import BackButton from '../../components/BackButton';
 import DiaryItem from '../../components/DiaryItem';
@@ -21,6 +22,12 @@ function ExchangeDiary(props) {
   return (
     <div>
       <p>교환일기</p>
+
+      <div>
+        <Link to="/withbuddy/exchangediary/create">
+          <button>생성하기</button>
+        </Link>
+      </div>
 
       {/* 검색 필터 */}
       <div>

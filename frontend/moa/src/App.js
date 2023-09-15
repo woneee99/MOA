@@ -7,10 +7,12 @@ import Main from './pages/Main';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import KoreanLearning from './pages/KoreanLearning';
-import Quiz from './pages/Quiz';
+import Quiz from './pages/Quiz/Quiz';
 import WithBuddy from './pages/WithBuddy/WithBuddy';
 import ExchangeDiary from './pages/WithBuddy/ExchangeDiary';
 import ExchangeDiaryDetail from './pages/WithBuddy/ExchangeDiaryDetail';
+import CreateExchangeDiary from './pages/WithBuddy/CreateExchangeDiary';
+import UpdateExchangeDiary from './pages/WithBuddy/UpdateExchangeDiary';
 import BalanceGame from './pages/WithBuddy/BalanceGame';
 import BalanceGameDetail from './pages/WithBuddy/BalanceGameDetail';
 import CreateBalanceGame from './pages/WithBuddy/CreateBalanceGame';
@@ -41,8 +43,11 @@ function App() {
           <Route path="/koreanlearning" element={<KoreanLearning />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/withbuddy" element={<WithBuddy />} />
+
           <Route path="/withbuddy/exchangediary" element={<ExchangeDiary />} />
           <Route path="/withbuddy/exchangediary/:id" element={<ExchangeDiaryDetail />} />
+          <Route path="/withbuddy/exchangediary/create" element={<CreateExchangeDiary />} />
+          <Route path="/withbuddy/exchangediary/:id/update" element={<UpdateExchangeDiary />} />
 
           <Route path="/withbuddy/balancegame" element={<BalanceGame />} />
           <Route path="/withbuddy/balancegame/:id" element={<BalanceGameDetail />} />

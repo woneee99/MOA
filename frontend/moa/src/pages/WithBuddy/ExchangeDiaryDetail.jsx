@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
 
 import BackButton from '../../components/BackButton';
@@ -14,9 +15,23 @@ function ExchangeDiaryDetail(props) {
   const date = diary.date;
   const time = diary.time;
 
+  const navigate = useNavigate();
+
+  const handleUpdateExchangeDiaryClick = () => {
+    navigate(`/withbuddy/exchangediary/${id}/update`, {
+      state: { diary }, // 밸런스게임 데이터를 state에 전달
+    });
+  };
+
   return (
     <div>
       {id} 번 다이어리
+
+      <div>
+        <button onClick={() => handleUpdateExchangeDiaryClick()}>수정하기</button>
+        <button>삭제하기</button>
+      </div>
+
       <div>
         {image}
       </div>
