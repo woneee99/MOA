@@ -1,6 +1,8 @@
 package com.ssafy.moa.api.controller;
 
+import com.ssafy.moa.api.dto.member.EmailCheckDto;
 import com.ssafy.moa.api.jwt.JwtTokenProvider;
+import com.ssafy.moa.api.service.EmailService;
 import com.ssafy.moa.api.service.MemberService;
 import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
 import com.ssafy.moa.api.dto.member.LoginReqDto;
@@ -22,6 +24,8 @@ import static com.ssafy.moa.common.utils.ApiUtils.success;
 public class MemberController {
 
     private final MemberService memberService;
+    private final EmailService emailService;
+
     private final JwtTokenProvider jwtTokenProvider;
 
     // 회원가입
@@ -30,6 +34,14 @@ public class MemberController {
         MemberSignUpDto memberSignUpRespDto = memberService.signUp(memberSignUpReqDto);
         return success(memberSignUpRespDto);
     }
+
+    @PostMapping("/signup/email")
+    // 회원가입 시 이메일 인증번호 전송
+    public ApiResult<String> emailCheck(@RequestBody EmailCheckDto emailCheckDto) throws Exception {
+        String emailCode = emailService.sendSimpleMessage(emailCheckDto);
+        return success(emailCode);
+    }
+
 
     // 로그인
     @PostMapping("/login")
