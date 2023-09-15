@@ -21,17 +21,16 @@ public class Foreigner {
     private String foreignerKoreaName;
     private int foreignerLikeGender;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    @OneToOne
+    @JoinColumn(name = "member_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nation_code", referencedColumnName = "nation_code")
     private NationCode nationCode;
 
-    @OneToOne
-    @JoinColumn(name = "buddy_id")
+    @OneToOne(mappedBy = "foreigner")
     private Buddy buddy;
 
     public void update(int foreignerLikeGender) {

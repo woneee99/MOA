@@ -41,14 +41,17 @@ public class Member {
     @Column(columnDefinition = "INT DEFAULT 0")
     private Integer memberExp;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Interest> interest;
 
-    @OneToMany(mappedBy = "member")
-    private List<Foreigner> foreigner;
+    @OneToOne(mappedBy = "member")
+    private Foreigner foreigner;
+
+    @OneToOne(mappedBy = "member")
+    private Korean korean;
 
     @OneToMany(mappedBy = "member")
-    private List<Korean> korean;
+    private List<BalanceGame> balanceGame;
 
     @ManyToOne
     @NotNull
