@@ -1,12 +1,11 @@
 package com.ssafy.moa.api.service.impl;
 
-import com.ssafy.moa.api.dto.BalanceGameDto;
-import com.ssafy.moa.api.dto.BalanceGameReqDto;
-import com.ssafy.moa.api.dto.BalanceGameListReqDto;
-import com.ssafy.moa.api.dto.BalanceGameResDto;
+import com.ssafy.moa.api.dto.*;
 import com.ssafy.moa.api.entity.BalanceGame;
+import com.ssafy.moa.api.entity.BalanceGameGood;
 import com.ssafy.moa.api.entity.BalanceGameList;
 import com.ssafy.moa.api.entity.Member;
+import com.ssafy.moa.api.repository.BalanceGameGoodRepository;
 import com.ssafy.moa.api.repository.BalanceGameListRepository;
 import com.ssafy.moa.api.repository.BalanceGameRepository;
 import com.ssafy.moa.api.repository.MemberRepository;
@@ -29,6 +28,7 @@ public class BalanceGameServiceImpl implements BalanceGameService {
     private final MemberRepository memberRepository;
     private final BalanceGameRepository balanceGameRepository;
     private final BalanceGameListRepository balanceGameListRepository;
+    private final BalanceGameGoodRepository balanceGameGoodRepository;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -93,6 +93,35 @@ public class BalanceGameServiceImpl implements BalanceGameService {
             balanceGameListItem.change(balanceGameDto.getBalanceGameList().get(i));
         }
         
+        return balanceGame.getBalanceGameId();
+    }
+
+    @Override
+    @Transactional
+    public Long createBalanceGameReaction(Long memberId, BalanceGameReactionDto balanceGameReactionDto) {
+        Optional<BalanceGame> balanceGameOptional = balanceGameRepository.findById(balanceGameReactionDto.getBalanceGameId());
+
+        // BalanceGame 테이블 수정
+        BalanceGame balanceGame = balanceGameOptional.orElseThrow(() -> new NotFoundException("Not Found Balance Game"));
+        if (balanceGameReactionDto.getReactionId() == 01){
+            balanceGame.plusGood();
+        } else if (balanceGameReactionDto.getReactionId() == 02) {
+            balanceGame.plusNormal();
+        }
+        else if (balanceGameReactionDto.getReactionId() == 03) {
+            balanceGame.plusBad();
+        }
+
+        // BalanceGameGood 테이블 수정
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException("Not Found Member"));
+        BalanceGameGood balanceGameGood = BalanceGameGood.builder()
+                .balanceGameReaction(balanceGameReactionDto.getReactionId())
+                .balanceGame(balanceGame)
+                .member(member)
+                .build();
+        balanceGameGoodRepository.save(balanceGameGood);
+
         return balanceGame.getBalanceGameId();
     }
 }

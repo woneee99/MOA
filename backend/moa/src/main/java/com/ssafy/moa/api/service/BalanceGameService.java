@@ -1,6 +1,7 @@
 package com.ssafy.moa.api.service;
 
 import com.ssafy.moa.api.dto.BalanceGameDto;
+import com.ssafy.moa.api.dto.BalanceGameReactionDto;
 import com.ssafy.moa.api.dto.BalanceGameReqDto;
 import com.ssafy.moa.api.dto.BalanceGameResDto;
 
@@ -16,4 +17,6 @@ public interface BalanceGameService {
     Long deleteBalanceGame(Long balanceGameId);
 
     Long updateBalanceGame(BalanceGameDto balanceGameDto);
+
+    Long createBalanceGameReaction(Long memberId, BalanceGameReactionDto balanceGameReactionDto);
 }

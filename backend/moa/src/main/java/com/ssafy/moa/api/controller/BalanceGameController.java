@@ -1,6 +1,7 @@
 package com.ssafy.moa.api.controller;
 
 import com.ssafy.moa.api.dto.BalanceGameDto;
+import com.ssafy.moa.api.dto.BalanceGameReactionDto;
 import com.ssafy.moa.api.dto.BalanceGameReqDto;
 import com.ssafy.moa.api.dto.BalanceGameResDto;
 import com.ssafy.moa.api.jwt.JwtTokenProvider;
@@ -55,5 +56,13 @@ public class BalanceGameController {
     @DeleteMapping("/{balanceGameId}")
     public ApiResult<Long> deleteBalanceGame(@PathVariable("balanceGameId") Long balanceGameId){
         return success(balanceGameService.deleteBalanceGame(balanceGameId));
+    }
+
+    // Todo : 추후 authentication를 사용해서 실제 memberId로 변경
+    @Operation(summary = "밸런스게임 반응 등록", description = "진행한 밸런스게임의 반응을 등록합니다.", tags = { "BalanceGame Controller" })
+    @PostMapping("/reaction")
+    public ApiResult<Long> createBalanceGameReaction(/*@RequestHeader("Authorization") String header,*/ @RequestBody BalanceGameReactionDto balanceGameReactionDto){
+        Long memberId = 4L;
+        return success(balanceGameService.createBalanceGameReaction(memberId, balanceGameReactionDto));
     }
 }

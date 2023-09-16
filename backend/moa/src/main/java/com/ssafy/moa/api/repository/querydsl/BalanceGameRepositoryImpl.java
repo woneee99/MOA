@@ -28,7 +28,7 @@ public class BalanceGameRepositoryImpl implements BalanceGameRepositoryCustom{
                 .leftJoin(bgl).on(bg.balanceGameId.eq(bgl.balanceGame.balanceGameId))
                 .where(bg.balanceGameId.eq(balanceGameId))
                 .transform(groupBy(bg.balanceGameId).list(Projections.constructor(BalanceGameDto.class,
-                        bg.balanceGameId, bg.balanceGameTitle, bg.balanceGameTime,
+                        bg.balanceGameId, bg.balanceGameTitle, bg.balanceGameTime, bg.goodCount, bg.normalCount, bg.badCount,
                         list(Projections.constructor(BalanceGameListDto.class,
                                 bgl.balanceGameListId, bgl.balanceGameOne, bgl.balanceGameTwo, bgl.balanceOrder))
                         )));
