@@ -1,7 +1,9 @@
 package com.ssafy.moa.api.service.impl;
 
 import com.ssafy.moa.api.dto.member.EmailCheckDto;
+import com.ssafy.moa.api.dto.member.EmailCodeDto;
 import com.ssafy.moa.api.service.EmailService;
+import com.ssafy.moa.common.exception.NotFoundException;
 import com.ssafy.moa.common.utils.RedisUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -76,6 +78,16 @@ public class EmailServiceImpl implements EmailService {
             throw new IllegalAccessException();
         }
         return ePw;
+    }
+
+    @Override
+    public String verifyEmail(EmailCodeDto emailCodeDto) throws NotFoundException {
+        String memberEmail = redisUtil.getData(emailCodeDto.getEmailCode());
+        if(memberEmail == null) {
+            throw new NotFoundException("이메일 인증을 실패했습니다.");
+        }
+        redisUtil.deleteData(emailCodeDto.getEmailCode());
+        return "이메일 인증을 성공했습니다.";
     }
 
 }
