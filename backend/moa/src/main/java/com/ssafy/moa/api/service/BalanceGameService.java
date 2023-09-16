@@ -19,4 +19,6 @@ public interface BalanceGameService {
     Long updateBalanceGame(BalanceGameDto balanceGameDto);
 
     Long createBalanceGameReaction(Long memberId, BalanceGameReactionDto balanceGameReactionDto);
+
+    List<BalanceGameResDto> getBestBalanceGame();
 }

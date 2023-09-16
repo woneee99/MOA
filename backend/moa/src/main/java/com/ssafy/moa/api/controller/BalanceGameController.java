@@ -65,4 +65,10 @@ public class BalanceGameController {
         Long memberId = 4L;
         return success(balanceGameService.createBalanceGameReaction(memberId, balanceGameReactionDto));
     }
+
+    @Operation(summary = "인기 밸런스게임 조회", description = "인기 밸런스게임을 조회할 수 있습니다. (좋아요>보통>나쁨 순)", tags = { "BalanceGame Controller" })
+    @GetMapping("/best")
+    public ApiResult<List<BalanceGameResDto>> getBestBalanceGame(){
+        return success(balanceGameService.getBestBalanceGame());
+    }
 }

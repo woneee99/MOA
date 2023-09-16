@@ -124,4 +124,14 @@ public class BalanceGameServiceImpl implements BalanceGameService {
 
         return balanceGame.getBalanceGameId();
     }
+
+    @Override
+    public List<BalanceGameResDto> getBestBalanceGame() {
+        List<BalanceGame> balanceGameList = balanceGameRepository.findTop3ByOrderByGoodCountDescNormalCountDescBadCountDesc().orElseThrow(() -> new NotFoundException("Not Found Balance Game"));
+        List<BalanceGameResDto> result = new ArrayList<>();
+        balanceGameList.forEach(e -> {
+            result.add(BalanceGameResDto.from(e));
+        });
+        return result;
+    }
 }
