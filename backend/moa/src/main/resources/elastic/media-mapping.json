@@ -1,0 +1,31 @@
+{
+  "properties": {
+    "geo": {
+      "properties": {
+        "place_nm": { "type": "text" },
+        "place_ty": { "type": "text" },
+        "oper_time": { "type": "text" },
+        "rest_time": { "type": "text" },
+        "rstde_guid_cn": { "type": "text" },
+        "addr": { "type": "text" },
+        "latitude": { "type": "float" },
+        "longitude": { "type": "float" },
+        "tel_no": { "type": "long", "null_value": 0  },
+        "location": { "type": "geo_point" }
+      }
+    },
+    "media": {
+      "properties": {
+        "seq_no" : {"type": "integer"},
+        "media_ty": { "type": "text" },
+        "title_nm": { "type": "text" },
+        "relate_place_dc": { "type": "text" },
+        "last_updt_de": { "type": "integer" }
+      }
+    }
+  },
+  "description" : {
+    "type" : "text",
+    "analyzer" : "korean"
+  }
+}

@@ -53,6 +53,10 @@ dependencies {
     // SMTP
     implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.0'
     implementation group: 'com.sun.mail', name: 'jakarta.mail', version: '2.0.1'
+
+    // Elastic search
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.17.6'
 }
 
 tasks.named('test') {
