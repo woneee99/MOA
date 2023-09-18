@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+import OpenChattingEntrance from './OpenChattingEntrance';
 
 function OpenChattingListItem(props) {
+  const { id, title, description, member_id, participate } = props;
+
   return (
     <div>
-      <p>오픈 채팅 item Component</p>
+      <h4>{title}</h4>
+      <p>{description}</p>
+      <p>참여자 수: {participate.length}</p>
     </div>
   );
 }
