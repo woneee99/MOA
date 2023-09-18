@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import BalanceGameResult from './BalanceGameResult';
-import BackButton from '../BackButton';
 import LiveChatArea from './LiveChatArea';
 import ProgressBar from './ProgressBar';
 
