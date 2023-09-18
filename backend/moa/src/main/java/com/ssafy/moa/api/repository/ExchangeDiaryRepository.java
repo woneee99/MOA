@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ExchangeDiaryRepository extends JpaRepository<ExchangeDiary, Long> {
-
+    ExchangeDiary findByExchangeDiaryId(Long exchangeDiaryId);
 }

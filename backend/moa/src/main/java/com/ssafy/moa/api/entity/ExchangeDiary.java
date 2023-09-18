@@ -15,6 +15,7 @@ public class ExchangeDiary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long exchangeDiaryId;
+    private String exchangeDiaryTitle;
     private String exchangeDiaryContent;
     private LocalDateTime exchangeDiaryDate;
     private LocalDateTime createdAt;
@@ -26,7 +27,8 @@ public class ExchangeDiary {
     private Member member;
 
     @Builder
-    public ExchangeDiary(String exchangeDiaryContent, LocalDateTime exchangeDiaryDate, LocalDateTime createdAt, LocalDateTime updatedAt, String exchangeDiaryPicture, Member member) {
+    public ExchangeDiary(String exchangeDiaryTitle, String exchangeDiaryContent, LocalDateTime exchangeDiaryDate, LocalDateTime createdAt, LocalDateTime updatedAt, String exchangeDiaryPicture, Member member) {
+        this.exchangeDiaryTitle = exchangeDiaryTitle;
         this.exchangeDiaryContent = exchangeDiaryContent;
         this.exchangeDiaryDate = exchangeDiaryDate;
         this.createdAt = createdAt;

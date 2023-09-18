@@ -1,10 +1,9 @@
 package com.ssafy.moa.api.service.impl;
 
-import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
-import com.ssafy.moa.api.dto.ExchangeDiaryDto;
+import com.ssafy.moa.api.dto.ExchangeDiaryDto.*;
+import com.ssafy.moa.api.dto.member.MemberDto;
 import com.ssafy.moa.api.entity.ExchangeDiary;
 import com.ssafy.moa.api.entity.Member;
 import com.ssafy.moa.api.repository.ExchangeDiaryRepository;
@@ -13,13 +12,13 @@ import com.ssafy.moa.api.service.ExchangeDiaryService;
 import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,11 +30,11 @@ public class ExchangeDiaryServiceImpl implements ExchangeDiaryService {
     private final MemberRepository memberRepository;
     private final ExchangeDiaryRepository exchangeDiaryRepository;
     private final Storage storage;
+    private final String url = "https://storage.googleapis.com/";
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long saveExchangeDiary(MultipartFile multipartFile, ExchangeDiaryDto.ExchangeDiaryRequest exchangeDiaryRequest) throws IOException {
-        System.out.println("exchangeDiaryRequest.getMemberId() = " + exchangeDiaryRequest.getMemberId());
+    public Long saveExchangeDiary(MultipartFile multipartFile, ExchangeDiaryRequest exchangeDiaryRequest) throws IOException {
         Member member = memberRepository.findByMemberId(exchangeDiaryRequest.getMemberId())
                 .orElseThrow(() -> new NotFoundException("Not Found User"));
 
@@ -49,12 +48,40 @@ public class ExchangeDiaryServiceImpl implements ExchangeDiaryService {
 
         LocalDateTime now = LocalDateTime.now();
         ExchangeDiary exchangeDiary = ExchangeDiary.builder()
+                .exchangeDiaryTitle(exchangeDiaryRequest.getExchangeDiaryTitle())
                 .exchangeDiaryContent(exchangeDiaryRequest.getExchangeDiaryContent())
                 .exchangeDiaryPicture(uuid)
                 .exchangeDiaryDate(now)
+                .member(member)
                 .createdAt(now)
                 .updatedAt(now)
                 .build();
         return exchangeDiaryRepository.save(exchangeDiary).getExchangeDiaryId();
+    }
+
+    @Override
+    public List<ExchangeDiaryResponse> findExchangeDiary(Long memberId) {
+        return null;
+    }
+
+    @Override
+    public ExchangeDiaryDetailResponse findExchangeDiaryDetail(Long exchangeDiaryId) {
+        ExchangeDiary exchangeDiary = exchangeDiaryRepository.findByExchangeDiaryId(exchangeDiaryId);
+        String imgUrl = url + bucketName + "/" + exchangeDiary.getExchangeDiaryPicture();
+
+        Member member = exchangeDiary.getMember();
+        MemberDto memberDto = MemberDto.builder()
+                .memberId(member.getMemberId())
+                .memberEmail(member.getMemberEmail())
+                .memberName(member.getMemberName())
+                .build();
+
+        return ExchangeDiaryDetailResponse.builder()
+                .member(memberDto)
+                .exchangeDiaryTitle(exchangeDiary.getExchangeDiaryTitle())
+                .exchangeDiaryContent(exchangeDiary.getExchangeDiaryContent())
+                .exchangeDiaryImgUrl(imgUrl)
+                .exchangeDiaryDate(exchangeDiary.getExchangeDiaryDate())
+                .build();
     }
 }

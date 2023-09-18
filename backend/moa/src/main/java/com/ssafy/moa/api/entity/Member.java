@@ -76,6 +76,8 @@ public class Member {
         this.memberLevel = memberLevel;
     }
 
+
+
     @Override
     public String toString() {
         return "Member{" +
