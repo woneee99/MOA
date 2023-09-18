@@ -3,7 +3,8 @@ import React from "react";
 function KoreanBuddy(){
   return(
     <>
-      <h3>선호하는 버디의 국적을 알려주세요</h3>
+      <h3>선호하는 버디의 국적을 알려주세요!</h3>
+      <p>버디 매칭에 도움이 될 거예요</p>
       <select>
         <option value="미국">미국</option>
         <option value="일본">일본</option>

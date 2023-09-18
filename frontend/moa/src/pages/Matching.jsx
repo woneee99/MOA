@@ -17,7 +17,7 @@ function Matching(){
         버디를 만나보세요</h3>
       <h3>(한국인)한국을 좋아하는
         외국인 친구의
-        버디가 되어보세요</h3>
+        버디가 되어주세요</h3>
       <ConfirmButton text="시작하기" />
 
       {/* 한국 버디일 경우 KoreanBuddy.jsx 추가*/}

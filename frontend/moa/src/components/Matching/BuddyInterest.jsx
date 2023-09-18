@@ -13,7 +13,6 @@ function BuddyInterest(){
       <div><SelectButton text="사회" /> <SelectButton text="경제" /></div>
       <div><SelectButton text="운동" /> <SelectButton text="스포츠" /></div>
       <div><SelectButton text="게임" /> <SelectButton text="요리" /></div>
-      
     </>
   );
 }
