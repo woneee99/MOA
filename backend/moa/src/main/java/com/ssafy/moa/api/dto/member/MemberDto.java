@@ -1,5 +1,6 @@
 package com.ssafy.moa.api.dto.member;
 
+import com.ssafy.moa.api.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +14,9 @@ public class MemberDto {
     private String memberEmail;
 
     @Builder
-    public MemberDto(Long memberId, String memberEmail, String memberName) {
-        this.memberId = memberId;
-        this.memberEmail = memberEmail;
-        this.memberName = memberName;
+    public MemberDto(Member member) {
+        this.memberId = member.getMemberId();
+        this.memberEmail = member.getMemberEmail();
+        this.memberName = member.getMemberName();
     }
 }

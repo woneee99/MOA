@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.ssafy.moa.common.utils.ApiUtils.success;
 
@@ -26,5 +27,10 @@ public class ExchangeDiaryController {
     @GetMapping("/{exchangeDiaryId}")
     public ApiUtils.ApiResult<ExchangeDiaryDetailResponse> getExchangeDiaryDetail(@PathVariable Long exchangeDiaryId) {
         return success(exchangeDiaryService.findExchangeDiaryDetail(exchangeDiaryId));
+    }
+
+    @GetMapping
+    public ApiUtils.ApiResult<List<ExchangeDiaryDetailResponse>> getExchangeDiary(@RequestParam("memberId") Long memberId) {
+        return success(exchangeDiaryService.findExchangeDiary(memberId));
     }
 }

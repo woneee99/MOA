@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ExchangeDiaryService {
     Long saveExchangeDiary(MultipartFile multipartFile, ExchangeDiaryRequest exchangeDiaryRequest) throws IOException;
-    List<ExchangeDiaryResponse> findExchangeDiary(Long memberId);
+    List<ExchangeDiaryDetailResponse> findExchangeDiary(Long memberId);
     ExchangeDiaryDetailResponse findExchangeDiaryDetail(Long exchangeDiaryId);
 }

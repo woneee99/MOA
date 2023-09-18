@@ -4,10 +4,8 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.ssafy.moa.api.dto.ExchangeDiaryDto.*;
 import com.ssafy.moa.api.dto.member.MemberDto;
-import com.ssafy.moa.api.entity.ExchangeDiary;
-import com.ssafy.moa.api.entity.Member;
-import com.ssafy.moa.api.repository.ExchangeDiaryRepository;
-import com.ssafy.moa.api.repository.MemberRepository;
+import com.ssafy.moa.api.entity.*;
+import com.ssafy.moa.api.repository.*;
 import com.ssafy.moa.api.service.ExchangeDiaryService;
 import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +25,14 @@ public class ExchangeDiaryServiceImpl implements ExchangeDiaryService {
 
     @Value("${spring.cloud.gcp.storage.bucket}")
     private String bucketName;
-    private final MemberRepository memberRepository;
-    private final ExchangeDiaryRepository exchangeDiaryRepository;
     private final Storage storage;
     private final String url = "https://storage.googleapis.com/";
+
+    private final MemberRepository memberRepository;
+    private final ExchangeDiaryRepository exchangeDiaryRepository;
+    private final BuddyRepository buddyRepository;
+    private final ForeignerRepository foreignerRepository;
+    private final KoreanRepository koreanRepository;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -60,8 +62,28 @@ public class ExchangeDiaryServiceImpl implements ExchangeDiaryService {
     }
 
     @Override
-    public List<ExchangeDiaryResponse> findExchangeDiary(Long memberId) {
-        return null;
+    public List<ExchangeDiaryDetailResponse> findExchangeDiary(Long memberId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException("Not Found User"));
+        Buddy buddy = null;
+        Member buddyMember = null;
+        if(member.getMemberIsForeigner()) { // 외국인이면
+            Foreigner foreigner = foreignerRepository.findByMember(member)
+                    .orElseThrow(() -> new NotFoundException("Not Found Foreigner"));
+            buddy = buddyRepository.findByForeigner(foreigner)
+                    .orElseThrow(() -> new NotFoundException("Not Found Buddy"));
+            buddyMember = buddy.getKorean().getMember();
+        }
+        else {
+            Korean korean = koreanRepository.findByMember(member)
+                    .orElseThrow(() -> new NotFoundException("Not Found Korean"));
+            buddy = buddyRepository.findByKorean(korean)
+                    .orElseThrow(() -> new NotFoundException("Not Found Buddy"));
+            buddyMember = buddy.getForeigner().getMember();
+        }
+
+        List<ExchangeDiary> diaryList = exchangeDiaryRepository.findByMemberOrMember(member, buddyMember);
+        return ExchangeDiaryResponse.builder().exchangeDiaryList(diaryList).build().getExchangeDiaryResponseList();
     }
 
     @Override
@@ -71,9 +93,7 @@ public class ExchangeDiaryServiceImpl implements ExchangeDiaryService {
 
         Member member = exchangeDiary.getMember();
         MemberDto memberDto = MemberDto.builder()
-                .memberId(member.getMemberId())
-                .memberEmail(member.getMemberEmail())
-                .memberName(member.getMemberName())
+                .member(member)
                 .build();
 
         return ExchangeDiaryDetailResponse.builder()
