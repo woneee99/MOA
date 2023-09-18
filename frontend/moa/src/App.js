@@ -6,7 +6,6 @@ import Intro from './pages/Intro';
 import Main from './pages/Main';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import Matching from './pages/Matching';
 import ChattingHome from './pages/Chatting/ChattingHome';
 import KoreanLearning from './pages/Learning/KoreanLearning';
 import Quiz from './pages/Quiz/Quiz';
@@ -42,8 +41,6 @@ function App() {
           <Route path="/intro" element={<Intro />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-
-          <Route path="/matching" element={<Matching />} />
 
           <Route path="/chatting" element={<ChattingHome />}/>
 
