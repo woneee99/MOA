@@ -6,8 +6,9 @@ import Intro from './pages/Intro';
 import Main from './pages/Main';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import KoreanLearning from './pages/KoreanLearning';
+import KoreanLearning from './pages/Learning/KoreanLearning';
 import Quiz from './pages/Quiz/Quiz';
+import IncorrectNote from './pages/Quiz/IncorrectNote';
 import WithBuddy from './pages/WithBuddy/WithBuddy';
 import ExchangeDiary from './pages/WithBuddy/ExchangeDiary';
 import ExchangeDiaryDetail from './pages/WithBuddy/ExchangeDiaryDetail';
@@ -41,7 +42,10 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
 
           <Route path="/koreanlearning" element={<KoreanLearning />} />
+
           <Route path="/quiz" element={<Quiz />} />
+          <Route path="/quiz/incorrect-note" element={<IncorrectNote />} />
+
           <Route path="/withbuddy" element={<WithBuddy />} />
 
           <Route path="/withbuddy/exchangediary" element={<ExchangeDiary />} />

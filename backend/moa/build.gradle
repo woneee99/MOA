@@ -53,6 +53,9 @@ dependencies {
 
     // websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // SMTP
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.0'
+    implementation group: 'com.sun.mail', name: 'jakarta.mail', version: '2.0.1'
 }
 
 tasks.named('test') {
