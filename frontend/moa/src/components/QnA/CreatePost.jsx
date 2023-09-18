@@ -6,7 +6,7 @@ function CreatePost({ addPost }){
 
   const handleSubmit = () => {
     const newPost = {title, content};
-    addPost(newPost);
+    // addPost(newPost);
     // api 요청 서버로 새 게시글 작성 
 
 
