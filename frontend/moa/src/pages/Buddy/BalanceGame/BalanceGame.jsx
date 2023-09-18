@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import BackButton from '../../../components/BackButton';
-import BalanceGameItem from '../../../components/BalanceGameItem';
+import BalanceGameItem from '../../../components/BalanceGame/BalanceGameItem';
 import PopularBalanceGameItem from '../../../components/PopularBalanceGameItem';
 
 function BalanceGame(props) {

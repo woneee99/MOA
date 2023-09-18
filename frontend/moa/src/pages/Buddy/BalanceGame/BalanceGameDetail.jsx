@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useLocation, Link } from 'react-router-dom';
 
 import BackButton from '../../../components/BackButton';
+import LiveChatArea from '../../../components/BalanceGame/LiveChatArea';
+import BalanceGameModal from '../../../components/BalanceGame/BalanceGameModal';
 
 function BalanceGameDetail(props) {
   const location = useLocation();
@@ -13,6 +15,12 @@ function BalanceGameDetail(props) {
   const username = balanceGame.username;
   const time = balanceGame.time;
   const balanceGameList = balanceGame.balanceGameList;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleStartClick = () => {
+    setIsModalOpen(true);
+  };
 
   const navigate = useNavigate();
 
@@ -74,13 +82,17 @@ function BalanceGameDetail(props) {
 
       {/* 실시간 채팅 화면 */}
       <div>
-        실시간 채팅 영역
-        <input type="text" id="liveChat"/>
+        <LiveChatArea />
       </div>
 
       <hr />
 
-      <button>시작하기</button>
+      <button onClick={handleStartClick}>시작하기</button>
+
+      {isModalOpen &&
+        <BalanceGameModal
+          balanceGame={balanceGame}
+        />}
 
     </div>
   );
