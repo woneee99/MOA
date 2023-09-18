@@ -53,6 +53,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<BalanceGame> balanceGame;
 
+    @OneToMany(mappedBy = "member")
+    private List<ExchangeDiary> exchangeDiary;
+
     @ManyToOne
     @NotNull
     @JoinColumn(name = "member_level")
