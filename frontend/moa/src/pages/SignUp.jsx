@@ -41,6 +41,7 @@ function SignUp(props) {
         <div className="inputForm">
           <label htmlFor="password" className="inputTitle">비밀번호</label>
           <input type="password" id="password" name="password"/>
+          <p>영어, 숫자, 특수문자를 포함해 8글자 이상이어야 합니다</p>
         </div>
 
         <MainButton text="회원가입" to="/intro" />
