@@ -17,7 +17,7 @@ function BalanceGameDetail(props) {
   const navigate = useNavigate();
 
   const handleUpdateBalanceGameClick = () => {
-    navigate(`/withbuddy/balancegame/${id}/update`, {
+    navigate(`/buddy/balancegame/${id}/update`, {
       state: { balanceGame }, // 밸런스게임 데이터를 state에 전달
     });
   };
