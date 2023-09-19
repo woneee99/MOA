@@ -69,4 +69,10 @@ public class ExchangeDiaryDto {
             this.exchangeDiaryResponseList = list;
         }
     }
+
+    @Getter
+    public static class ExchangeDiaryUpdateRequest {
+        private String exchangeDiaryTitle;
+        private String exchangeDiaryContent;
+    }
 }

@@ -36,4 +36,9 @@ public class ExchangeDiary {
         this.exchangeDiaryPicture = exchangeDiaryPicture;
         this.member = member;
     }
+
+    public void update(String exchangeDiaryTitle, String exchangeDiaryContent) {
+        this.exchangeDiaryTitle = exchangeDiaryTitle;
+        this.exchangeDiaryContent = exchangeDiaryContent;
+    }
 }

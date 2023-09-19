@@ -112,4 +112,13 @@ public class ExchangeDiaryServiceImpl implements ExchangeDiaryService {
     public Long deleteExchangeDiary(Long exchangeDiaryId) {
         return exchangeDiaryRepository.deleteByExchangeDiaryId(exchangeDiaryId);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Long updateExchangeDiary(Long exchangeId, ExchangeDiaryUpdateRequest exchangeDiaryUpdateRequest) {
+        ExchangeDiary exchangeDiary = exchangeDiaryRepository.findByExchangeDiaryId(exchangeId);
+        exchangeDiary.update(exchangeDiaryUpdateRequest.getExchangeDiaryTitle(), exchangeDiaryUpdateRequest.getExchangeDiaryContent());
+        exchangeDiaryRepository.save(exchangeDiary);
+        return exchangeDiary.getExchangeDiaryId();
+    }
 }

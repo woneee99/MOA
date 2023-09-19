@@ -38,4 +38,9 @@ public class ExchangeDiaryController {
     public ApiResult<Long> deleteExchangeDiary(@PathVariable Long exchangeDiaryId) {
         return success(exchangeDiaryService.deleteExchangeDiary(exchangeDiaryId));
     }
+
+    @PutMapping("/{exchangeDiaryId}")
+    public ApiResult<Long> updateExchangeDiary(@PathVariable Long exchangeDiaryId, @RequestBody ExchangeDiaryUpdateRequest exchangeDiaryUpdateRequest) {
+        return success(exchangeDiaryService.updateExchangeDiary(exchangeDiaryId, exchangeDiaryUpdateRequest));
+    }
 }

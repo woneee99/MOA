@@ -11,4 +11,5 @@ public interface ExchangeDiaryService {
     List<ExchangeDiaryDetailResponse> findExchangeDiary(Long memberId);
     ExchangeDiaryDetailResponse findExchangeDiaryDetail(Long exchangeDiaryId);
     Long deleteExchangeDiary(Long exchangeDiaryId);
+    Long updateExchangeDiary(Long exchangeId, ExchangeDiaryUpdateRequest exchangeDiaryUpdateRequest);
 }
