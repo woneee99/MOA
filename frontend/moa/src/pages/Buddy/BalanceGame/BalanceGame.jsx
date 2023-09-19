@@ -6,27 +6,45 @@ import { balanceGameApi } from '../../../api/balanceGameApi';
 
 import BackButton from '../../../components/BackButton';
 import BalanceGameItem from '../../../components/BalanceGame/BalanceGameItem';
-import PopularBalanceGameItem from '../../../components/PopularBalanceGameItem';
+import BestBalanceGameItem from '../../../components/BalanceGame/BestBalanceGameItem';
 
 function BalanceGame(props) {
   const [balanceGames, setBalanceGames] = useState([]);
-  const [popularBalanceGames, setPopularBalanceGames] = useState([]);
+  const [bestBalanceGames, setBestBalanceGames] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
+    // 전체 밸런스 게임
     balanceGameApi.getBalanceGameList()
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  })
+    .then((response) => {
+      console.log(response.data.response);
+      setBalanceGames(response.data.response);
+    })
+    .catch((error) => {
+      console.log('전체 밸런스게임 조회 에러 발생');
+      console.error(error);
+    });
+
+    // 인기 밸런스 게임
+    balanceGameApi.getBestBalanceGameList()
+    .then((response) => {
+      console.log(response.data.response);
+      setBestBalanceGames(response.data.response);
+    })
+    .catch((error) => {
+      console.log('인기 밸런스게임 조회 에러 발생');
+      console.error(error);
+    });
+
+    setDataLoaded(true);
+
+  }, [dataLoaded]);
 
 
   const navigate = useNavigate();
 
   const handleBalanceGameClick = (balanceGame) => {
-    navigate(`/buddy/balancegame/${balanceGame.id}`, {
+    navigate(`/buddy/balancegame/${balanceGame.balanceGameId}`, {
       state: { balanceGame }, // 밸런스게임 데이터를 state에 전달
     });
   };
@@ -38,14 +56,14 @@ function BalanceGame(props) {
 
       <div>
         <h3>인기 밸런스 게임</h3>
-        {popularBalanceGames.map((popularBalanceGame, index) => {
-          const rounds = popularBalanceGame.balanceGameList.length;
+        {bestBalanceGames.map((bestBalanceGame, index) => {
+          const { balanceGameId, balanceGameTitle } = bestBalanceGame;
+
           return (
-            <div key={index} onClick={() => handleBalanceGameClick(popularBalanceGame)}>
-              <PopularBalanceGameItem 
-                title={popularBalanceGame.title}
-                username={popularBalanceGame.username}
-                rounds={rounds}
+            <div key={index} onClick={() => handleBalanceGameClick(bestBalanceGame)}>
+              <BestBalanceGameItem 
+                balanceGameId={balanceGameId}
+                balanceGameTitle={balanceGameTitle}
               />
             </div>
           )
@@ -64,13 +82,13 @@ function BalanceGame(props) {
           </Link>
         </div>
         {balanceGames.map((balanceGame, index) => {
-          const rounds = balanceGame.balanceGameList.length;
+          const { balanceGameId, balanceGameTitle } = balanceGame;
+
           return (
             <div key={index} onClick={() => handleBalanceGameClick(balanceGame)}>
               <BalanceGameItem 
-                title={balanceGame.title}
-                username={balanceGame.username}
-                rounds={rounds}
+                balanceGameId={balanceGameId}
+                balanceGameTitle={balanceGameTitle}
               />
             </div>
           )
