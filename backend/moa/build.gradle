@@ -56,7 +56,7 @@ dependencies {
 
     // Elastic search
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.17.6'
+    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.17.1'
 }
 
 tasks.named('test') {
