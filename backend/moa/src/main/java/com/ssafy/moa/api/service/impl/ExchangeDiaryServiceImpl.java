@@ -42,7 +42,7 @@ public class ExchangeDiaryServiceImpl implements ExchangeDiaryService {
         String uuid = UUID.randomUUID().toString();
         String ext = multipartFile.getContentType();
 
-        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, uuid)
+        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, "diary/" + uuid)
                 .setContentType(ext)
                 .build();
         storage.create(blobInfo, multipartFile.getInputStream());
