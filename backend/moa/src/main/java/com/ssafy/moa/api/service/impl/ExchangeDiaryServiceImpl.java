@@ -62,6 +62,7 @@ public class ExchangeDiaryServiceImpl implements ExchangeDiaryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ExchangeDiaryDetailResponse> findExchangeDiary(Long memberId) {
         Member member = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new NotFoundException("Not Found User"));
@@ -87,6 +88,7 @@ public class ExchangeDiaryServiceImpl implements ExchangeDiaryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ExchangeDiaryDetailResponse findExchangeDiaryDetail(Long exchangeDiaryId) {
         ExchangeDiary exchangeDiary = exchangeDiaryRepository.findByExchangeDiaryId(exchangeDiaryId);
         String imgUrl = url + bucketName + "/" + exchangeDiary.getExchangeDiaryPicture();
@@ -103,5 +105,11 @@ public class ExchangeDiaryServiceImpl implements ExchangeDiaryService {
                 .exchangeDiaryImgUrl(imgUrl)
                 .exchangeDiaryDate(exchangeDiary.getExchangeDiaryDate())
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public Long deleteExchangeDiary(Long exchangeDiaryId) {
+        return exchangeDiaryRepository.deleteByExchangeDiaryId(exchangeDiaryId);
     }
 }

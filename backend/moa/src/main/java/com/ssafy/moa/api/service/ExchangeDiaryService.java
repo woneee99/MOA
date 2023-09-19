@@ -10,4 +10,5 @@ public interface ExchangeDiaryService {
     Long saveExchangeDiary(MultipartFile multipartFile, ExchangeDiaryRequest exchangeDiaryRequest) throws IOException;
     List<ExchangeDiaryDetailResponse> findExchangeDiary(Long memberId);
     ExchangeDiaryDetailResponse findExchangeDiaryDetail(Long exchangeDiaryId);
+    Long deleteExchangeDiary(Long exchangeDiaryId);
 }

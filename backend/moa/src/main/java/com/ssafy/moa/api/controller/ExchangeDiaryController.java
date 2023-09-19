@@ -2,7 +2,7 @@ package com.ssafy.moa.api.controller;
 
 import com.ssafy.moa.api.dto.ExchangeDiaryDto.*;
 import com.ssafy.moa.api.service.ExchangeDiaryService;
-import com.ssafy.moa.common.utils.ApiUtils;
+import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,17 +20,22 @@ public class ExchangeDiaryController {
     private final ExchangeDiaryService exchangeDiaryService;
 
     @PostMapping
-    public ApiUtils.ApiResult<Long> saveExchangeDiary(MultipartFile multipartFile, @RequestPart(value = "exchangeDiaryRequest") ExchangeDiaryRequest exchangeDiaryRequest) throws IOException {
+    public ApiResult<Long> saveExchangeDiary(MultipartFile multipartFile, @RequestPart(value = "exchangeDiaryRequest") ExchangeDiaryRequest exchangeDiaryRequest) throws IOException {
         return success(exchangeDiaryService.saveExchangeDiary(multipartFile, exchangeDiaryRequest));
     }
 
     @GetMapping("/{exchangeDiaryId}")
-    public ApiUtils.ApiResult<ExchangeDiaryDetailResponse> getExchangeDiaryDetail(@PathVariable Long exchangeDiaryId) {
+    public ApiResult<ExchangeDiaryDetailResponse> getExchangeDiaryDetail(@PathVariable Long exchangeDiaryId) {
         return success(exchangeDiaryService.findExchangeDiaryDetail(exchangeDiaryId));
     }
 
     @GetMapping
-    public ApiUtils.ApiResult<List<ExchangeDiaryDetailResponse>> getExchangeDiary(@RequestParam("memberId") Long memberId) {
+    public ApiResult<List<ExchangeDiaryDetailResponse>> getExchangeDiary(@RequestParam("memberId") Long memberId) {
         return success(exchangeDiaryService.findExchangeDiary(memberId));
+    }
+
+    @DeleteMapping("/{exchangeDiaryId}")
+    public ApiResult<Long> deleteExchangeDiary(@PathVariable Long exchangeDiaryId) {
+        return success(exchangeDiaryService.deleteExchangeDiary(exchangeDiaryId));
     }
 }

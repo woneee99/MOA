@@ -28,14 +28,16 @@ public class ExchangeDiaryDto {
     @Getter
     public static class ExchangeDiaryDetailResponse {
         private MemberDto member;
+        private Long exchangeDiaryId;
         private String exchangeDiaryTitle;
         private String exchangeDiaryContent;
         private String exchangeDiaryImgUrl;
         private LocalDateTime exchangeDiaryDate;
 
         @Builder
-        public ExchangeDiaryDetailResponse(MemberDto member, String exchangeDiaryTitle, String exchangeDiaryContent, String exchangeDiaryImgUrl, LocalDateTime exchangeDiaryDate) {
+        public ExchangeDiaryDetailResponse(MemberDto member, Long exchangeDiaryId, String exchangeDiaryTitle, String exchangeDiaryContent, String exchangeDiaryImgUrl, LocalDateTime exchangeDiaryDate) {
             this.member = member;
+            this.exchangeDiaryId = exchangeDiaryId;
             this.exchangeDiaryTitle = exchangeDiaryTitle;
             this.exchangeDiaryContent = exchangeDiaryContent;
             this.exchangeDiaryImgUrl = exchangeDiaryImgUrl;
@@ -56,6 +58,7 @@ public class ExchangeDiaryDto {
 
                         return ExchangeDiaryDetailResponse.builder()
                                 .member(memberDto)
+                                .exchangeDiaryId(exchangeDiary.getExchangeDiaryId())
                                 .exchangeDiaryTitle(exchangeDiary.getExchangeDiaryTitle())
                                 .exchangeDiaryContent(exchangeDiary.getExchangeDiaryContent())
                                 .exchangeDiaryImgUrl(imgUrl)

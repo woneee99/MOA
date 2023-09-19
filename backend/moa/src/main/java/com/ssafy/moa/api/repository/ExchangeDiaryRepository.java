@@ -11,4 +11,5 @@ import java.util.List;
 public interface ExchangeDiaryRepository extends JpaRepository<ExchangeDiary, Long> {
     ExchangeDiary findByExchangeDiaryId(Long exchangeDiaryId);
     List<ExchangeDiary> findByMemberOrMember(Member member, Member buddyMember);
+    Long deleteByExchangeDiaryId(Long exchangeDiaryId);
 }
