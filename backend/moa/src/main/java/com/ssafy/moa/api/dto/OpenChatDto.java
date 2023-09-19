@@ -14,4 +14,11 @@ public class OpenChatDto {
         private String openChatTitle;
         private String openChatContent;
     }
+
+    @Getter
+    @NoArgsConstructor
+    public static class SaveOpenChatMemberRequest {
+        private Long memberId;
+    }
+
 }

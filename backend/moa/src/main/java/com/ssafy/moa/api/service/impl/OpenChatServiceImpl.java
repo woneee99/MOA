@@ -5,7 +5,9 @@ import com.google.cloud.storage.Storage;
 import com.ssafy.moa.api.dto.OpenChatDto.*;
 import com.ssafy.moa.api.entity.Member;
 import com.ssafy.moa.api.entity.OpenChat;
+import com.ssafy.moa.api.entity.OpenChatMember;
 import com.ssafy.moa.api.repository.MemberRepository;
+import com.ssafy.moa.api.repository.OpenChatMemberRepository;
 import com.ssafy.moa.api.repository.OpenChatRepository;
 import com.ssafy.moa.api.service.MemberService;
 import com.ssafy.moa.api.service.OpenChatService;
@@ -21,6 +23,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OpenChatServiceImpl implements OpenChatService {
     private final OpenChatRepository openChatRepository;
+    private final OpenChatMemberRepository openChatMemberRepository;
     private final MemberService memberService;
     private final String bucketName = "diary_storage";
     private final Storage storage;
@@ -46,4 +49,23 @@ public class OpenChatServiceImpl implements OpenChatService {
 
         return openChatRepository.save(openChat).getOpenChatId();
     }
+
+    @Override
+    public Long saveOpenChatMember(Long openChatId, SaveOpenChatMemberRequest saveOpenChatMemberRequest) {
+        Member member = memberService.findMember(saveOpenChatMemberRequest.getMemberId());
+
+        OpenChatMember openChatMember = OpenChatMember.builder()
+                .member(member)
+                .openChat(findOpenChat(openChatId))
+                .build();
+        return openChatMemberRepository.save(openChatMember).getOpenChatMemberId();
+    }
+
+    @Override
+    public OpenChat findOpenChat(Long openChatId) {
+        return openChatRepository.findByOpenChatId(openChatId)
+                .orElseThrow(() -> new NotFoundException("Not Found OpenChat"));
+    }
+
+
 }
