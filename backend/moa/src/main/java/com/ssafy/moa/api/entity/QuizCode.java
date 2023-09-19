@@ -12,7 +12,7 @@ import java.util.List;
 public class QuizCode {
 
     @Id
-    private Long quizeCode;
+    private Long quizCode;
 
     @Column(length = 100)
     private String  quizName;

@@ -18,11 +18,11 @@ public class QQuizCode extends EntityPathBase<QuizCode> {
 
     private static final long serialVersionUID = -1588408989L;
 
-    public static final QQuizCode quizCode = new QQuizCode("quizCode");
+    public static final QQuizCode quizCode1 = new QQuizCode("quizCode1");
 
     public final ListPath<DailyKoreanQuiz, QDailyKoreanQuiz> dailyKoreanQuizList = this.<DailyKoreanQuiz, QDailyKoreanQuiz>createList("dailyKoreanQuizList", DailyKoreanQuiz.class, QDailyKoreanQuiz.class, PathInits.DIRECT2);
 
-    public final NumberPath<Long> quizeCode = createNumber("quizeCode", Long.class);
+    public final NumberPath<Long> quizCode = createNumber("quizCode", Long.class);
 
     public final StringPath quizName = createString("quizName");
 
