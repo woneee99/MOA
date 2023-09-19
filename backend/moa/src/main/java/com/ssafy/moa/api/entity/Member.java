@@ -53,6 +53,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<BalanceGame> balanceGame;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<BalanceGameGood> balanceGameGood;
+
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
