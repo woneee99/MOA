@@ -19,7 +19,7 @@ public class MoaApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://moamore.site/");
+                registry.addMapping("/**").allowedOrigins("*");
             }
         };
     }
