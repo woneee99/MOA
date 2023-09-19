@@ -23,8 +23,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ExchangeDiaryServiceImpl implements ExchangeDiaryService {
 
-    @Value("${spring.cloud.gcp.storage.bucket}")
-    private String bucketName;
+    private final String bucketName = "diary_storage";
     private final Storage storage;
     private final String url = "https://storage.googleapis.com/";
 
