@@ -41,14 +41,14 @@ public class Member {
     @Column(columnDefinition = "INT DEFAULT 0")
     private Integer memberExp;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Interest> interest;
 
-    @OneToMany(mappedBy = "member")
-    private List<Foreigner> foreigner;
+    @OneToOne(mappedBy = "member")
+    private Foreigner foreigner;
 
-    @OneToMany(mappedBy = "member")
-    private List<Korean> korean;
+    @OneToOne(mappedBy = "member")
+    private Korean korean;
 
     @OneToMany(mappedBy = "member")
     private List<BalanceGame> balanceGame;
@@ -56,19 +56,30 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<BalanceGameGood> balanceGameGood;
 
+    @OneToMany(mappedBy = "member")
+    private List<ExchangeDiary> exchangeDiary;
+
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "member_level")
+    private Level memberLevel;
+
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
 
     @Builder
-    public Member(String memberEmail, String memberPassword, String memberName, Integer memberGender, Boolean memberIsForeigner, Integer memberExp) {
+    public Member(String memberEmail, String memberPassword, String memberName, Integer memberGender, Boolean memberIsForeigner, Integer memberExp, Level memberLevel) {
         this.memberEmail = memberEmail;
         this.memberPassword = memberPassword;
         this.memberName = memberName;
         this.memberGender = memberGender;
         this.memberIsForeigner = memberIsForeigner;
         this.memberExp = memberExp;
+        this.memberLevel = memberLevel;
     }
+
+
 
     @Override
     public String toString() {
