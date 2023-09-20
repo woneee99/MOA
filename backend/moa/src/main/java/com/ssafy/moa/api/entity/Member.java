@@ -53,6 +53,12 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<BalanceGame> balanceGame;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<BalanceGameGood> balanceGameGood;
+
+    @OneToMany(mappedBy = "member")
+    private List<ExchangeDiary> exchangeDiary;
+
     @ManyToOne
     @NotNull
     @JoinColumn(name = "member_level")
@@ -72,6 +78,8 @@ public class Member {
         this.memberExp = memberExp;
         this.memberLevel = memberLevel;
     }
+
+
 
     @Override
     public String toString() {

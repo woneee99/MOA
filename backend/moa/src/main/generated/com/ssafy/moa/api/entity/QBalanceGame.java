@@ -22,6 +22,10 @@ public class QBalanceGame extends EntityPathBase<BalanceGame> {
 
     public static final QBalanceGame balanceGame = new QBalanceGame("balanceGame");
 
+    public final NumberPath<Integer> badCount = createNumber("badCount", Integer.class);
+
+    public final ListPath<BalanceGameGood, QBalanceGameGood> balanceGameGood = this.<BalanceGameGood, QBalanceGameGood>createList("balanceGameGood", BalanceGameGood.class, QBalanceGameGood.class, PathInits.DIRECT2);
+
     public final NumberPath<Long> balanceGameId = createNumber("balanceGameId", Long.class);
 
     public final ListPath<BalanceGameList, QBalanceGameList> balanceGameList = this.<BalanceGameList, QBalanceGameList>createList("balanceGameList", BalanceGameList.class, QBalanceGameList.class, PathInits.DIRECT2);
@@ -32,7 +36,11 @@ public class QBalanceGame extends EntityPathBase<BalanceGame> {
 
     public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
+    public final NumberPath<Integer> goodCount = createNumber("goodCount", Integer.class);
+
     public final QMember member;
+
+    public final NumberPath<Integer> normalCount = createNumber("normalCount", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
