@@ -7,7 +7,6 @@ function OpenChattingModal(props) {
   return (
     <div>
       <CloseButton onClose={props.closeModal}/>
-      <p>오픈 채팅</p>
       <OpenChattingList />
     </div>
   );

@@ -34,7 +34,7 @@ function ChattingArea(props) {
       setInputOpponentText('');
     }
   };
-  
+
   return (
     <div>
       <div>
@@ -43,13 +43,13 @@ function ChattingArea(props) {
       <hr />
       <div>
         {/* 대화 메세지 출력 */}
-        {messages.map((message, index) => (
+        {messages.map((message, index) =>
           message.isMine ? (
             <MyTalk key={index} talk={message.text} />
           ) : (
             <OpponentTalk key={index} talk={message.text} />
           )
-        ))}
+        )}
       </div>
 
       <div>
