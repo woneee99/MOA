@@ -90,4 +90,13 @@ public class OpenChatServiceImpl implements OpenChatService {
                 .orElseThrow(() -> new NotFoundException("Not Found OpenChat"));
     }
 
+    @Override
+    @Transactional
+    public Long deleteOpenChatMember(Long openChatId, Long memberId) {
+        Member member = memberService.findMember(memberId);
+        OpenChat openChat = findOpenChat(openChatId);
+        openChatMemberRepository.deleteByMember(member);
+        return openChat.getOpenChatId();
+    }
+
 }

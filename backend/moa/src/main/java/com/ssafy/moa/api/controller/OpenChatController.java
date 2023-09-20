@@ -48,4 +48,9 @@ public class OpenChatController {
         return success(openChatService.findOpenChatOne(openChatId));
     }
 
+    @DeleteMapping("/{openChatId}/{memberId}")
+    @Operation(summary = "오픈 채팅방 멤버 삭제")
+    public ApiResult<Long> deleteOpenChatMember(@PathVariable Long openChatId, @PathVariable Long memberId) {
+        return success(openChatService.deleteOpenChatMember(openChatId, memberId));
+    }
 }
