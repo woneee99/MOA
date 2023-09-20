@@ -19,17 +19,32 @@ function Main(props) {
     <div>
       <p>Main Page</p>
       <div>
+        <Link to="/chatting">
+          <button>채팅</button>
+        </Link>
+      </div>
+      <div>
         <Link to="/koreanlearning">
-          <button>한국어 학습</button>
+          <button>뉴스 보기</button>
         </Link>
         <Link to="/quiz">
-          <button>퀴즈</button>
+          <button>퀴즈 풀기</button>
         </Link>
-        <Link to="/withbuddy">
+        <Link to="/qna-board">
+          <button>질문하기</button>
+        </Link>
+
+        <Link to="/buddy">
           <button>버디랑 놀기</button>
         </Link>
 
-        <BackButton />
+        {/* 첫 화면 이동을 위해 임시로 만든 버튼 */}
+        <div>
+          <Link to="/intro">
+            <button>첫 화면으로 이동</button>
+          </Link>
+        </div>
+        {/* <BackButton /> */}
       </div>
     </div>
   );

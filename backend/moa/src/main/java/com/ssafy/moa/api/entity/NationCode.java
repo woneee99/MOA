@@ -16,13 +16,13 @@ public class NationCode {
     @Column(name = "nation_code")
     private int nationCode;
 
-    @Column(length = 30)
+    @Column
     private String nationName;
 
-    @OneToMany(mappedBy = "nationCode")
+    @OneToMany(mappedBy = "nationCode", cascade = CascadeType.ALL)
     private List<Foreigner> foreigner;
 
-    @OneToMany(mappedBy = "nationCode")
+    @OneToMany(mappedBy = "nationCode", cascade = CascadeType.ALL)
     private List<Korean> korean;
 
     @Override
