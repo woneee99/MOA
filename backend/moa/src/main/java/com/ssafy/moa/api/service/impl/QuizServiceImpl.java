@@ -21,7 +21,7 @@ public class QuizServiceImpl implements QuizService {
 
     // 단어 퀴즈 출제
     @Override
-    public List<QuizQuestionDto> submitWordQuiz() {
+    public List<QuizQuestionDto> questionWordQuiz() {
         // QuizRepository에서 랜덤으로 15개의 Quiz를 가져온다.
         List<QuizQuestionDto> quizQuestionDtoList = quizQueryRepository.getRandomQuizzes();
         // 퀴즈에 따라 보기를 생성한다.
