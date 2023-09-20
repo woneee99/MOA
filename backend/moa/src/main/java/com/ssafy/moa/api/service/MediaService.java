@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.util.List;
 
 public interface MediaService {
-    List<MediaInfoDocument> searchMedia(String mediaName);
+    List<MediaInfoDocument> searchMedia(String type, String mediaName);
 
     List<String> getMediaType() throws IOException;
+
 }

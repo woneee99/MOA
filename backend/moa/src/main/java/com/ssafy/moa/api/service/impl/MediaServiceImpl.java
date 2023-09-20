@@ -1,28 +1,19 @@
 package com.ssafy.moa.api.service.impl;
 
-import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
 import com.ssafy.moa.api.entity.elastic.MediaInfoDocument;
 import com.ssafy.moa.api.repository.elastic.MediaInfoRepository;
 import com.ssafy.moa.api.service.MediaService;
-import com.ssafy.moa.config.ElasticSearchConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -39,34 +30,19 @@ public class MediaServiceImpl implements MediaService {
 
 
     @Override
-    public List<MediaInfoDocument> searchMedia(String mediaName) {
-        return mediaInfoRepository.findByTitleNmOrRelatePlaceDc(mediaName, mediaName);
+    public List<MediaInfoDocument> searchMedia(String type, String mediaName) {
+        List<MediaInfoDocument> mediaList = null;
+        if (type.equals("all")){
+            mediaList = mediaInfoRepository.findByTitleNmOrRelatePlaceDc(mediaName, mediaName);
+        }
+        else if (type.equals("mediaType")){
+            mediaList = mediaInfoRepository.findByMediaTy(mediaName);
+        }
+        return mediaList;
     }
-
-//    @Override
-//    public List<MediaInfoDocument> getMediaType() {
-//        return null;
-//    }
 
     @Override
     public List<String> getMediaType() throws IOException {
-//        SearchRequest searchRequest = new SearchRequest("media-info-example");
-//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-//
-//        searchSourceBuilder.query(QueryBuilders.matchAllQuery());
-//        searchSourceBuilder.size(0);
-//
-//        searchSourceBuilder.aggregation(
-//                AggregationBuilders.terms("titleNmKind")
-//                        .field("titleNmKind.keyword")
-//                        .size(1000)
-//        );
-//
-//        searchRequest.source(searchSourceBuilder);
-//
-//        SearchResponse searchResponse = elasticsearchClient.search(searchRequest, RequestOptions.DEFAULT);
-//        return searchResponse.getAggregations().get("titleNmKind");
-
         SearchRequest searchRequest = new SearchRequest("media-info-example");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
@@ -86,7 +62,6 @@ public class MediaServiceImpl implements MediaService {
         List<String> mediaTitleList = new ArrayList<>();
         for (Terms.Bucket bucket: aggregationResult.getBuckets()){
             mediaTitleList.add(bucket.getKeyAsString());
-//            log.info("{}, {}", bucket.getKeyAsString(), bucket.getDocCount());
         }
 
         return mediaTitleList;

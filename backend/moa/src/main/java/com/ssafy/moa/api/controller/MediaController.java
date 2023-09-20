@@ -26,10 +26,11 @@ public class MediaController {
 
     private final MediaService mediaService;
 
-    @Operation(summary = "미디어 제목 or 아티스트 검색", description = "드라마 속 장소나 아티스트가 방문한 장소의 정보를 반환합니다.(장소에 대한 설명에서도 검색)", tags = { "Media Controller" })
+    // 검색(조회)
+    @Operation(summary = "미디어 제목 or 아티스트 검색", description = "드라마 속 장소나 아티스트가 방문한 장소의 정보를 검색어를 기반으로 반환합니다. </br> type이 all일 때는 전체 검색 -> 드라마 or 아티스트 or 장소설명 3가지 중 하나만 만족해도 검색됨</br> type이 mediaType일 때는 컨텐츠종류(drama, artist, show movie)에 따른 결과 검색 -> mediaName에는 drama, artist, show, movie 4가지만 가능", tags = { "Media Controller" })
     @GetMapping("/search")
-    public ApiUtils.ApiResult<List<MediaInfoDocument>> searchMedia(@RequestParam(name = "mediaName") String mediaName){
-        List<MediaInfoDocument> mediaList = mediaService.searchMedia(mediaName);
+    public ApiUtils.ApiResult<List<MediaInfoDocument>> searchMedia(@RequestParam(name = "type") String type, @RequestParam(name = "mediaName") String mediaName){
+        List<MediaInfoDocument> mediaList = mediaService.searchMedia(type, mediaName);
         return success(mediaList);
     }
 
@@ -40,6 +41,14 @@ public class MediaController {
         List<String> mediaTypeList = mediaService.getMediaType();
         return success(mediaTypeList);
     }
+
+//    // 미디어 or 아티스트 이름 기반 검색 가져오기
+//    @Operation(summary = "미디어 제목 or 아티스트 종류 조회", description = "아티스트, 드라마의 종류들을 반환합니다.", tags = { "Media Controller" })
+//    @GetMapping("/search/mediaType")
+//    public ApiUtils.ApiResult<List<MediaInfoDocument>> searchMediaType(@RequestParam(name = "mediaType") String mediaType){
+//        List<MediaInfoDocument> mediaList = mediaService.searchMediaType(mediaType);
+//        return success(mediaList);
+//    }
 
 
     // 미디어 재목 or 아티스트 자동완성
