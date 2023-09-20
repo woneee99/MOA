@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.ssafy.moa.common.utils.ApiUtils.success;
 
@@ -33,5 +34,13 @@ public class OpenChatController {
     public ApiResult<Long> saveOpenChatMember(@PathVariable Long openChatId, @RequestBody SaveOpenChatMemberRequest saveOpenChatMemberRequest) {
         return success(openChatService.saveOpenChatMember(openChatId, saveOpenChatMemberRequest));
     }
+
+
+    @GetMapping
+    @Operation(summary = "오픈 채팅방 전체 조회")
+    public ApiResult<List<OpenChatResponse>> getOpenChatList() {
+        return success(openChatService.findOpenChat());
+    }
+
 
 }
