@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
+import { balanceGameApi } from '../../../api/balanceGameApi';
 
 import BackButton from '../../../components/BackButton';
 import LiveChatArea from '../../../components/BalanceGame/LiveChatArea';
@@ -9,26 +11,66 @@ import BalanceGameModal from '../../../components/BalanceGame/BalanceGameModal';
 function BalanceGameDetail(props) {
   const location = useLocation();
   const balanceGame = location.state.balanceGame;
-
-  const id = balanceGame.id;
-  const title = balanceGame.title;
-  const username = balanceGame.username;
-  const time = balanceGame.time;
-  const balanceGameList = balanceGame.balanceGameList;
-
+  const balanceGameId = balanceGame.balanceGameId;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  
   const handleStartClick = () => {
     setIsModalOpen(true);
   };
-
+  
   const navigate = useNavigate();
-
+  
+  // 밸런스 게임 수정 페이지 이동
   const handleUpdateBalanceGameClick = () => {
-    navigate(`/buddy/balancegame/${id}/update`, {
+    navigate(`/buddy/balancegame/${balanceGameId}/update`, {
       state: { balanceGame }, // 밸런스게임 데이터를 state에 전달
     });
   };
+
+  // 밸런스 게임 삭제
+  const deleteBalanceGame = () => {
+    balanceGameApi.deleteBalanceGame(balanceGameId)
+    .then((response) => {
+      alert('게임이 삭제되었습니다.');
+      navigate('/buddy/balancegame');
+    })
+    .catch((error) => {
+      console.log('밸런스 게임 삭제 에러 발생');
+      console.log(error);
+    })
+  }
+  
+  // 밸런스 게임 목록
+  const [title, setTitle] = useState('');
+  const [time, setTime] = useState(0);
+  const [balanceGameList, setBalanceGameList] = useState([]);
+  const [goodCount, setGoodCount] = useState(0);
+  const [normalCount, setNormalCount] = useState(0);
+  const [badCount, setBadCount] = useState(0);
+
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  useEffect(() => {
+    balanceGameApi.getBalanceGameDetail(balanceGameId)
+    .then((response) => {
+      const res = response.data.response;
+      console.log(res);
+      setTitle(res.balanceGameTitle);
+      setTime(res.balanceGameTime);
+      setBalanceGameList(res.balanceGameList);
+      setGoodCount(res.goodCount);
+      setNormalCount(res.normalCount);
+      setBadCount(res.badCount);
+    })
+    .catch((error) => {
+      console.log('상세 밸런스게임 조회 에러 발생');
+      console.error(error);
+    });
+
+    setDataLoaded(true);
+
+  }, [dataLoaded]);
 
   return (
     <div>
@@ -38,30 +80,26 @@ function BalanceGameDetail(props) {
       {/* 수정 및 삭제 버튼 */}
       <div>
         <button onClick={() => handleUpdateBalanceGameClick()}>수정하기</button>
-        <button>삭제하기</button>
+        <button onClick={deleteBalanceGame}>삭제하기</button>
       </div>
 
-      { id } 번 밸런스 게임
       <div>
         <h1>제목 : { title }</h1>
 
         {/* 밸런스 게임 평가 */}
         <div>
           <div>
-            😍 : 0
+            😍 : { goodCount }
           </div>
           <div>
-            😐 : 0
+            😐 : { normalCount }
           </div>
           <div>
-            😥 : 0
+            😥 : { badCount }
           </div>
         </div>
 
         {/* 밸런스 게임 정보 */}
-        <div>
-          제작자 : { username }
-        </div>
         <div>
           라운드 수 : { balanceGameList.length }
         </div>
@@ -91,7 +129,9 @@ function BalanceGameDetail(props) {
 
       {isModalOpen &&
         <BalanceGameModal
-          balanceGame={balanceGame}
+          balanceGameId={balanceGameId}
+          balanceGameList={balanceGameList}
+          time={time}
         />}
 
     </div>
