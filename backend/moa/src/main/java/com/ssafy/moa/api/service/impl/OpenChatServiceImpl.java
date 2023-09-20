@@ -99,4 +99,12 @@ public class OpenChatServiceImpl implements OpenChatService {
         return openChat.getOpenChatId();
     }
 
+    @Override
+    @Transactional
+    public Long deleteOpenChat(Long openChatId) {
+        findOpenChat(openChatId);
+        openChatRepository.deleteByOpenChatId(openChatId);
+        return 1L;
+    }
+
 }

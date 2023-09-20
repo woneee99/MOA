@@ -14,4 +14,5 @@ public interface OpenChatService {
     List<OpenChatResponse> findOpenChat();
     OpenChat findOpenChat(Long openChatId);
     Long deleteOpenChatMember(Long openChatId, Long memberId);
+    Long deleteOpenChat(Long openChatId);
 }

@@ -24,7 +24,7 @@ public class OpenChat {
     @JoinColumn(name = "member_id", referencedColumnName = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "openChat")
+    @OneToMany(mappedBy = "openChat", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OpenChatMember> openChatMember;
 
     @Builder

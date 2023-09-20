@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface OpenChatRepository extends JpaRepository<OpenChat, Long>, OpenChatQueryRepository {
     Optional<OpenChat> findByOpenChatId(Long openChatId);
+    void deleteByOpenChatId(Long openChatId);
 }
