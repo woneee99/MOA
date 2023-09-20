@@ -25,8 +25,6 @@ public class MoaApplication {
                         .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
                                         HttpMethod.DELETE.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(),
                                         HttpMethod.PATCH.name())
-                        .allowedHeaders("*")
-						.allowCredentials(true)
                         .maxAge(1800);
             }
         };
