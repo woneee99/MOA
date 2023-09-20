@@ -52,6 +52,9 @@ public class MediaInfoDocument {
     @Field(type = FieldType.Text)
     private String titleNm;
 
+    @Field(type = FieldType.Keyword)
+    private String titleNmKind;
+
     @Field(type = FieldType.Text)
     private String relatePlaceDc;
 
@@ -62,7 +65,7 @@ public class MediaInfoDocument {
     private String description;
 
     @Builder
-    public MediaInfoDocument(String id, String placeNm, String placeTy, String operTime, String restTime, String rstdeQuidCn, String addr, Float latitude, Float longitude, Long telNo, Integer seqNo, String mediaTy, String titleNm, String relatePlaceDc, Integer lastUpdtDe, String description) {
+    public MediaInfoDocument(String id, String placeNm, String placeTy, String operTime, String restTime, String rstdeQuidCn, String addr, Float latitude, Float longitude, Long telNo, Integer seqNo, String mediaTy, String titleNm, String titleNmKind, String relatePlaceDc, Integer lastUpdtDe, String description) {
         this.id = id;
         this.placeNm = placeNm;
         this.placeTy = placeTy;
@@ -76,6 +79,7 @@ public class MediaInfoDocument {
         this.seqNo = seqNo;
         this.mediaTy = mediaTy;
         this.titleNm = titleNm;
+        this.titleNmKind = titleNmKind;
         this.relatePlaceDc = relatePlaceDc;
         this.lastUpdtDe = lastUpdtDe;
         this.description = description;
@@ -97,13 +101,15 @@ public class MediaInfoDocument {
                 ", seqNo=" + seqNo +
                 ", mediaTy='" + mediaTy + '\'' +
                 ", titleNm='" + titleNm + '\'' +
+                ", titleNmKind='" + titleNmKind + '\'' +
                 ", relatePlaceDc='" + relatePlaceDc + '\'' +
                 ", lastUpdtDe=" + lastUpdtDe +
                 ", description='" + description + '\'' +
                 '}';
     }
 
-    //    @Id
+
+//    @Id
 //    private Long id;
 //    private Geo geo;
 //    private Media media;

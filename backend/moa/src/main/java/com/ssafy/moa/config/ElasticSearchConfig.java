@@ -15,7 +15,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 public class ElasticSearchConfig extends ElasticsearchConfiguration {
 
     @Bean
-    public RestHighLevelClient elasticsearchClient() {
+    public RestHighLevelClient restHighLevelClient() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                 .connectedTo("3.38.179.92:9200")
                 .build();
