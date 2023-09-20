@@ -45,7 +45,7 @@ function SignUp(props) {
 
   // 타이머 
   const handleSendVerificationCode = () => {
-    // 인증번호 전송 처리 코드 추가 
+    // 인증번호 전송 처리 코드 추가해야 함
     // 인증번호 전송 후 타이머 시작해야 함
     startTimer()
   };
