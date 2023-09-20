@@ -42,5 +42,10 @@ public class OpenChatController {
         return success(openChatService.findOpenChat());
     }
 
+    @GetMapping("/{openChatId}")
+    @Operation(summary = "오픈 채팅방 한 개 조회")
+    public ApiResult<OpenChatResponse> getOpenChatList(@PathVariable Long openChatId) {
+        return success(openChatService.findOpenChatOne(openChatId));
+    }
 
 }
