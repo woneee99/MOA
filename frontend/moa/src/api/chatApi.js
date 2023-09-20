@@ -5,17 +5,17 @@ export const openChatApi = {
   getOpenChatRoom : () => axios.get('open-chat'),
   
   // 오픈채팅방 상세 조회
-  getOpenChatRoomDetail : (roomId) => axios.get(`open-chat/${roomId}`),
+  getOpenChatRoomDetail : (openChatId) => axios.get(`open-chat/${openChatId}`),
 
   // 오픈채팅방 생성
   createOpenChatRoom : (data) => axios.post('open-chat', data),
 
   // 오픈채팅방 참여
-  participateOpenChatRoom : (data) => axios.post('open-chat/participate', data),
+  participateOpenChatRoom : (openChatId, data) => axios.post(`open-chat/${openChatId}`, data),
 
   // 오픈채팅방 탈퇴
-  exitOpenChatRoom : () => axios.delete('open-chat/leave'),
+  exitOpenChatRoom : (openChatId, memberId) => axios.delete(`open-chat/${openChatId}/${memberId}`),
 
   // 오픈채팅방 삭제
-  deleteOpenChatRoom : () => axios.delete('open-chat'),
+  deleteOpenChatRoom : (openChatId) => axios.delete(`open-chat/${openChatId}`),
 };
