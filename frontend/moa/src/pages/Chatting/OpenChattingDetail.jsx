@@ -8,7 +8,6 @@ function OpenChattingDetail(props) {
   const location = useLocation();
   const state = location.state;
 
-  const id = state.id;
   const title = state.title;
   const description = state.description;
   const participate = state.participate;
@@ -16,7 +15,6 @@ function OpenChattingDetail(props) {
   return (
     <div>
       <BackButton />
-      <p>{ id }번 채팅방</p>
       <div>
         <h3>{ title }</h3>
         <p>{ participate.length }</p>

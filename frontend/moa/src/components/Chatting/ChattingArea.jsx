@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 import MyTalk from '../MyTalk';
 import OpponentTalk from '../OpponentTalk';
 
+const chatContainerStyle = {
+  margin: '20px',
+  border: '1px solid #ccc',
+  padding: '20px',
+  borderRadius: '5px',
+};
+
 function ChattingArea(props) {
   const [inputMyText, setInputMyText] = useState(''); // 나의 텍스트 입력 상태
   const [inputOpponentText, setInputOpponentText] = useState(''); // 상대방 텍스트 입력 상태
@@ -36,7 +43,7 @@ function ChattingArea(props) {
   };
 
   return (
-    <div>
+    <div style={chatContainerStyle}>
       <div>
         <h4>대화상대 이름</h4>
       </div>

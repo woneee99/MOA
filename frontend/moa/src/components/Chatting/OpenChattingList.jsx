@@ -43,7 +43,6 @@ function OpenChattingList(props) {
               member_id={member_id}
               participate={participate}
             />
-            <hr />
           </div>
         );
       })}
