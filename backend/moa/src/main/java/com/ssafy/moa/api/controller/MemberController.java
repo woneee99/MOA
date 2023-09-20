@@ -18,7 +18,6 @@ import static com.ssafy.moa.common.utils.ApiUtils.success;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/member")
 public class MemberController {
 
