@@ -38,6 +38,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/test/**").permitAll()
                                 .requestMatchers("/balance/**").permitAll()
                                 .requestMatchers("/media/**").permitAll()
+                                .requestMatchers("/open-chat/**").permitAll()
                                 .anyRequest().authenticated())
                 .apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
 
