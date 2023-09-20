@@ -22,10 +22,10 @@ public class QuizController {
     private final QuizService quizService;
 
     // 퀴즈 출제 API
-    @GetMapping
-    @Operation(summary = "퀴즈 출제 API", description = "퀴즈를 랜덤으로 15개 출제하는 API입니다.")
-    public ApiResult<List<QuizQuestionDto>> submitQuiz(){
-        List<QuizQuestionDto> quizQuestionDtoList = quizService.submitQuiz();
+    @GetMapping("/word")
+    @Operation(summary = "단어 퀴즈 출제 API", description = "단어 퀴즈를 랜덤으로 15개 출제하는 API입니다.")
+    public ApiResult<List<QuizQuestionDto>> submitWordQuiz(){
+        List<QuizQuestionDto> quizQuestionDtoList = quizService.submitWordQuiz();
         return success(quizQuestionDtoList);
     }
 
