@@ -11,10 +11,7 @@ function OpenChattingEntrance(props) {
   const handleOpenChattingClick = () => {
     navigate(`/chatting/openchat/${openChatId}`, {
       state: {
-        id: openChatId,
-        title: title,
-        content: content,
-        memberCount: memberCount,
+        openChatId: openChatId,
       },
     });
   };
