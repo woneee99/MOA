@@ -78,13 +78,13 @@ public class MemberController {
     }
 
     // 회원 정보 조회
-//    @GetMapping
-//    public ApiResult<MemberInfoDto> getMemberInfo(@RequestHeader("Authorization") String header) {
-//        String token = header.substring(7);
-//        Long memberId = jwtTokenProvider.extractMemberId(token);
-//        MemberInfoDto memberInfoDto = memberService.getMemberInfo(memberId);
-//        return success(memberInfoDto);
-//    }
+    @GetMapping
+    @Operation(summary = "회원 정보 조회", description = "회원 정보를 조회하는 API 입니다.")
+    public ApiResult<MemberInfoDto> getMemberInfo(@RequestHeader("Authorization") String header) {
+        String token = header.substring(7);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+        return success(memberService.getMemberInfo(memberId));
+    }
 
     // 회원 탈퇴
     @DeleteMapping

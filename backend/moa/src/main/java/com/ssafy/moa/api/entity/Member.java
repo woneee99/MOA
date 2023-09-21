@@ -45,8 +45,6 @@ public class Member {
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'https://storage.googleapis.com/diary_storage/member/default.jpg'")
     private String memberImgAddress;
 
-    private String memberKoreanName;
-
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Interest> interest;
 
@@ -108,7 +106,6 @@ public class Member {
                 ", memberIsForeigner=" + memberIsForeigner +
                 ", memberExp=" + memberExp +
                 ", memberImgAddress='" + memberImgAddress + '\'' +
-                ", memberKoreanName='" + memberKoreanName + '\'' +
                 '}';
     }
 }

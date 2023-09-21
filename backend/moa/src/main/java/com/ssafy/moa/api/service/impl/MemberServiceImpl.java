@@ -40,7 +40,6 @@ public class MemberServiceImpl implements MemberService {
     private final NationRepository nationRepository;
     private final ForeignerRepository foreignerRepository;
     private final LevelRepository levelRepository;
-//    private final MemberQueryRepository memberQueryRepository;
 
     private final PasswordEncoder passwordEncoder;
     private final MyUserDetailsService myUserDetailsService;
@@ -137,12 +136,6 @@ public class MemberServiceImpl implements MemberService {
         return "탈퇴 성공";
     }
 
-    // 회원 정보 조회
-//    @Override
-//    public MemberInfoDto getMemberInfo(Long memberId) {
-//
-//    }
-
     @Override
     public Member findMember(Long memberId) {
         return memberRepository.findByMemberId(memberId)
@@ -171,6 +164,12 @@ public class MemberServiceImpl implements MemberService {
         return MemberPhotoDto.builder()
                 .memberImgAddress(updateMemberImgAddress)
                 .build();
+    }
+
+    // 회원 정보 조회
+    @Override
+    public MemberInfoDto getMemberInfo(Long memberId) {
+        return memberRepository.getMemberInfoWithLevel(memberId);
     }
 
 

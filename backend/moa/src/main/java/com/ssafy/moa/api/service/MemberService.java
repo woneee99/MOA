@@ -17,5 +17,7 @@ public interface MemberService {
 
     MemberPhotoDto updateMemberPhoto(Long memberId, MultipartFile multipartFile) throws IOException;
 
+    MemberInfoDto getMemberInfo(Long memberId);
+
 //    MemberInfoDto getMemberInfo(Long memberId);
 }
