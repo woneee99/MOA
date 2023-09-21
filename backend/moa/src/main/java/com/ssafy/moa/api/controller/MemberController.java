@@ -6,11 +6,15 @@ import com.ssafy.moa.api.service.EmailService;
 import com.ssafy.moa.api.service.impl.EmailServiceImpl;
 import com.ssafy.moa.api.service.MemberService;
 import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import static com.ssafy.moa.common.utils.ApiUtils.error;
 import static com.ssafy.moa.common.utils.ApiUtils.success;
@@ -62,6 +66,15 @@ public class MemberController {
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
         memberService.logout(authentication);
         return success("로그아웃 성공");
+    }
+
+    // 회원 사진 수정
+    @PutMapping(value = "/photo")
+    @Operation(summary = "회원 사진 수정", description = "회원 사진을 수정하는 API 입니다.")
+    public ApiResult<MemberPhotoDto> updateMemberPhoto(@RequestHeader("Authorization") String header, @RequestParam MultipartFile multipartFile) throws IOException {
+        String token = header.substring(7);
+        Long memberId = jwtTokenProvider.extractMemberId(token);
+        return success(memberService.updateMemberPhoto(memberId, multipartFile));
     }
 
     // 회원 정보 조회

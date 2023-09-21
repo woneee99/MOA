@@ -1,15 +1,14 @@
 package com.ssafy.moa.api.service.impl;
 
-import com.ssafy.moa.api.dto.member.MemberInfoDto;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.ssafy.moa.api.dto.member.*;
 import com.ssafy.moa.api.entity.*;
 import com.ssafy.moa.api.jwt.JwtTokenProvider;
 import com.ssafy.moa.api.jwt.MyUserDetailsService;
 import com.ssafy.moa.api.repository.*;
 import com.ssafy.moa.api.repository.querydsl.MemberQueryRepository;
 import com.ssafy.moa.api.service.MemberService;
-import com.ssafy.moa.api.dto.member.LoginReqDto;
-import com.ssafy.moa.api.dto.member.MemberSignUpDto;
-import com.ssafy.moa.api.dto.member.TokenRespDto;
 import com.ssafy.moa.common.exception.EmailDuplicateException;
 import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +20,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class MemberServiceImpl implements MemberService {
+
+    private final String bucketName = "diary_storage";
+    private final Storage storage;
+    private final String url = "https://storage.googleapis.com/";
 
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -141,6 +147,30 @@ public class MemberServiceImpl implements MemberService {
     public Member findMember(Long memberId) {
         return memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new NotFoundException("Not Found User"));
+    }
+
+    // 회원 프로필 사진 수정
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public MemberPhotoDto updateMemberPhoto(Long memberId, MultipartFile multipartFile) throws IOException {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException(memberId + "에 해당하는 Member를 찾을 수 없습니다."));
+
+        String uuid = UUID.randomUUID().toString();
+        String ext = multipartFile.getContentType();
+
+        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, "member/" + uuid)
+                .setContentType(ext)
+                .build();
+        storage.create(blobInfo, multipartFile.getInputStream());
+
+        String updateMemberImgAddress = url + bucketName + "/member/" + uuid;
+        member.updateMemberImgAddress(updateMemberImgAddress);
+        memberRepository.save(member);
+
+        return MemberPhotoDto.builder()
+                .memberImgAddress(updateMemberImgAddress)
+                .build();
     }
 
 

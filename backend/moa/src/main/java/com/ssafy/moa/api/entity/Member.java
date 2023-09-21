@@ -92,6 +92,10 @@ public class Member {
         this.memberImgAddress = memberImgAddress;
     }
 
+    public void updateMemberImgAddress(String memberImgAddress) {
+        this.memberImgAddress = memberImgAddress;
+    }
+
 
     @Override
     public String toString() {
