@@ -44,8 +44,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public MemberSignUpDto signUp(MemberSignUpDto memberSignUpReqDto) {
-        // 중복체크 나중에 ..
-
         String encodedPassword = passwordEncoder.encode(memberSignUpReqDto.getMemberPassword());
 
         String memberEmail = memberSignUpReqDto.getMemberEmail();
@@ -61,7 +59,17 @@ public class MemberServiceImpl implements MemberService {
         Level defaultLevel = levelRepository.findByLevelId(1L)
                 .orElseThrow(() -> new NotFoundException("해당 ID를 가진 Level를 찾지 못했습니다."));
 
-        Member member = new Member(memberEmail, encodedPassword, memberName, memberGender, memberIsForeigner, 0, defaultLevel);
+        Member member = Member.builder()
+                .memberEmail(memberEmail)
+                .memberPassword(encodedPassword)
+                .memberName(memberName)
+                .memberGender(memberGender)
+                .memberIsForeigner(memberIsForeigner)
+                .memberExp(0)
+                .memberLevel(defaultLevel)
+                .memberImgAddress("https://storage.googleapis.com/diary_storage/member/default.jpg")
+                .build();
+
         memberRepository.save(member);
 
         // 유학생일 경우 유학생 테이블에도 정보 추가해주기
