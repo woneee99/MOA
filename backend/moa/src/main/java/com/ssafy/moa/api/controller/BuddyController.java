@@ -37,4 +37,8 @@ public class BuddyController {
         return success(buddyService.deleteBuddy(memberId));
     }
 
+    @GetMapping("/{memberId}")
+    public ApiResult<Long> findWithBuddyDate(@PathVariable Long memberId) {
+        return success(buddyService.findWithBuddyDate(memberId));
+    }
 }
