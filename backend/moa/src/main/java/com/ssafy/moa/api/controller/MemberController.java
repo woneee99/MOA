@@ -7,6 +7,7 @@ import com.ssafy.moa.api.service.impl.EmailServiceImpl;
 import com.ssafy.moa.api.service.MemberService;
 import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import static com.ssafy.moa.common.utils.ApiUtils.success;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "member", description = "회원 관련 API")
 @RequestMapping("/member")
 public class MemberController {
 
@@ -32,20 +34,21 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("/signup")
+    @Operation(summary = "회원 가입", description = "회원 가입하는 API 입니다.")
     public ApiResult<MemberSignUpDto> signUp(@RequestBody @Valid MemberSignUpDto memberSignUpReqDto) {
         MemberSignUpDto memberSignUpRespDto = memberService.signUp(memberSignUpReqDto);
         return success(memberSignUpRespDto);
     }
 
     @PostMapping("/signup/email")
-    // 회원가입 시 이메일 인증번호 전송
+    @Operation(summary = "이메일 인증번호 전송")
     public ApiResult<String> sendEmailCode(@RequestBody EmailCheckDto emailCheckDto) throws Exception {
         String emailCode = emailService.sendSimpleMessage(emailCheckDto);
         return success(emailCode);
     }
 
     @DeleteMapping("/signup/email")
-    // 회원가입 시 코드를 통한 이메일 인증
+    @Operation(summary = "이메일 인증번호 검증")
     public ApiResult<String> verifyEmailCode(@RequestBody EmailCodeDto emailCodeDto) {
         String verifyEmailStatus = emailService.verifyEmail(emailCodeDto);
         return success(verifyEmailStatus);
@@ -54,6 +57,7 @@ public class MemberController {
 
     // 로그인
     @PostMapping("/login")
+    @Operation(summary = "로그인")
     public ApiResult<TokenRespDto> login(@RequestBody LoginReqDto loginReqDto) {
         TokenRespDto tokenRespDto = memberService.login(loginReqDto);
         return success(tokenRespDto);
@@ -61,6 +65,7 @@ public class MemberController {
 
     // 로그아웃
     @DeleteMapping("/logout")
+    @Operation(summary = "로그아웃")
     public ApiResult<String> logout(@RequestHeader("Authorization") String header) {
         String token = header.substring(7);
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
@@ -88,23 +93,12 @@ public class MemberController {
 
     // 회원 탈퇴
     @DeleteMapping
+    @Operation(summary = "회원 탈퇴")
     public ApiResult<String> removeMember(@RequestHeader("Authorization") String header) {
         String token = header.substring(7);
         Long memberId = jwtTokenProvider.extractMemberId(token);
         String status = memberService.removeMember(memberId);
         return success(status);
     }
-
-    // 테스트
-    @GetMapping("/test")
-    public ApiResult<?> test(@RequestHeader("Authorization") String header) {
-        String token = header.substring(7);
-        Authentication authentication = jwtTokenProvider.getAuthentication(token);
-//        log.info("member의 Id는 " + jwtTokenProvider.extractMemberId(token).toString());
-
-        return success(authentication.getName() + "은 접근 가능합니다.");
-    }
-
-
 
 }
