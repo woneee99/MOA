@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CloseButton from '../CloseButton';
 import OpenChattingList from './OpenChattingList';
+import CreateOpenChatting from './CreateOpenChatting';
 
 const openChatModalStyle = {
   position: 'fixed',
@@ -20,9 +21,28 @@ const modalOpenStyle = {
 function OpenChattingModal(props) {
   const modalStyle = props.isOpen ? { ...openChatModalStyle, ...modalOpenStyle } : openChatModalStyle;
 
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+
+  const openCreateModal = () => {
+    setCreateModalOpen(true);
+  };
+
+  const closeCreateModal = () => {
+    setCreateModalOpen(false);
+  };
+
   return (
     <div style={modalStyle}>
       <CloseButton onClose={props.closeModal} />
+      <h3>오픈 채팅 목록</h3>
+      <div>
+        <p>검색 input Component</p>
+      </div>
+      <div>
+        <button onClick={openCreateModal}>오픈채팅방 생성</button>
+      </div>
+
+      <CreateOpenChatting isOpen={createModalOpen} onClose={closeCreateModal} />
       <OpenChattingList />
     </div>
   );
