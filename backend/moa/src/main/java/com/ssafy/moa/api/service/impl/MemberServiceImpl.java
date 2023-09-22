@@ -95,16 +95,6 @@ public class MemberServiceImpl implements MemberService {
             Foreigner newForeigner = new Foreigner(member, nationCode);
             foreignerRepository.save(newForeigner);
         }
-        else { // 한국일 경우 한국 테이블에도 정보 추가해주기
-            NationCode nationCode = nationRepository.findByNationName("대한민국")
-                    .orElseThrow(() -> new NotFoundException("Not Found Nation Name : " + "대한민국"));
-            Korean newKorean = Korean.builder()
-                    .member(member)
-                    .nationCode(nationCode)
-                    .build();
-            koreanRepository.save(newKorean);
-        }
-
 
         return new MemberSignUpDto(member);
     }
@@ -171,8 +161,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     // 로그아웃
-    public void logout(Authentication authentication) {
+    public void logout(Authentication authentication, HttpServletResponse response) {
         String memberEmail = authentication.getName();
+
+        Cookie refreshCookie = new Cookie("refreshToken", null);
+        refreshCookie.setMaxAge(0);
+        refreshCookie.setPath("/");
+
+        response.addCookie(refreshCookie);
 
         Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findById(memberEmail);
         if(findRefreshToken.isPresent()) {
