@@ -133,6 +133,7 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
+    // 로그인
     @Override
     @Transactional
     public TokenRespDto login(LoginReqDto loginReqDto, HttpServletResponse response) {
@@ -157,7 +158,7 @@ public class MemberServiceImpl implements MemberService {
         String cookieValue = refreshToken;
 
         Cookie cookie = new Cookie(cookieName, cookieValue);
-        cookie.setMaxAge(60 * 60 * 24 * 14);
+        cookie.setMaxAge(60 * 60 * 24 * 7);
         cookie.setPath("/");
 
         response.addCookie(cookie);
