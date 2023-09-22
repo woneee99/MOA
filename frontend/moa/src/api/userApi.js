@@ -38,5 +38,9 @@ export const userApi = {
     };
 
     return axios.post(loginApiEndPoint, requestData);
-  }
+  },
+
+
+  // 국가 정보 조회
+  getNations: () => axios.get('/nation'),
 };

@@ -20,10 +20,14 @@ function SignUp(props) {
   const [timer, setTimer] = useState(180);
   const [timerStarted, setTimerStarted] = useState(false); // 타이머 시작 여부
   const [verificationSent, setVerificationSent] = useState(false); // 인증번호 전송 여부
+  const [nations, setNations] = useState([]); // 국가 정보
 
   useEffect(() => {
     const passwordValid = validatePassword(formData.memberPassword);
     setPasswordValid(passwordValid);
+    
+    // 국가 정보 조회
+    fetchNations();
   }, [formData.memberPassword]);
 
   const handleInputChange = (e) => {
@@ -113,6 +117,21 @@ function SignUp(props) {
     }
   };
 
+  // 국가 정보 조회
+  const fetchNations = async () =>{
+    try{
+      const response = await userApi.getNations();
+
+      if (response.data.success) {
+        setNations(response.data.response);
+      } else {
+        console.log('국가 정보 조회 실패:', response.data.error.message);
+      }
+    } catch (error) {
+      console.log('API Request Error:', error);
+    }
+  };
+
   return (
     <div>
       <p>SignUp Page</p>
@@ -131,8 +150,11 @@ function SignUp(props) {
         <div className="inputForm">
           <label htmlFor="nationName" className="inputTitle">국적</label>
           <select name="nationName" onChange={handleInputChange}>
-            <option value="한국">한국</option>
-            <option value="미국">미국</option>
+            {nations.map((nation) => (
+              <option key={nation.nationCode} value={nation.nationName}>
+                {nation.nationName}
+              </option>
+            ))}
           </select>
         </div>
 
