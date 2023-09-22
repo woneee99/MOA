@@ -1,15 +1,15 @@
 package com.ssafy.moa.api.controller;
 
+import com.ssafy.moa.api.dto.scrap.ArticleDto;
 import com.ssafy.moa.api.dto.scrap.ArticleReqDto;
 import com.ssafy.moa.api.service.ArticleService;
 import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.ssafy.moa.common.utils.ApiUtils.success;
 
@@ -27,6 +27,15 @@ public class ScrapController {
 //        String token = header.substring(7);
 //        Authentication authentication = jwtTokenProvider.getAuthentication(token);
         Long memberId = 5L;
-        log.info(articleReqDto.toString());
         return success(articleService.createArticleScrap(memberId, articleReqDto));
-    }}
+    }
+
+    @Operation(summary = "스크랩북 뉴스 전체 조회", description = "내가 스크랩한 모든 뉴스를 조회할 수 있습니다.", tags = { "Scrap Controller" })
+    @GetMapping("/news")
+    public ApiResult<List<ArticleDto>> getAllArticleScrap(/*@RequestHeader("Authorization") String header,*/){
+//        String token = header.substring(7);
+//        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        Long memberId = 5L;
+        return success(articleService.getAllArticleScrap(memberId));
+    }
+}

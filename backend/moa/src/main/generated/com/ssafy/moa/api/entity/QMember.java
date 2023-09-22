@@ -22,6 +22,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
+    public final ListPath<Article, QArticle> article = this.<Article, QArticle>createList("article", Article.class, QArticle.class, PathInits.DIRECT2);
+
     public final ListPath<BalanceGame, QBalanceGame> balanceGame = this.<BalanceGame, QBalanceGame>createList("balanceGame", BalanceGame.class, QBalanceGame.class, PathInits.DIRECT2);
 
     public final ListPath<BalanceGameGood, QBalanceGameGood> balanceGameGood = this.<BalanceGameGood, QBalanceGameGood>createList("balanceGameGood", BalanceGameGood.class, QBalanceGameGood.class, PathInits.DIRECT2);

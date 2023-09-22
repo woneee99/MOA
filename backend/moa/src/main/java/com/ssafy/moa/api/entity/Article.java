@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -28,6 +30,10 @@ public class Article {
     @Column(name = "article_link")
     private String articleLink;
 
+    @NotNull
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     @ManyToOne
     @JoinColumn(name = "member_id", referencedColumnName = "member_id")
     private Member member;
@@ -38,6 +44,7 @@ public class Article {
         this.articleTitle = articleTitle;
         this.articleContent = articleContent;
         this.articleLink = articleLink;
+        this.createdAt = LocalDateTime.now();
         this.member = member;
     }
 

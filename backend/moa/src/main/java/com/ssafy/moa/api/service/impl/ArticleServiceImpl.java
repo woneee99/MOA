@@ -1,5 +1,6 @@
 package com.ssafy.moa.api.service.impl;
 
+import com.ssafy.moa.api.dto.scrap.ArticleDto;
 import com.ssafy.moa.api.dto.scrap.ArticleReqDto;
 import com.ssafy.moa.api.entity.Article;
 import com.ssafy.moa.api.entity.Member;
@@ -10,6 +11,9 @@ import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +35,15 @@ public class ArticleServiceImpl implements ArticleService {
                 .build();
 
         return articleRepository.save(article).getArticleId();
+    }
+
+    @Override
+    public List<ArticleDto> getAllArticleScrap(Long memberId) {
+        List<Article> articleList = articleRepository.findByMember_MemberIdOrderByCreatedAtDesc(memberId);
+        List<ArticleDto> result = new ArrayList<>();
+        articleList.forEach(e -> {
+            result.add(ArticleDto.from(e));
+        });
+        return result;
     }
 }

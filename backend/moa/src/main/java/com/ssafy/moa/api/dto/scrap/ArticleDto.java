@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,13 +18,19 @@ public class ArticleDto {
     private String articleTitle;
     private String articleContent;
     private String articleLink;
+    private LocalDateTime createdAt;
 
     @Builder
-    public ArticleDto(Long articleId, String articleTitle, String articleContent, String articleLink) {
+    public ArticleDto(Long articleId, String articleTitle, String articleContent, String articleLink, LocalDateTime createdAt) {
         this.articleId = articleId;
         this.articleTitle = articleTitle;
         this.articleContent = articleContent;
         this.articleLink = articleLink;
+        this.createdAt = createdAt;
+    }
+
+    public static ArticleDto from(Article e) {
+        return new ArticleDto(e.getArticleId(), e.getArticleTitle(), e.getArticleContent(), e.getArticleLink(), e.getCreatedAt());
     }
 
     @Override
@@ -32,6 +40,7 @@ public class ArticleDto {
                 ", articleTitle='" + articleTitle + '\'' +
                 ", articleContent='" + articleContent + '\'' +
                 ", articleLink='" + articleLink + '\'' +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }
