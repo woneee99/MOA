@@ -16,7 +16,8 @@ import LearningKeyword from './pages/Learning/LearningMyKeyword';
 import WordLearning from './pages/Learning/WordLearning';
 import KoreanLearningDefault from './pages/Learning/KoreanLearningDefault';
 import QnABoard from './pages/QnA/QnABoard';
-import Quiz from './components/QuizHome';
+import Quiz from './pages/Quiz/Quiz';
+import QuestionPage from './pages/Quiz/QuestionPage';
 import IncorrectNote from './pages/Quiz/IncorrectNote';
 import BuddyHome from './components/BuddyHome';
 import ExchangeDiary from './pages/Buddy/Diary/ExchangeDiary';
@@ -59,6 +60,7 @@ function App() {
           <Route path="/qna-board" element={<QnABoard />} />
           
           <Route path="/quiz" element={<Quiz />} />
+          <Route path="/quiz/question-page" element={<QuestionPage />} />
           <Route path="/quiz/incorrect-note" element={<IncorrectNote />} />
 
           <Route path="/buddy" element={<BuddyHome />} />
