@@ -22,6 +22,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
+    public final ListPath<Article, QArticle> article = this.<Article, QArticle>createList("article", Article.class, QArticle.class, PathInits.DIRECT2);
+
     public final ListPath<BalanceGame, QBalanceGame> balanceGame = this.<BalanceGame, QBalanceGame>createList("balanceGame", BalanceGame.class, QBalanceGame.class, PathInits.DIRECT2);
 
     public final ListPath<BalanceGameGood, QBalanceGameGood> balanceGameGood = this.<BalanceGameGood, QBalanceGameGood>createList("balanceGameGood", BalanceGameGood.class, QBalanceGameGood.class, PathInits.DIRECT2);
@@ -44,6 +46,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final NumberPath<Long> memberId = createNumber("memberId", Long.class);
 
+    public final StringPath memberImgAddress = createString("memberImgAddress");
+
     public final BooleanPath memberIsForeigner = createBoolean("memberIsForeigner");
 
     public final QLevel memberLevel;
@@ -57,6 +61,8 @@ public class QMember extends EntityPathBase<Member> {
     public final ListPath<OpenChat, QOpenChat> openChat = this.<OpenChat, QOpenChat>createList("openChat", OpenChat.class, QOpenChat.class, PathInits.DIRECT2);
 
     public final ListPath<OpenChatMember, QOpenChatMember> openChatMember = this.<OpenChatMember, QOpenChatMember>createList("openChatMember", OpenChatMember.class, QOpenChatMember.class, PathInits.DIRECT2);
+
+    public final ListPath<Word, QWord> word = this.<Word, QWord>createList("word", Word.class, QWord.class, PathInits.DIRECT2);
 
     public QMember(String variable) {
         this(Member.class, forVariable(variable), INITS);

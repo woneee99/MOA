@@ -27,8 +27,7 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender javaMailSender;
     private final RedisUtil redisUtil;
 
-    // 인증번호 생성
-    private final String ePw = createKey();
+    static String ePw;
 
     @Value("${spring.mail.username}")
     private String id;
@@ -36,6 +35,9 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public MimeMessage createMessage(String to) throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = javaMailSender.createMimeMessage();
+
+        // 인증번호 생성
+        ePw = createKey();
 
         message.addRecipients(MimeMessage.RecipientType.TO, to); //  보내는 대상
         message.setSubject("MOA 회원가입 인증 코드입니다.");
@@ -56,7 +58,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     // 인증번호 만들기
-    private  static String createKey() {
+    private static String createKey() {
         StringBuffer key = new StringBuffer();
         Random random = new Random();
 
@@ -70,8 +72,9 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public String sendSimpleMessage(EmailCheckDto emailCheckDto) throws Exception {
         MimeMessage message = createMessage(emailCheckDto.getEmail());
+
         try {
-            redisUtil.setDataExpire(ePw, emailCheckDto.getEmail(), 60 * 3L); // 유효기간 3분
+            redisUtil.setDataExpire(ePw, emailCheckDto.getEmail(), 60 * 5L); // 유효기간 5분
             javaMailSender.send(message);
         } catch (MailException e) {
             e.printStackTrace();
