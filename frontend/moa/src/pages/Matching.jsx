@@ -7,31 +7,11 @@ import BuddyGender from "../components/Matching/BuddyGender";
 import LoadingMatching from "../components/Matching/LoadingMatching";
 import SuccessMatching from "../components/Matching/SuccessMatching";
 import KoreanBuddy from "../components/Matching/KoreanBuddy";
+import { userApi } from '../api/userApi';
 
-function Matching() {
-  // const location = useLocation();
-  // const foreigner = location.state.isForeigner;
-
-  // console.log(foreigner);
-
-  const [isForeigner, setIsForeigner] = useState(false);
-  const [currentStep, setCurrentStep] = useState(null);
-
-  const steps = [
-    <KoreanBuddy />,
-    <BuddyInterest />,
-    <BuddyGender />,
-    <LoadingMatching />,
-    <SuccessMatching />,
-  ];
-
-  useEffect(() => {
-    // Your useEffect logic here
-  }, []);
-
-  return (
+function Matching(){
+  return(
     <>
-      
       <div>매칭 페이지</div>
       {/* Display the current step */}
       {isForeigner ? (
