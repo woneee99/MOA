@@ -98,4 +98,17 @@ public class QuizQueryRepositoryImpl implements QuizQueryRepository {
 
         return quizQuestionDtoList;
     }
+
+    @Override
+    public List<String> getQuizAnswerCandidates() {
+        QDailyKoreanQuiz dailyKoreanQuiz = QDailyKoreanQuiz.dailyKoreanQuiz;
+
+        return jpaQueryFactory
+                .select(dailyKoreanQuiz.quizAnswer)
+                .from(dailyKoreanQuiz)
+                .where(dailyKoreanQuiz.quizCode.quizCode.eq(1L))
+                .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                .limit(9)
+                .fetch();
+    }
 }
