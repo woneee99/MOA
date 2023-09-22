@@ -189,4 +189,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
+//    @Override
+//    public void updateMemberLevel(Member member) {
+//
+//    }
+
+
 }
