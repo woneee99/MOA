@@ -98,6 +98,11 @@ public class Member {
         this.memberImgAddress = memberImgAddress;
     }
 
+    @PreUpdate
+    public void preUpdate() {
+        this.modifiedAt = LocalDateTime.now();
+    }
+
 
     @Override
     public String toString() {
