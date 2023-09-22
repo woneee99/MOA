@@ -1,5 +1,6 @@
 package com.ssafy.moa.api.service.impl;
 
+import com.ssafy.moa.api.dto.scrap.WordDto;
 import com.ssafy.moa.api.dto.scrap.WordReqDto;
 import com.ssafy.moa.api.entity.Member;
 import com.ssafy.moa.api.entity.Word;
@@ -10,6 +11,9 @@ import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +34,16 @@ public class WordServiceImpl implements WordService {
                 .build();
 
         return wordRepository.save(word).getWordId();
+    }
+
+    @Override
+    public List<WordDto> getAllWordScrap(Long memberId) {
+        List<Word> wordList = wordRepository.findByMember_MemberIdOrderByCreatedAtDesc(memberId);
+
+        List<WordDto> result = new ArrayList<>();
+        wordList.forEach(e -> {
+            result.add(WordDto.from(e));
+        });
+        return result;
     }
 }

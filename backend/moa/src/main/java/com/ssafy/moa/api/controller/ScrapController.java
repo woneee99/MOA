@@ -2,6 +2,7 @@ package com.ssafy.moa.api.controller;
 
 import com.ssafy.moa.api.dto.scrap.ArticleDto;
 import com.ssafy.moa.api.dto.scrap.ArticleReqDto;
+import com.ssafy.moa.api.dto.scrap.WordDto;
 import com.ssafy.moa.api.dto.scrap.WordReqDto;
 import com.ssafy.moa.api.service.ArticleService;
 import com.ssafy.moa.api.service.WordService;
@@ -66,4 +67,15 @@ public class ScrapController {
         Long memberId = 5L;
         return success(wordService.createWordScrap(memberId, wordReqDto));
     }
+
+    // Todo : 추후 authentication를 사용해서 실제 memberId로 변경
+    @Operation(summary = "스크랩북 단어 전체 조회", description = "내가 스크랩한 모든 단어를 조회할 수 있습니다.", tags = { "Scrap Controller" })
+    @GetMapping("/words")
+    public ApiResult<List<WordDto>> getAllWordScrap(/*@RequestHeader("Authorization") String header,*/){
+//        String token = header.substring(7);
+//        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        Long memberId = 5L;
+        return success(wordService.getAllWordScrap(memberId));
+    }
+    
 }
