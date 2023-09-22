@@ -11,6 +11,7 @@ import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
 
     @Override
+    @Transactional
     public Long createArticleScrap(Long memberId, ArticleReqDto articleReqDto) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(() -> new NotFoundException("Not Found Member"));
 
@@ -51,5 +53,11 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleDto getArticle(Long articleId) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new NotFoundException("Not Found Balance Game Detail"));
         return ArticleDto.from(article);
+    }
+
+    @Override
+    @Transactional
+    public Long deleteArticle(Long articleId) {
+        return articleRepository.deleteByArticleId(articleId);
     }
 }

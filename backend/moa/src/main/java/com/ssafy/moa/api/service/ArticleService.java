@@ -11,4 +11,6 @@ public interface ArticleService {
     List<ArticleDto> getAllArticleScrap(Long memberId);
 
     ArticleDto getArticle(Long articleId);
+
+    Long deleteArticle(Long articleId);
 }

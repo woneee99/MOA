@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findByMember_MemberIdOrderByCreatedAtDesc(Long memberId);
+    Long deleteByArticleId(Long articleId);
 }

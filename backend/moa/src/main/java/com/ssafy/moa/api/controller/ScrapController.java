@@ -45,4 +45,10 @@ public class ScrapController {
     public ApiResult<ArticleDto> getArticle(@PathVariable("articleId") Long articleId){
         return success(articleService.getArticle(articleId));
     }
+
+    @Operation(summary = "스크랩북 뉴스 삭제", description = "내가 선택한 스크랩 뉴스를 삭제 할 수 있습니다.", tags = { "Scrap Controller" })
+    @DeleteMapping("/news/{articleId}")
+    public ApiResult<Long> deleteArticle(@PathVariable("articleId") Long articleId){
+        return success(articleService.deleteArticle(articleId));
+    }
 }
