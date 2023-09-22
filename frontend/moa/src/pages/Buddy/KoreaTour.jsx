@@ -4,11 +4,18 @@ import BackButton from '../../components/BackButton';
 import KoreaTourSearch from '../../components/KoreaTourSearch';
 import KoreaTourMap from '../../components/KoreaTourMap';
 import KoreaTourSearchResult from '../../components/KoreaTourSearchResult';
+import { koreaTourApi } from '../../api/KoreaTourApi';
 
 function KoreaTour(props) {
   const [showSearchResults, setShowSearchResults] = useState(false);
 
   const handleSearchClick = () => {
+    const type = "all";
+    const mediaName = "nct";
+    koreaTourApi.getMediaList(type, mediaName)
+      .then((response) => {
+        console.log(response.data.response);
+    })
     setShowSearchResults(true);
   };
 

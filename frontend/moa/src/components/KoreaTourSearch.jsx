@@ -5,6 +5,10 @@ function KoreaTourSearch(props) {
     <div>
       <h3>검색</h3>
       <div>
+        <label htmlFor="mediaName">K-drama or K-pop</label>
+        <input type="text" id="mediaName" />
+      </div>
+      {/* <div>
         <label htmlFor="mediaType">매체 분류</label>
         <input type="text" id="mediaType" />
       </div>
@@ -19,7 +23,7 @@ function KoreaTourSearch(props) {
       <div>
         <label htmlFor="placeType">장소 분류</label>
         <input type="text" id="placeType" />
-      </div>
+      </div> */}
     </div>
   );
 }
