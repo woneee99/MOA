@@ -11,4 +11,6 @@ public interface WordService {
     List<WordDto> getAllWordScrap(Long memberId);
 
     WordDto getWord(Long wordId);
+
+    Long deleteWord(Long wordId);
 }

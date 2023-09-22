@@ -11,6 +11,7 @@ import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,5 +52,11 @@ public class WordServiceImpl implements WordService {
     public WordDto getWord(Long wordId) {
         Word word = wordRepository.findById(wordId).orElseThrow(() -> new NotFoundException("Not Found Word Detail"));
         return WordDto.from(word);
+    }
+
+    @Override
+    @Transactional
+    public Long deleteWord(Long wordId) {
+        return wordRepository.deleteByWordId(wordId);
     }
 }
