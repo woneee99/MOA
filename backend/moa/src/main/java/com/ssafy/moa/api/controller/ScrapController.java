@@ -2,7 +2,9 @@ package com.ssafy.moa.api.controller;
 
 import com.ssafy.moa.api.dto.scrap.ArticleDto;
 import com.ssafy.moa.api.dto.scrap.ArticleReqDto;
+import com.ssafy.moa.api.dto.scrap.WordReqDto;
 import com.ssafy.moa.api.service.ArticleService;
+import com.ssafy.moa.api.service.WordService;
 import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,9 @@ import static com.ssafy.moa.common.utils.ApiUtils.success;
 @Slf4j
 public class ScrapController {
     private final ArticleService articleService;
+    private final WordService wordService;
 
+    // 뉴스
     // Todo : 추후 authentication를 사용해서 실제 memberId로 변경
     @Operation(summary = "뉴스 스크랩북 등록", description = "뉴스를 내 스크랩북에 등록할 수 있습니다.", tags = { "Scrap Controller" })
     @PostMapping("/news")
@@ -50,5 +54,16 @@ public class ScrapController {
     @DeleteMapping("/news/{articleId}")
     public ApiResult<Long> deleteArticle(@PathVariable("articleId") Long articleId){
         return success(articleService.deleteArticle(articleId));
+    }
+
+    // 단어
+    // Todo : 추후 authentication를 사용해서 실제 memberId로 변경
+    @Operation(summary = "단어 스크랩북 등록", description = "단어를 내 스크랩북에 등록할 수 있습니다.", tags = { "Scrap Controller" })
+    @PostMapping("/words")
+    public ApiResult<Long> createWordScrap(/*@RequestHeader("Authorization") String header,*/ @RequestBody WordReqDto wordReqDto){
+//        String token = header.substring(7);
+//        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        Long memberId = 5L;
+        return success(wordService.createWordScrap(memberId, wordReqDto));
     }
 }

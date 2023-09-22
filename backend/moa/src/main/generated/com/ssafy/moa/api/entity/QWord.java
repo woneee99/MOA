@@ -22,6 +22,8 @@ public class QWord extends EntityPathBase<Word> {
 
     public static final QWord word = new QWord("word");
 
+    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+
     public final QMember member;
 
     public final NumberPath<Long> wordId = createNumber("wordId", Long.class);
