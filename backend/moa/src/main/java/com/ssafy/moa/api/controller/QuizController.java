@@ -1,8 +1,7 @@
 package com.ssafy.moa.api.controller;
 
-import com.ssafy.moa.api.dto.quiz.QuizQuestionDto;
-import com.ssafy.moa.api.dto.quiz.QuizSubmitReqDto;
-import com.ssafy.moa.api.dto.quiz.QuizSubmitRespDto;
+import com.ssafy.moa.api.dto.quiz.*;
+import com.ssafy.moa.api.jwt.JwtTokenProvider;
 import com.ssafy.moa.api.service.QuizService;
 import com.ssafy.moa.common.utils.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +19,8 @@ public class QuizController {
 
     private final QuizService quizService;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     // 단어 퀴즈 출제 API
     @GetMapping("/word")
     @Operation(summary = "단어 퀴즈 출제 API", description = "단어 퀴즈를 랜덤으로 15개 출제하는 API입니다.")
@@ -34,6 +35,14 @@ public class QuizController {
     public ApiResult<QuizSubmitRespDto> submitWordQuiz(@RequestBody QuizSubmitReqDto quizSubmitReqDto) {
         QuizSubmitRespDto quizSubmitRespDto = quizService.submitWordQuiz(quizSubmitReqDto);
         return success(quizSubmitRespDto);
+    }
+
+    // 퀴즈 완료 API
+    @PutMapping("/finsih")
+    @Operation(summary = "퀴즈를 완료하면 보내는 API")
+    public ApiResult<QuizFinishRespDto> finishQuiz(@RequestHeader("Authorization") String header, @RequestBody QuizFinishReqDto quizFinishReqDto) {
+        Long memberId = jwtTokenProvider.extractMemberId(header.substring(7));
+        return success(quizService.finishQuiz(memberId, quizFinishReqDto));
     }
 
 
