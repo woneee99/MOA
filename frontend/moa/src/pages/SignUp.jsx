@@ -51,6 +51,7 @@ function SignUp(props) {
 
   // 타이머 시작
   const startTimer = () => {
+    setTimer(300);
     setTimerStarted(true); // 타이머 시작됨 표시
     const interval = setInterval(() => {
       setTimer((prevTimer) => prevTimer - 1);
@@ -59,7 +60,7 @@ function SignUp(props) {
     setTimeout(() => {
       clearInterval(interval);
       setTimerStarted(false); // 타이머 종료됨 표시
-    }, 180000);
+    }, 300000);
   };
 
   // 이메일 인증코드 전송 및 타이머 
@@ -108,7 +109,7 @@ function SignUp(props) {
       if (response.data.success) {
         console.log('회원가입 성공', response);
         alert('회원가입 성공!');
-        navigate('/matching');
+        navigate('/login');
       } else {
         console.log('회원가입 오류: ', response.data.error.message);
       }
@@ -168,7 +169,7 @@ function SignUp(props) {
           <label htmlFor="memberEmail" className="inputTitle">이메일</label>
           <input type="text" id="memberEmail" name="memberEmail" onChange={handleInputChange}/>
         </div>
-
+        
         {/* 이메일 인증 */}
         <button onClick={handleSendVerificationCode}>인증번호 전송</button>
 
