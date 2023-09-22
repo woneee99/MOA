@@ -106,9 +106,13 @@ function SignUp(props) {
       const response = await userApi.signUp(formData);
 
       if (response.data.success) {
+        const res = response.data.response;
+        const isForeigner = res.memberIsForeigner;
         console.log('회원가입 성공', response);
         alert('회원가입 성공!');
-        navigate('/matching');
+        navigate('/matching', {
+          state: { isForeigner },
+        });
       } else {
         console.log('회원가입 오류: ', response.data.error.message);
       }
@@ -160,7 +164,7 @@ function SignUp(props) {
 
         <div className="inputForm">
           <label htmlFor="memberGender" className="inputTitle">성별</label>
-          <input type="radio" id="man" name="memberGender" value="0" onChange={handleInputChange}/>남자
+          <input type="radio" id="man" name="memberGender" value="2" onChange={handleInputChange}/>남자
           <input type="radio" id="woman" name="memberGender" value="1" onChange={handleInputChange}/>여자
         </div>
 
