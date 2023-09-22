@@ -9,4 +9,6 @@ public interface ArticleService {
     Long createArticleScrap(Long memberId, ArticleReqDto articleReqDto);
 
     List<ArticleDto> getAllArticleScrap(Long memberId);
+
+    ArticleDto getArticle(Long articleId);
 }

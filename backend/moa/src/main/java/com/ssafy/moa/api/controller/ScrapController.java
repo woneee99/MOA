@@ -30,6 +30,7 @@ public class ScrapController {
         return success(articleService.createArticleScrap(memberId, articleReqDto));
     }
 
+    // Todo : 추후 authentication를 사용해서 실제 memberId로 변경
     @Operation(summary = "스크랩북 뉴스 전체 조회", description = "내가 스크랩한 모든 뉴스를 조회할 수 있습니다.", tags = { "Scrap Controller" })
     @GetMapping("/news")
     public ApiResult<List<ArticleDto>> getAllArticleScrap(/*@RequestHeader("Authorization") String header,*/){
@@ -37,5 +38,11 @@ public class ScrapController {
 //        Authentication authentication = jwtTokenProvider.getAuthentication(token);
         Long memberId = 5L;
         return success(articleService.getAllArticleScrap(memberId));
+    }
+
+    @Operation(summary = "스크랩북 뉴스 상세 조회", description = "내가 선택한 스크랩 뉴스의 상세정보를 조회할 수 있습니다.", tags = { "Scrap Controller" })
+    @GetMapping("/news/{articleId}")
+    public ApiResult<ArticleDto> getArticle(@PathVariable("articleId") Long articleId){
+        return success(articleService.getArticle(articleId));
     }
 }

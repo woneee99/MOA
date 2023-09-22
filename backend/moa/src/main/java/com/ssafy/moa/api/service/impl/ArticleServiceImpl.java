@@ -46,4 +46,10 @@ public class ArticleServiceImpl implements ArticleService {
         });
         return result;
     }
+
+    @Override
+    public ArticleDto getArticle(Long articleId) {
+        Article article = articleRepository.findById(articleId).orElseThrow(() -> new NotFoundException("Not Found Balance Game Detail"));
+        return ArticleDto.from(article);
+    }
 }
