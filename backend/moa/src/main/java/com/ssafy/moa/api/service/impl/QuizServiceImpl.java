@@ -112,6 +112,14 @@ public class QuizServiceImpl implements QuizService {
                 .build();
     }
 
+    // 문장 퀴즈 출제 API
+    @Override
+    public List<QuizQuestionDto> questionSentenceQuiz() {
+        List<QuizQuestionDto> quizQuestionDtoList = quizQueryRepository.getRandomSentenceQuizzes();
+
+        return quizQuestionDtoList;
+    }
+
     public void updateMemberLevel(Member member) {
         // member level up 조건인지 확인하기
         // 1. member의 현재 경험치와 레벨업 조건을 확인한다.

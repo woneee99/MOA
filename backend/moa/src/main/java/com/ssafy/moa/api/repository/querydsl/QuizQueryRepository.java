@@ -8,4 +8,6 @@ public interface QuizQueryRepository {
     List<QuizQuestionDto> getRandomQuizzes();
 
     List<String> getWordQuizAnswerList(String quizAnswer);
+
+    List<QuizQuestionDto> getRandomSentenceQuizzes();
 }

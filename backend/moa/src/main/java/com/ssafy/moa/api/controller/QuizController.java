@@ -39,6 +39,13 @@ public class QuizController {
         return success(quizSubmitRespDto);
     }
 
+    // 문장 퀴즈 출제 API
+    @GetMapping("/sentence")
+    @Operation(summary = "문장 퀴즈 출제")
+    public ApiResult<List<QuizQuestionDto>> questionSentenceQuiz() {
+        return success(quizService.questionSentenceQuiz());
+    }
+
     // 퀴즈 완료 API
     @PutMapping("/finish")
     @Operation(summary = "퀴즈를 완료하면 보내는 API")
@@ -46,6 +53,7 @@ public class QuizController {
         Long memberId = jwtTokenProvider.extractMemberId(header.substring(7));
         return success(quizService.finishQuiz(memberId, quizFinishReqDto));
     }
+
 
 
 }
