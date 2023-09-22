@@ -44,6 +44,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final NumberPath<Long> memberId = createNumber("memberId", Long.class);
 
+    public final StringPath memberImgAddress = createString("memberImgAddress");
+
     public final BooleanPath memberIsForeigner = createBoolean("memberIsForeigner");
 
     public final QLevel memberLevel;
@@ -53,6 +55,10 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath memberPassword = createString("memberPassword");
 
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = createDateTime("modifiedAt", java.time.LocalDateTime.class);
+
+    public final ListPath<OpenChat, QOpenChat> openChat = this.<OpenChat, QOpenChat>createList("openChat", OpenChat.class, QOpenChat.class, PathInits.DIRECT2);
+
+    public final ListPath<OpenChatMember, QOpenChatMember> openChatMember = this.<OpenChatMember, QOpenChatMember>createList("openChatMember", OpenChatMember.class, QOpenChatMember.class, PathInits.DIRECT2);
 
     public QMember(String variable) {
         this(Member.class, forVariable(variable), INITS);

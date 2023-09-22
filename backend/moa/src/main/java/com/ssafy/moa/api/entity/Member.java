@@ -41,6 +41,10 @@ public class Member {
     @Column(columnDefinition = "INT DEFAULT 0")
     private Integer memberExp;
 
+    @NotNull
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'https://storage.googleapis.com/diary_storage/member/default.jpg'")
+    private String memberImgAddress;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Interest> interest;
 
@@ -59,6 +63,12 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<ExchangeDiary> exchangeDiary;
 
+    @OneToMany(mappedBy = "member")
+    private List<OpenChat> openChat;
+
+    @OneToMany(mappedBy = "member")
+    private List<OpenChatMember> openChatMember;
+
     @ManyToOne
     @NotNull
     @JoinColumn(name = "member_level")
@@ -69,7 +79,7 @@ public class Member {
 
 
     @Builder
-    public Member(String memberEmail, String memberPassword, String memberName, Integer memberGender, Boolean memberIsForeigner, Integer memberExp, Level memberLevel) {
+    public Member(String memberEmail, String memberPassword, String memberName, Integer memberGender, Boolean memberIsForeigner, Integer memberExp, Level memberLevel, String memberImgAddress) {
         this.memberEmail = memberEmail;
         this.memberPassword = memberPassword;
         this.memberName = memberName;
@@ -77,8 +87,12 @@ public class Member {
         this.memberIsForeigner = memberIsForeigner;
         this.memberExp = memberExp;
         this.memberLevel = memberLevel;
+        this.memberImgAddress = memberImgAddress;
     }
 
+    public void updateMemberImgAddress(String memberImgAddress) {
+        this.memberImgAddress = memberImgAddress;
+    }
 
 
     @Override
@@ -91,6 +105,7 @@ public class Member {
                 ", memberGender=" + memberGender +
                 ", memberIsForeigner=" + memberIsForeigner +
                 ", memberExp=" + memberExp +
+                ", memberImgAddress='" + memberImgAddress + '\'' +
                 '}';
     }
 }

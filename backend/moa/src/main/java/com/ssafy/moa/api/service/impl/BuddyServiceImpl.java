@@ -4,11 +4,14 @@ import com.ssafy.moa.api.dto.BuddyDto.*;
 import com.ssafy.moa.api.entity.*;
 import com.ssafy.moa.api.repository.*;
 import com.ssafy.moa.api.service.BuddyService;
+import com.ssafy.moa.api.service.MemberService;
 import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -21,6 +24,7 @@ public class BuddyServiceImpl implements BuddyService {
     private final InterestRepository interestRepository;
     private final InterestCodeRepository interestCodeRepository;
     private final ForeignerRepository foreignerRepository;
+    private final MemberService memberService;
     private final MemberRepository memberRepository;
 
     @Override
@@ -29,9 +33,7 @@ public class BuddyServiceImpl implements BuddyService {
         NationCode nationCode = nationRepository.findByNationCode(buddyKoreanPostRequest.getNationCode())
                 .orElseThrow(() -> new NotFoundException("Not Found Nation Code"));
 
-        Member member = memberRepository.findByMemberId(buddyKoreanPostRequest.getMemberId())
-                .orElseThrow(() -> new NotFoundException("Not Found Member"));
-
+        Member member = memberService.findMember(buddyKoreanPostRequest.getMemberId());
         Korean korean = Korean.builder()
                 .koreanLikeGender(buddyKoreanPostRequest.getGender())
                 .member(member)
@@ -55,9 +57,7 @@ public class BuddyServiceImpl implements BuddyService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long saveForeignerBuddyInfo(ForeignerBuddyPostRequest foreignerBuddyPostRequest) {
-        Member member = memberRepository.findByMemberId(foreignerBuddyPostRequest.getMemberId())
-                .orElseThrow(() -> new NotFoundException("Not Found Member"));
-
+        Member member = memberService.findMember(foreignerBuddyPostRequest.getMemberId());
         // Foreigner 를 찾기
         Foreigner foreigner = foreignerRepository.findByMember(member)
                 .orElseThrow(() -> new NotFoundException("Not Found Foreigner"));
@@ -84,8 +84,7 @@ public class BuddyServiceImpl implements BuddyService {
     @Override
     public Long findMatchingBuddy(BuddyMatchingRequest buddyMatchingRequest) {
         // memberId로 외국인인지 판별
-        Member member = memberRepository.findByMemberId(buddyMatchingRequest.getMemberId())
-                .orElseThrow(() -> new NotFoundException("Not Found User"));
+        Member member = memberService.findMember(buddyMatchingRequest.getMemberId());
 
         // 외국인이면
         if(member.getMemberIsForeigner()) {
@@ -99,14 +98,16 @@ public class BuddyServiceImpl implements BuddyService {
                     if(count > 0) {
                         Buddy buddy = Buddy.builder()
                                 .korean(korean)
-                                .foreigner(foreigner).build();
+                                .foreigner(foreigner)
+                                .createdAt(LocalDate.now()).build();
                         return buddyRepository.save(buddy).getBuddyId();
                     }
                 }
 
                 Buddy buddy = Buddy.builder()
                         .korean(koreanBuddyGenderAndNation.get(0))
-                        .foreigner(foreigner).build();
+                        .foreigner(foreigner)
+                        .createdAt(LocalDate.now()).build();
                 return buddyRepository.save(buddy).getBuddyId();
             }
 
@@ -118,14 +119,16 @@ public class BuddyServiceImpl implements BuddyService {
                     if(count > 0) {
                         Buddy buddy = Buddy.builder()
                                 .korean(korean)
-                                .foreigner(foreigner).build();
+                                .foreigner(foreigner)
+                                .createdAt(LocalDate.now()).build();
                         return buddyRepository.save(buddy).getBuddyId();
                     }
                 }
 
                 Buddy buddy = Buddy.builder()
                         .korean(koreanBuddyGenderAndNation.get(0))
-                        .foreigner(foreigner).build();
+                        .foreigner(foreigner)
+                        .createdAt(LocalDate.now()).build();
                 return buddyRepository.save(buddy).getBuddyId();
             }
 
@@ -142,14 +145,16 @@ public class BuddyServiceImpl implements BuddyService {
                     if(count > 0) {
                         Buddy buddy = Buddy.builder()
                                 .korean(korean)
-                                .foreigner(foreigner).build();
+                                .foreigner(foreigner)
+                                .createdAt(LocalDate.now()).build();
                         return buddyRepository.save(buddy).getBuddyId();
                     }
                 }
 
                 Buddy buddy = Buddy.builder()
                         .korean(korean)
-                        .foreigner(foreignerBuddyGenderAndNation.get(0)).build();
+                        .foreigner(foreignerBuddyGenderAndNation.get(0))
+                        .createdAt(LocalDate.now()).build();
                 return buddyRepository.save(buddy).getBuddyId();
             }
 
@@ -178,8 +183,8 @@ public class BuddyServiceImpl implements BuddyService {
     @Override
     @Transactional
     public Integer deleteBuddy(Long memberId) {
-        Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new NotFoundException("Not Found User"));
+        Member member = memberService.findMember(memberId);
+
         if(member.getMemberIsForeigner()) {
             Foreigner foreigner = foreignerRepository.findByMember(member)
                     .orElseThrow(() -> new NotFoundException("Not Found Foreigner"));
@@ -190,5 +195,13 @@ public class BuddyServiceImpl implements BuddyService {
                     .orElseThrow(() -> new NotFoundException("Not Found Korean"));
             return buddyRepository.deleteByKorean(korean);
         }
+    }
+
+    @Override
+    public Long findWithBuddyDate(Long memberId) {
+        Member member = memberService.findMember(memberId);
+        LocalDate agoDate = buddyRepository.findByKorean(member.getKorean()).get().getCreatedAt();
+        Long daysDifference = ChronoUnit.DAYS.between(agoDate, LocalDate.now());
+        return daysDifference;
     }
 }
