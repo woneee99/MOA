@@ -69,6 +69,12 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<OpenChatMember> openChatMember;
 
+    @OneToMany(mappedBy = "member")
+    private List<Article> article;
+
+    @OneToMany(mappedBy = "member")
+    private List<Word> word;
+
     @ManyToOne
     @NotNull
     @JoinColumn(name = "member_level")
@@ -79,7 +85,9 @@ public class Member {
 
 
     @Builder
-    public Member(String memberEmail, String memberPassword, String memberName, Integer memberGender, Boolean memberIsForeigner, Integer memberExp, Level memberLevel, String memberImgAddress) {
+    public Member(String memberEmail, String memberPassword, String memberName, Integer memberGender, Boolean memberIsForeigner,
+                  Integer memberExp, Level memberLevel, String memberImgAddress,
+                  LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.memberEmail = memberEmail;
         this.memberPassword = memberPassword;
         this.memberName = memberName;
@@ -88,6 +96,8 @@ public class Member {
         this.memberExp = memberExp;
         this.memberLevel = memberLevel;
         this.memberImgAddress = memberImgAddress;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 
     public void updateMemberImgAddress(String memberImgAddress) {
@@ -97,6 +107,11 @@ public class Member {
     public void updateMemberExp(Integer memberExp) {this.memberExp = memberExp;}
 
     public void updateMemberLevel(Level memberLevel) {this.memberLevel = memberLevel;}
+    @PreUpdate
+    public void preUpdate() {
+        this.modifiedAt = LocalDateTime.now();
+    }
+
 
     @Override
     public String toString() {
@@ -109,6 +124,9 @@ public class Member {
                 ", memberIsForeigner=" + memberIsForeigner +
                 ", memberExp=" + memberExp +
                 ", memberImgAddress='" + memberImgAddress + '\'' +
+                ", memberLevel=" + memberLevel +
+                ", createdAt=" + createdAt +
+                ", modifiedAt=" + modifiedAt +
                 '}';
     }
 }

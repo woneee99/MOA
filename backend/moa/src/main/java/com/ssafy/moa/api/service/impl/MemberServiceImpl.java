@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,6 +46,7 @@ public class MemberServiceImpl implements MemberService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final NationRepository nationRepository;
     private final ForeignerRepository foreignerRepository;
+    private final KoreanRepository koreanRepository;
     private final LevelRepository levelRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -78,6 +81,7 @@ public class MemberServiceImpl implements MemberService {
                 .memberExp(0)
                 .memberLevel(defaultLevel)
                 .memberImgAddress("https://storage.googleapis.com/diary_storage/member/default.jpg")
+                .createdAt(LocalDateTime.now())
                 .build();
 
         memberRepository.save(member);
@@ -91,11 +95,45 @@ public class MemberServiceImpl implements MemberService {
             Foreigner newForeigner = new Foreigner(member, nationCode);
             foreignerRepository.save(newForeigner);
         }
+        else { // 한국일 경우 한국 테이블에도 정보 추가해주기
+            NationCode nationCode = nationRepository.findByNationName("대한민국")
+                    .orElseThrow(() -> new NotFoundException("Not Found Nation Name : " + "대한민국"));
+            Korean newKorean = Korean.builder()
+                    .member(member)
+                    .nationCode(nationCode)
+                    .build();
+            koreanRepository.save(newKorean);
+        }
 
 
         return new MemberSignUpDto(member);
     }
 
+    // 이메일 중복 확인
+    @Override
+    public EmailDuplicateCheckDto checkEmailDuplicate(EmailCheckDto emailCheckDto) {
+        String memberEmail = emailCheckDto.getEmail();
+        Optional<Member> member = memberRepository.findByMemberEmail(memberEmail);
+
+        String emailMessage;
+        Boolean isEmailDuplicate;
+
+        if(member.isPresent()) {
+            emailMessage = "중복된 이메일입니다.";
+            isEmailDuplicate = true;
+        }
+        else {
+            emailMessage = "가입 가능한 이메일입니다.";
+            isEmailDuplicate = false;
+        }
+
+        return EmailDuplicateCheckDto.builder()
+                .emailMessage(emailMessage)
+                .isEmailDuplicate(isEmailDuplicate)
+                .build();
+    }
+
+    // 로그인
     @Override
     @Transactional
     public TokenRespDto login(LoginReqDto loginReqDto, HttpServletResponse response) {
@@ -120,7 +158,7 @@ public class MemberServiceImpl implements MemberService {
         String cookieValue = refreshToken;
 
         Cookie cookie = new Cookie(cookieName, cookieValue);
-        cookie.setMaxAge(60 * 60 * 24 * 14);
+        cookie.setMaxAge(60 * 60 * 24 * 7);
         cookie.setPath("/");
 
         response.addCookie(cookie);
@@ -185,8 +223,23 @@ public class MemberServiceImpl implements MemberService {
     // 회원 정보 조회
     @Override
     public MemberInfoDto getMemberInfo(Long memberId) {
-        return memberRepository.getMemberInfoWithLevel(memberId);
+        // member가 유학생인지 한국인인지 확인하기
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException(memberId + "에 해당하는 member를 찾지 못헀습니다."));
+
+        // 유학생이라면
+        if(member.getMemberIsForeigner()) {
+            return memberRepository.getForeignerMemberInfoWithLevel(memberId);
+        }
+        // 한국인이라면
+        else {
+            return memberRepository.getKoreanMemberInfoWithLevel(memberId);
+        }
+
+
     }
+
+
 
 
 }

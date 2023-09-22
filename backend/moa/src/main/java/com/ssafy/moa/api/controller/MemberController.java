@@ -41,6 +41,13 @@ public class MemberController {
         return success(memberSignUpRespDto);
     }
 
+    // 이메일 중복 체크
+    @PostMapping("/signup/email-check")
+    @Operation(summary = "회원 가입시 이메일 중복 체크")
+    public ApiResult<EmailDuplicateCheckDto> checkEmailDuplicate(@RequestBody EmailCheckDto emailCheckDto) {
+        return success(memberService.checkEmailDuplicate(emailCheckDto));
+    }
+
     @PostMapping("/signup/email")
     @Operation(summary = "이메일 인증번호 전송")
     public ApiResult<String> sendEmailCode(@RequestBody EmailCheckDto emailCheckDto) throws Exception {
@@ -80,9 +87,7 @@ public class MemberController {
     public ApiResult<MemberPhotoDto> updateMemberPhoto(@RequestHeader("Authorization") String header, @RequestParam MultipartFile multipartFile) throws IOException {
         String token = header.substring(7);
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        log.info("그렇다면" + authentication.getName());
         Long memberId = jwtTokenProvider.extractMemberId(token);
-        log.info("토큰 확인해보시당" + memberId);
         return success(memberService.updateMemberPhoto(memberId, multipartFile));
     }
 

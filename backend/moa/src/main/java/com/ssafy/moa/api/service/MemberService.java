@@ -17,5 +17,5 @@ public interface MemberService {
     Member findMember(Long memberId);
     MemberPhotoDto updateMemberPhoto(Long memberId, MultipartFile multipartFile) throws IOException;
     MemberInfoDto getMemberInfo(Long memberId);
-
+    EmailDuplicateCheckDto checkEmailDuplicate(EmailCheckDto emailCheckDto);
 }
