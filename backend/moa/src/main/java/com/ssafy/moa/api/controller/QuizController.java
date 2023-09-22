@@ -6,12 +6,14 @@ import com.ssafy.moa.api.service.QuizService;
 import com.ssafy.moa.common.utils.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import com.ssafy.moa.common.utils.ApiUtils.ApiResult;
 import static com.ssafy.moa.common.utils.ApiUtils.success;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/quiz")
@@ -38,7 +40,7 @@ public class QuizController {
     }
 
     // 퀴즈 완료 API
-    @PutMapping("/finsih")
+    @PutMapping("/finish")
     @Operation(summary = "퀴즈를 완료하면 보내는 API")
     public ApiResult<QuizFinishRespDto> finishQuiz(@RequestHeader("Authorization") String header, @RequestBody QuizFinishReqDto quizFinishReqDto) {
         Long memberId = jwtTokenProvider.extractMemberId(header.substring(7));

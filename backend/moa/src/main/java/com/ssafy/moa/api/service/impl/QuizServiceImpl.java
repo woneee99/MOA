@@ -98,6 +98,10 @@ public class QuizServiceImpl implements QuizService {
 
         // 경험치 획득 시키기
         Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException(memberId + "에 해당하는 member를 찾을 수 없습니다."));
+
+        member.updateMemberExp(member.getMemberExp() + memberGetExp);
+        memberRepository.save(member);
 
 
         return QuizFinishRespDto.builder()

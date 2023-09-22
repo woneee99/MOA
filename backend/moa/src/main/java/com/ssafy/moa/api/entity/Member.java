@@ -94,6 +94,8 @@ public class Member {
         this.memberImgAddress = memberImgAddress;
     }
 
+    public void updateMemberExp(Integer memberExp) {this.memberExp = memberExp;}
+
 
     @Override
     public String toString() {
