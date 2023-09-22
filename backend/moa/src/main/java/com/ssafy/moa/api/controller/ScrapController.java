@@ -77,5 +77,11 @@ public class ScrapController {
         Long memberId = 5L;
         return success(wordService.getAllWordScrap(memberId));
     }
-    
+
+    @Operation(summary = "스크랩북 단어 상세 조회", description = "내가 선택한 스크랩 단어의 상세정보를 조회할 수 있습니다.", tags = { "Scrap Controller" })
+    @GetMapping("/words/{wordId}")
+    public ApiResult<WordDto> getWord(@PathVariable("wordId") Long wordId){
+        return success(wordService.getWord(wordId));
+    }
+
 }

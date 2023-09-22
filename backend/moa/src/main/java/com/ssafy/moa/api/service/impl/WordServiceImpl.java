@@ -46,4 +46,10 @@ public class WordServiceImpl implements WordService {
         });
         return result;
     }
+
+    @Override
+    public WordDto getWord(Long wordId) {
+        Word word = wordRepository.findById(wordId).orElseThrow(() -> new NotFoundException("Not Found Word Detail"));
+        return WordDto.from(word);
+    }
 }

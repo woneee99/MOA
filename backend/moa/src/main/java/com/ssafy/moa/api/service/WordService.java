@@ -9,4 +9,6 @@ public interface WordService {
     Long createWordScrap(Long memberId, WordReqDto wordReqDto);
 
     List<WordDto> getAllWordScrap(Long memberId);
+
+    WordDto getWord(Long wordId);
 }
