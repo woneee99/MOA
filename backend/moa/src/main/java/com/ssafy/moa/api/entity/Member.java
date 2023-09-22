@@ -96,6 +96,7 @@ public class Member {
 
     public void updateMemberExp(Integer memberExp) {this.memberExp = memberExp;}
 
+    public void updateMemberLevel(Level memberLevel) {this.memberLevel = memberLevel;}
 
     @Override
     public String toString() {
