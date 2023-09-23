@@ -56,4 +56,12 @@ public class QuizController {
         Long memberId = jwtTokenProvider.extractMemberId(header.substring(7));
         return success(quizService.finishQuiz(memberId, quizFinishReqDto));
     }
+
+    // 틀린 문제 개수 반환
+    @GetMapping("/incorrect")
+    @Operation(summary = "틀린 문제의 개수를 반환")
+    public ApiResult<QuizWrongCountDto> getWrongQuizCount(@RequestHeader("Authorization") String header) {
+        Long memberId = jwtTokenProvider.extractMemberId(header.substring(7));
+        return success(quizService.getWrongQuizCount(memberId));
+    }
 }

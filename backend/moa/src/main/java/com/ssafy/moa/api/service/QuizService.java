@@ -12,4 +12,6 @@ public interface QuizService {
 
     QuizFinishRespDto finishQuiz(Long memberId, QuizFinishReqDto quizFinishReqDto);
     List<QuizQuestionDto> questionSentenceQuiz();
+
+    QuizWrongCountDto getWrongQuizCount(Long memberId);
 }

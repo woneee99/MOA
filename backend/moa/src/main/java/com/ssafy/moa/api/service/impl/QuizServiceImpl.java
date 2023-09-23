@@ -165,6 +165,13 @@ public class QuizServiceImpl implements QuizService {
         return quizQuestionDtoList;
     }
 
+    @Override
+    public QuizWrongCountDto getWrongQuizCount(Long memberId) {
+        return QuizWrongCountDto.builder()
+                .quizWrongCount(quizWrongAnswerRepository.getWrongQuizCount(memberId).intValue())
+                .build();
+    }
+
     public void updateMemberLevel(Member member) {
         // member level up 조건인지 확인하기
         // 1. member의 현재 경험치와 레벨업 조건을 확인한다.
