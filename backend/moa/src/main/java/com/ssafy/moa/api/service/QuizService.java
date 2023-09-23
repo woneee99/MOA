@@ -14,4 +14,6 @@ public interface QuizService {
     List<QuizQuestionDto> questionSentenceQuiz();
 
     QuizWrongCountDto getWrongQuizCount(Long memberId);
+
+    List<QuizQuestionDto> submitWrongQuiz(Long memberId, QuizWrongCountDto quizWrongCountDto);
 }

@@ -58,10 +58,20 @@ public class QuizController {
     }
 
     // 틀린 문제 개수 반환
-    @GetMapping("/incorrect")
+    @GetMapping("/wrong-answer")
     @Operation(summary = "틀린 문제의 개수를 반환")
     public ApiResult<QuizWrongCountDto> getWrongQuizCount(@RequestHeader("Authorization") String header) {
         Long memberId = jwtTokenProvider.extractMemberId(header.substring(7));
         return success(quizService.getWrongQuizCount(memberId));
     }
+
+    // 틀린 문제에서 랜덤 출제
+    @PostMapping("/wrong-answer")
+    @Operation(summary = "틀린 문제에서 랜덤으로 문제 출제")
+    public ApiResult<List<QuizQuestionDto>> submitWrongQuiz(@RequestHeader("Authorization") String header, @RequestBody QuizWrongCountDto quizWrongCountDto) {
+        Long memberId = jwtTokenProvider.extractMemberId(header.substring(7));
+        return success(quizService.submitWrongQuiz(memberId, quizWrongCountDto));
+    }
+
+
 }

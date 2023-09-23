@@ -172,6 +172,16 @@ public class QuizServiceImpl implements QuizService {
                 .build();
     }
 
+    @Override
+    public List<QuizQuestionDto> submitWrongQuiz(Long memberId, QuizWrongCountDto quizWrongCountDto) {
+        Integer quizWrongCount = quizWrongCountDto.getQuizWrongCount();
+
+        // 퀴즈를 랜덤으로 가져온다.
+        List<QuizQuestionDto> quizQuestionDtoList = quizWrongAnswerRepository.getRandomWrongQuizzes(memberId, quizWrongCount);
+
+        return quizQuestionDtoList;
+    }
+
     public void updateMemberLevel(Member member) {
         // member level up 조건인지 확인하기
         // 1. member의 현재 경험치와 레벨업 조건을 확인한다.
