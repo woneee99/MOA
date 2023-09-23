@@ -6,6 +6,7 @@ import com.ssafy.moa.api.repository.ChatRoomRepository;
 import com.ssafy.moa.api.service.ChatGptService;
 import com.ssafy.moa.common.handler.RedisPublisher;
 import com.ssafy.moa.common.utils.ApiUtils;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -25,21 +26,26 @@ public class ChatController {
 
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {
-        if (ChatMessage.MessageType.ENTER.equals(message.getMessageType())) {
-            if(message.getRoomType() == 1) {
-                chatRoomRepository.enterOpenChatRoom(message.getRoomId());
-                message.setMessage(message.getSender() + "이 들어왔습니다.");
-                redisPublisher.publish(chatRoomRepository.getOpenChatTopic(message.getRoomId()), message);
-            }
-            else {
-                chatRoomRepository.enterBuddyChatRoom(message.getRoomId());
-                message.setMessage(message.getSender() + "이 들어왔습니다.");
-                redisPublisher.publish(chatRoomRepository.getBuddyChatTopic(message.getRoomId()), message);
-            }
+        if (ChatMessage.MessageType.OPEN_ENTER.equals(message.getMessageType())) {
+            chatRoomRepository.enterOpenChatRoom(message.getRoomId());
+            message.setMessage(message.getSender() + "이 들어왔습니다.");
+            redisPublisher.publish(chatRoomRepository.getOpenChatTopic(message.getRoomId()), message);
+        }
+        else if(ChatMessage.MessageType.BUDDY_ENTER.equals(message.getMessageType())){
+            chatRoomRepository.enterBuddyChatRoom(message.getRoomId());
+            message.setMessage(message.getSender() + "이 들어왔습니다.");
+            redisPublisher.publish(chatRoomRepository.getBuddyChatTopic(message.getRoomId()), message);
+        }
+        else if(ChatMessage.MessageType.OPEN_TALK.equals(message.getMessageType())){
+            redisPublisher.publish(chatRoomRepository.getOpenChatTopic(message.getRoomId()), message);
+        }
+        else if(ChatMessage.MessageType.BUDDY_TALK.equals(message.getMessageType())) {
+            redisPublisher.publish(chatRoomRepository.getBuddyChatTopic(message.getRoomId()), message);
         }
     }
 
     @PostMapping("/chat-gpt")
+    @Operation(summary = "chatgpt question & answer")
     public ApiUtils.ApiResult<String> questionChatGpt(@RequestBody @Valid ChatGptDto chatGptDto) {
         return success(chatGptService.chatGptAnswer(chatGptDto));
     }
