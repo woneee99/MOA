@@ -4,9 +4,11 @@ import com.ssafy.moa.api.dto.quiz.*;
 import com.ssafy.moa.api.entity.DailyKoreanQuiz;
 import com.ssafy.moa.api.entity.Level;
 import com.ssafy.moa.api.entity.Member;
+import com.ssafy.moa.api.entity.QuizWrongAnswer;
 import com.ssafy.moa.api.repository.DailyKoreanQuizRepository;
 import com.ssafy.moa.api.repository.LevelRepository;
 import com.ssafy.moa.api.repository.MemberRepository;
+import com.ssafy.moa.api.repository.QuizWrongAnswerRepository;
 import com.ssafy.moa.api.repository.querydsl.QuizQueryRepository;
 import com.ssafy.moa.api.service.QuizService;
 import com.ssafy.moa.common.exception.NotFoundException;
@@ -23,6 +25,7 @@ public class QuizServiceImpl implements QuizService {
 
     private final DailyKoreanQuizRepository dailyKoreanQuizRepository;
     private final QuizQueryRepository quizQueryRepository;
+    private final QuizWrongAnswerRepository quizWrongAnswerRepository;
     private final MemberRepository memberRepository;
     private final LevelRepository levelRepository;
 
@@ -57,7 +60,7 @@ public class QuizServiceImpl implements QuizService {
 
     // 단어 퀴즈 한 개씩 제출 API
     @Override
-    public QuizSubmitRespDto submitWordQuiz(QuizSubmitReqDto quizSubmitReqDto) {
+    public QuizSubmitRespDto submitWordQuiz(Long memberId, QuizSubmitReqDto quizSubmitReqDto) {
         // quiz
         Long quizId = quizSubmitReqDto.getQuizId();
         DailyKoreanQuiz dailyKoreanQuiz = dailyKoreanQuizRepository.findByQuizId(quizId)
@@ -65,6 +68,19 @@ public class QuizServiceImpl implements QuizService {
 
         String quizAnswer = dailyKoreanQuiz.getQuizAnswer();
         Boolean isQuizCorrect = quizAnswer.equals(quizSubmitReqDto.getQuizSubmitAnswer());
+
+        // quiz가 틀렸을 경우 오답노트에 추가해야한다.
+        if(!isQuizCorrect) {
+            Member member = memberRepository.findByMemberId(memberId)
+                    .orElseThrow(() -> new NotFoundException(memberId + "에 해당하는 member가 없습니다."));
+
+            QuizWrongAnswer quizWrongAnswer = QuizWrongAnswer.builder()
+                    .member(member)
+                    .quiz(dailyKoreanQuiz)
+                    .build();
+
+            quizWrongAnswerRepository.save(quizWrongAnswer);
+        }
 
         return QuizSubmitRespDto.builder()
                 .quizId(quizId)

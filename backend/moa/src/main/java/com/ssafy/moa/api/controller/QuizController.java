@@ -43,8 +43,9 @@ public class QuizController {
     // 퀴즈 제출 API
     @PostMapping
     @Operation(summary = "퀴즈 제출", description = "퀴즈를 풀고 한 문제씩 답을 확인하는 API입니다.")
-    public ApiResult<QuizSubmitRespDto> submitWordQuiz(@RequestBody QuizSubmitReqDto quizSubmitReqDto) {
-        QuizSubmitRespDto quizSubmitRespDto = quizService.submitWordQuiz(quizSubmitReqDto);
+    public ApiResult<QuizSubmitRespDto> submitWordQuiz(@RequestHeader("Authorization") String header, @RequestBody QuizSubmitReqDto quizSubmitReqDto) {
+        Long memberId = jwtTokenProvider.extractMemberId(header.substring(7));
+        QuizSubmitRespDto quizSubmitRespDto = quizService.submitWordQuiz(memberId, quizSubmitReqDto);
         return success(quizSubmitRespDto);
     }
 
