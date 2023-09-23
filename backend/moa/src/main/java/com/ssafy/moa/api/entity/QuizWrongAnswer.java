@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class WrongQuizAnswer {
+public class QuizWrongAnswer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +21,13 @@ public class WrongQuizAnswer {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "quiz_id")
     private DailyKoreanQuiz quiz;
 
     @Builder
-    public WrongQuizAnswer(Member member, DailyKoreanQuiz quiz) {
+    public QuizWrongAnswer(Member member, DailyKoreanQuiz quiz) {
         this.member = member;
         this.quiz = quiz;
     }
