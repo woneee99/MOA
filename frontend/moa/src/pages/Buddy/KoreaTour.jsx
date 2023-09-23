@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import BackButton from '../../components/BackButton';
-import KoreaTourSearch from '../../components/KoreaTourSearch';
-import KoreaTourMap from '../../components/KoreaTourMap';
-import KoreaTourSearchResult from '../../components/KoreaTourSearchResult';
-import { koreaTourApi } from '../../api/KoreaTourApi';
+import BackButton from "../../components/BackButton";
+import KoreaTourSearch from "../../components/KoreaTourSearch";
+import KoreaTourMap from "../../components/KoreaTourMap";
+import KoreaTourSearchResult from "../../components/KoreaTourSearchResult";
+import { koreaTourApi } from "../../api/KoreaTourApi";
 
 function KoreaTour(props) {
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const [mediaPlaceList, setmediaPlaceList] = useState([]);
 
   const handleSearchClick = () => {
     const type = "all";
     const mediaName = "nct";
-    koreaTourApi.getMediaList(type, mediaName)
-      .then((response) => {
-        console.log(response.data.response);
-    })
+    koreaTourApi.getMediaList(type, mediaName).then((response) => {
+      setmediaPlaceList(response.data.response);
+      console.log(response.data.response);
+    });
     setShowSearchResults(true);
   };
 
@@ -36,7 +37,7 @@ function KoreaTour(props) {
       <hr />
       {showSearchResults && (
         <div className="search-results-popup">
-          <KoreaTourMap />
+          <KoreaTourMap mediaPlaceList={mediaPlaceList} />
           <KoreaTourSearchResult />
           <button onClick={closeSearchResults}>닫기</button>
         </div>
