@@ -12,6 +12,7 @@ import com.ssafy.moa.api.repository.QuizWrongAnswerRepository;
 import com.ssafy.moa.api.repository.querydsl.QuizQueryRepository;
 import com.ssafy.moa.api.service.QuizService;
 import com.ssafy.moa.common.exception.NotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -147,6 +148,13 @@ public class QuizServiceImpl implements QuizService {
         }
 
         return quizQuestionDtoList;
+    }
+
+    // 틀린 문제에서 문제 삭제
+    @Transactional
+    @Override
+    public Long deleteWrongQuiz(Long memberId, Long quizId) {
+        return quizWrongAnswerRepository.deleteWrongQuiz(memberId, quizId);
     }
 
     // 단어 퀴즈 보기 생성

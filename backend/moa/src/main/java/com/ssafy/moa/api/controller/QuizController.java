@@ -73,5 +73,13 @@ public class QuizController {
         return success(quizService.submitWrongQuiz(memberId, quizWrongCountDto));
     }
 
+    // 틀린 문제 삭제
+    @DeleteMapping("/wrong-answer/{quizId}")
+    @Operation(summary = "틀린 문제 풀기에서 맞춘 후 문제 삭제")
+    public ApiResult<Long> deleteWrongQuiz(@RequestHeader("Authorization") String header, @PathVariable("quizId") Long quizId) {
+        Long memberId = jwtTokenProvider.extractMemberId(header.substring(7));
+        return success(quizService.deleteWrongQuiz(memberId, quizId));
+    }
+
 
 }

@@ -16,4 +16,6 @@ public interface QuizService {
     QuizWrongCountDto getWrongQuizCount(Long memberId);
 
     List<QuizQuestionDto> submitWrongQuiz(Long memberId, QuizWrongCountDto quizWrongCountDto);
+
+    Long deleteWrongQuiz(Long memberId, Long quizId);
 }

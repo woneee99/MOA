@@ -57,4 +57,12 @@ public class QuizWrongAnswerQueryRepositoryImpl implements QuizWrongAnswerQueryR
 
         return quizQuestionDtoList;
     }
+
+    @Override
+    public Long deleteWrongQuiz(Long memberId, Long quizId) {
+        return jpaQueryFactory.delete(quizWrongAnswer)
+                .where(quizWrongAnswer.member.memberId.eq(memberId)
+                        .and(quizWrongAnswer.quiz.quizId.eq(quizId)))
+                .execute();
+    }
 }

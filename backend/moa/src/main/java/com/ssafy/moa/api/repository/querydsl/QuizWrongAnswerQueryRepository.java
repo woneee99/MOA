@@ -10,4 +10,5 @@ public interface QuizWrongAnswerQueryRepository {
 
     List<QuizQuestionDto> getRandomWrongQuizzes(Long memberId, Integer wrongQuizCount);
 
+    Long deleteWrongQuiz(Long memberId, Long quizId);
 }
