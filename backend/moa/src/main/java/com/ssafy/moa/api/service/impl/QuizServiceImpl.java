@@ -35,25 +35,10 @@ public class QuizServiceImpl implements QuizService {
     public List<QuizQuestionDto> questionWordQuiz() {
         // QuizRepository에서 랜덤으로 15개의 Quiz를 가져온다.
         List<QuizQuestionDto> quizQuestionDtoList = quizQueryRepository.getRandomQuizzes();
+
         // 퀴즈에 따라 보기를 생성한다.
         // 퀴즈 유형 1,2는 답을 포함한 보기가 4개
-
-        // 단어 보기 생성
-        for (int i = 0; i < quizQuestionDtoList.size(); i++) {
-            QuizQuestionDto quizQuestionDto = quizQuestionDtoList.get(i);
-            if (quizQuestionDto.getQuizCategoryId() == 1 || quizQuestionDto.getQuizCategoryId() == 2) {
-                log.info(quizQuestionDto.toString());
-
-                // 퀴즈 보기 가져오기
-                String quizAnswer = quizQuestionDto.getQuizAnswer();
-                List<String> quizAnswerList = quizQueryRepository.getWordQuizAnswerList(quizAnswer);
-                quizAnswerList.add(quizAnswer);
-                Collections.shuffle(quizAnswerList);
-                quizQuestionDto.setQuizAnswerList(quizAnswerList);
-
-                quizQuestionDtoList.set(i, quizQuestionDto);
-            }
-        }
+        createWordOptions(quizQuestionDtoList);
 
         return quizQuestionDtoList;
     }
@@ -172,6 +157,7 @@ public class QuizServiceImpl implements QuizService {
                 .build();
     }
 
+    // 틀린 문제에서 퀴즈 랜덤 출제
     @Override
     public List<QuizQuestionDto> submitWrongQuiz(Long memberId, QuizWrongCountDto quizWrongCountDto) {
         Integer quizWrongCount = quizWrongCountDto.getQuizWrongCount();
@@ -179,7 +165,31 @@ public class QuizServiceImpl implements QuizService {
         // 퀴즈를 랜덤으로 가져온다.
         List<QuizQuestionDto> quizQuestionDtoList = quizWrongAnswerRepository.getRandomWrongQuizzes(memberId, quizWrongCount);
 
+        for(QuizQuestionDto quizQuestionDto : quizQuestionDtoList) {
+            Long quizCategoryId = quizQuestionDto.getQuizCategoryId();
+            if(quizCategoryId == 1 || quizCategoryId == 2) createWordOptions(quizQuestionDtoList);
+        }
+
         return quizQuestionDtoList;
+    }
+
+    // 단어 퀴즈 보기 생성
+    private void createWordOptions(List<QuizQuestionDto> quizQuestionDtoList) {
+        // 단어 보기 생성
+        for (int i = 0; i < quizQuestionDtoList.size(); i++) {
+            QuizQuestionDto quizQuestionDto = quizQuestionDtoList.get(i);
+
+            if(quizQuestionDto.getQuizCategoryId() == 1 || quizQuestionDto.getQuizCategoryId() == 2) {
+                // 퀴즈 보기 가져오기
+                String quizAnswer = quizQuestionDto.getQuizAnswer();
+                List<String> quizAnswerList = quizQueryRepository.getWordQuizAnswerList(quizAnswer);
+                quizAnswerList.add(quizAnswer);
+                Collections.shuffle(quizAnswerList);
+                quizQuestionDto.setQuizAnswerList(quizAnswerList);
+
+                quizQuestionDtoList.set(i, quizQuestionDto);
+            }
+        }
     }
 
     public void updateMemberLevel(Member member) {
