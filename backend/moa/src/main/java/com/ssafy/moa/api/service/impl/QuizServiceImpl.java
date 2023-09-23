@@ -119,36 +119,11 @@ public class QuizServiceImpl implements QuizService {
         // 퀴즈 보기 생성
         // 1. StringTokenizer를 사용하여 문제 답을 토큰화 시켜 나누자.
         // 2. 보기는 총 9개가 있어야한다.
-
-        for(int i = 0; i<quizQuestionDtoList.size(); i++) {
-            QuizQuestionDto quizQuestionDto = quizQuestionDtoList.get(i);
-            String quizAnswer = quizQuestionDto.getQuizAnswer();
-
-            StringTokenizer stringTokenizer = new StringTokenizer(quizAnswer);
-
-            List<String> quizAnswerList = new ArrayList<>();
-            int cnt = 0;
-            while(stringTokenizer.hasMoreTokens()) {
-                String token = stringTokenizer.nextToken();
-                quizAnswerList.add(token);
-                cnt++;
-            }
-
-            // 3. 단어 퀴즈 answer 값 랜덤으로 9개 가져와서 남은 개수만큼 넣어주기
-            List<String> quizAnswerCandidateList = quizQueryRepository.getQuizAnswerCandidates();
-
-            int remainWordCnt = 9 - cnt;
-            for(int r = 0; r < remainWordCnt; r++) {
-                quizAnswerList.add(quizAnswerCandidateList.get(r));
-            }
-
-            Collections.shuffle(quizAnswerList);
-            quizQuestionDto.setQuizAnswerList(quizAnswerList);
-            quizQuestionDtoList.set(i, quizQuestionDto);
-        }
+        createSentenceOptions(quizQuestionDtoList);
 
         return quizQuestionDtoList;
     }
+
 
     @Override
     public QuizWrongCountDto getWrongQuizCount(Long memberId) {
@@ -168,6 +143,7 @@ public class QuizServiceImpl implements QuizService {
         for(QuizQuestionDto quizQuestionDto : quizQuestionDtoList) {
             Long quizCategoryId = quizQuestionDto.getQuizCategoryId();
             if(quizCategoryId == 1 || quizCategoryId == 2) createWordOptions(quizQuestionDtoList);
+            else if(quizCategoryId == 3 || quizCategoryId == 4) createSentenceOptions(quizQuestionDtoList);
         }
 
         return quizQuestionDtoList;
@@ -190,6 +166,39 @@ public class QuizServiceImpl implements QuizService {
                 quizQuestionDtoList.set(i, quizQuestionDto);
             }
         }
+    }
+
+    // 문장 퀴즈 보기 생성
+    private void createSentenceOptions(List<QuizQuestionDto> quizQuestionDtoList) {
+        for(int i = 0; i<quizQuestionDtoList.size(); i++) {
+            QuizQuestionDto quizQuestionDto = quizQuestionDtoList.get(i);
+            if(quizQuestionDto.getQuizCategoryId() == 3 || quizQuestionDto.getQuizCategoryId() == 4) {
+                String quizAnswer = quizQuestionDto.getQuizAnswer();
+
+                StringTokenizer stringTokenizer = new StringTokenizer(quizAnswer);
+
+                List<String> quizAnswerList = new ArrayList<>();
+                int cnt = 0;
+                while(stringTokenizer.hasMoreTokens()) {
+                    String token = stringTokenizer.nextToken();
+                    quizAnswerList.add(token);
+                    cnt++;
+                }
+
+                // 3. 단어 퀴즈 answer 값 랜덤으로 9개 가져와서 남은 개수만큼 넣어주기
+                List<String> quizAnswerCandidateList = quizQueryRepository.getQuizAnswerCandidates();
+
+                int remainWordCnt = 9 - cnt;
+                for(int r = 0; r < remainWordCnt; r++) {
+                    quizAnswerList.add(quizAnswerCandidateList.get(r));
+                }
+
+                Collections.shuffle(quizAnswerList);
+                quizQuestionDto.setQuizAnswerList(quizAnswerList);
+                quizQuestionDtoList.set(i, quizQuestionDto);
+            }
+        }
+
     }
 
     public void updateMemberLevel(Member member) {
