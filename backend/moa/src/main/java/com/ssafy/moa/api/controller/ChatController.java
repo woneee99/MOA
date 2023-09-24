@@ -1,20 +1,24 @@
 package com.ssafy.moa.api.controller;
 
+import com.ssafy.moa.api.dto.ChatDto;
 import com.ssafy.moa.api.dto.ChatGptDto;
 import com.ssafy.moa.api.dto.ChatMessage;
 import com.ssafy.moa.api.repository.ChatRoomRepository;
 import com.ssafy.moa.api.service.ChatGptService;
+import com.ssafy.moa.api.service.ChatService;
 import com.ssafy.moa.common.handler.RedisPublisher;
 import com.ssafy.moa.common.utils.ApiUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.ssafy.moa.common.utils.ApiUtils.success;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ChatController {
@@ -22,6 +26,7 @@ public class ChatController {
     private final RedisPublisher redisPublisher;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatGptService chatGptService;
+    private final ChatService chatService;
 
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {
@@ -41,6 +46,18 @@ public class ChatController {
         else if(ChatMessage.MessageType.BUDDY_TALK.equals(message.getMessageType())) {
             redisPublisher.publish(chatRoomRepository.getBuddyChatTopic(message.getRoomId()), message);
         }
+        chatService.chatSave(message);
+    }
+
+    @GetMapping("/chat/buddy/{roomId}")
+    public ApiUtils.ApiResult<List<ChatDto.ChatMessageResponse>> getBuddyMessage(@PathVariable Long roomId) {
+        log.info(String.valueOf(roomId));
+        return success(chatService.getChatMessage(roomId, 2));
+    }
+
+    @GetMapping("/chat/open-chat/{roomId}")
+    public ApiUtils.ApiResult<List<ChatDto.ChatMessageResponse>> getOpenChatMessage(@PathVariable Long roomId) {
+        return success(chatService.getChatMessage(roomId, 1));
     }
 
     @PostMapping("/chat-gpt")
