@@ -41,6 +41,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/open-chat/**").permitAll()
                                 .requestMatchers("/chat-gpt/**").permitAll()
                                 .requestMatchers("/scrap/**").permitAll()
+                                .requestMatchers("/chat/**").permitAll()
                                 .requestMatchers("/quiz/**").permitAll()
                                 .requestMatchers("/chat/**").permitAll()
                                 .requestMatchers("/ws-stomp/**").permitAll()
