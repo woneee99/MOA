@@ -8,16 +8,18 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Matching from './pages/Matching';
 import ChattingHome from './pages/Chatting/ChattingHome';
+import BuddyChattingModal from './pages/Chatting/BuddyChattingModal';
+import OpenChattingModal from './pages/Chatting/OpenChattingModal';
 import OpenChattingDetail from './pages/Chatting/OpenChattingDetail';
 import KoreanLearning from './pages/Learning/KoreanLearning';
 import QnABoard from './pages/QnA/QnABoard';
 import Quiz from './pages/Quiz/Quiz';
 import IncorrectNote from './pages/Quiz/IncorrectNote';
 import BuddyHome from './pages/Buddy/BuddyHome';
-import ExchangeDiary from './pages/Buddy/ExchangeDiary';
-import ExchangeDiaryDetail from './pages/Buddy/ExchangeDiaryDetail';
-import CreateExchangeDiary from './pages/Buddy/CreateExchangeDiary';
-import UpdateExchangeDiary from './pages/Buddy/UpdateExchangeDiary';
+import ExchangeDiary from './pages/Buddy/Diary/ExchangeDiary';
+import ExchangeDiaryDetail from './pages/Buddy/Diary/ExchangeDiaryDetail';
+import CreateExchangeDiary from './pages/Buddy/Diary/CreateExchangeDiary';
+import UpdateExchangeDiary from './pages/Buddy/Diary/UpdateExchangeDiary';
 import BalanceGame from './pages/Buddy/BalanceGame/BalanceGame';
 import BalanceGameDetail from './pages/Buddy/BalanceGame/BalanceGameDetail';
 import CreateBalanceGame from './pages/Buddy/BalanceGame/CreateBalanceGame';
@@ -48,6 +50,8 @@ function App() {
           <Route path="/matching" element={<Matching />}/>
 
           <Route path="/chatting" element={<ChattingHome />}/>
+          <Route path="/chatting/buddy" element={<BuddyChattingModal />}/>
+          <Route path="/chatting/openchat" element={<OpenChattingModal />}/>
           <Route path="/chatting/openchat/:id" element={<OpenChattingDetail />}/>
 
           <Route path="/koreanlearning" element={<KoreanLearning />} />

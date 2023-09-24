@@ -8,6 +8,7 @@ import com.ssafy.moa.api.service.ChatGptService;
 import com.ssafy.moa.api.service.ChatService;
 import com.ssafy.moa.common.handler.RedisPublisher;
 import com.ssafy.moa.common.utils.ApiUtils;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +62,7 @@ public class ChatController {
     }
 
     @PostMapping("/chat-gpt")
+    @Operation(summary = "chatgpt question & answer")
     public ApiUtils.ApiResult<String> questionChatGpt(@RequestBody @Valid ChatGptDto chatGptDto) {
         return success(chatGptService.chatGptAnswer(chatGptDto));
     }

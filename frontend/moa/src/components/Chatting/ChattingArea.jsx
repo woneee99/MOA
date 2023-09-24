@@ -12,22 +12,39 @@ const chatContainerStyle = {
 };
 
 function ChattingArea(props) {
+  // 대화 메세지 저장용 리스트를 만들어서 이전 대화내역이 출력되는 등의 조치가 필요할 듯
+  // { type, sender, message } 형태로 저장해야할 듯?
   const [inputMyText, setInputMyText] = useState(''); // 나의 텍스트 입력 상태
   const [messages, setMessages] = useState([]); // 대화 메세지 저장용
   const [stompClient, setStompClient] = useState(null); // Stomp 클라이언트 상태
 
+  const [roomId, setRoomId] = useState('1');
+  const [name, setName] = useState('한국인');
+
   useEffect(() => {
     // WebSocket 연결 설정
-    const socket = new SockJS('http://moamore.site:8589/ws-stomp'); // WebSocket 서버 주소
+    const socket = new SockJS('https://moamore.site:8589/ws-stomp'); // WebSocket 서버 주소
     const stompClient = Stomp.over(socket);
+
 
     stompClient.connect({}, () => {
       setStompClient(stompClient);
+      console.log(stompClient.connected);
       // 연결 성공 시 동작 설정
-      stompClient.subscribe('/sub/chat', (message) => {
+      stompClient.subscribe(`/sub/chat/buddy/${roomId}`, (message) => {
         const newMessage = JSON.parse(message.body);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
       });
+      stompClient.send(`/pub/chat/buddy/${roomId}`, {},
+        JSON.stringify({
+          messageType: 'BUDDY_ENTER',
+          roomType: 2,
+          roomId: roomId,
+          sender: name,
+          message: '님이 입장했습니다',
+        })
+      );
+
     });
 
     // 컴포넌트 언마운트 시 WebSocket 연결 해제
@@ -36,7 +53,7 @@ function ChattingArea(props) {
         stompClient.disconnect();
       }
     };
-  }, []);
+  }, [messages]);
 
   const handleMyInputKeyDown = (e) => {
     if (e.key === 'Enter' && inputMyText.trim() !== '') {
@@ -45,7 +62,13 @@ function ChattingArea(props) {
       setInputMyText('');
 
       if (stompClient && stompClient.connected) {
-        stompClient.send('/pub/chat', {}, JSON.stringify(newMessage));
+        stompClient.send(`/pub/chat/buddy/${roomId}`, {}, JSON.stringify({
+          messageType: 'BUDDY_TALK',
+          roomType: 2,
+          roomId: roomId,
+          sender: name,
+          message: newMessage,
+        }));
       }
     }
   };

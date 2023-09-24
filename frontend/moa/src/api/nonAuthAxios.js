@@ -1,5 +1,5 @@
 import baseAxios from 'axios';
 
-export const axios = baseAxios.create({
+export const nonAuthAxios = baseAxios.create({
     baseURL: "https://moamore.site:8589/",
-  });
+});

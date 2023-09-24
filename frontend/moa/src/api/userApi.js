@@ -1,8 +1,9 @@
-import { axios } from './https';
+import { nonAuthAxios } from './nonAuthAxios';
+import { authAxios } from './authAxios';
 
 export const userApi = {
   // 회원가입
-  signUp : (data) => axios.post('member/signup',data),
+  signUp : (data) => nonAuthAxios.post('member/signup',data),
 
 
   // 이메일 인증
@@ -13,7 +14,7 @@ export const userApi = {
       email: email,           // 요청 본문 데이터
     };
 
-    return axios.post(emailVerificationApiEndPoint, requestData);
+    return nonAuthAxios.post(emailVerificationApiEndPoint, requestData);
   },
 
   // 인증코드 확인 
@@ -24,7 +25,7 @@ export const userApi = {
       emailCode : emailCode,
     };
 
-    return axios.delete(verificationCodeApiEndPoint, {data:requestData});
+    return nonAuthAxios.delete(verificationCodeApiEndPoint, {data:requestData});
   },
 
 
@@ -37,10 +38,17 @@ export const userApi = {
       memberPassword: password,
     };
 
-    return axios.post(loginApiEndPoint, requestData);
+    return nonAuthAxios.post(loginApiEndPoint, requestData);
   },
+
+  // 로그아웃
+  logout: () => authAxios.delete('/member/logout'),
 
 
   // 국가 정보 조회
-  getNations: () => axios.get('/nation'),
+  getNations: () => nonAuthAxios.get('/nation'),
+
+
+  // 회원 정보 조회
+  getMemberInfo: () => authAxios.get('/member'),
 };

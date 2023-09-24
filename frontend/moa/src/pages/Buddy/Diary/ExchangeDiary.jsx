@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-import { diaryApi } from '../../api/diaryApi';
+import { useSelector } from 'react-redux';
+
+import { diaryApi } from '../../../api/diaryApi';
 
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import BackButton from '../../components/BackButton';
-import DiaryItem from '../../components/DiaryItem';
+import BackButton from '../../../components/BackButton';
+import DiaryItem from '../../../components/DiaryItem';
 
 function ExchangeDiary(props) {
   const [diaries, setDiaries] = useState([]);
@@ -17,9 +19,10 @@ function ExchangeDiary(props) {
       console.log(response.data);
       setDiaries(response.data.response);
     })
-    .catch((error) => {
+    .catch((e) => {
+      const error = e.error;
       console.log('교환일기 전체 조회 에러 발생');
-      console.log(error);
+      console.log(e);
     })
   }, []);
 
