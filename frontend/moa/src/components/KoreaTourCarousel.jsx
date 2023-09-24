@@ -3,25 +3,29 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-function KoreaTourCarousel({ mediaPlaceList, selectedPlace }) {
+function KoreaTourCarousel(props) {
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    beforeChange: (current, next) => {
+      props.changeCenterByCarousel(next);
+    },
   };
   const [slider, setSlider] = useState(null);
   //처음 화면이 랜더링 되었을때는 null 이라 캐러셀이 보이지 않음
 
-  const smIndex = mediaPlaceList.indexOf(selectedPlace);
+  const smIndex = props.mediaPlaceList.indexOf(props.selectedPlace);
 
-  const selectedPlaceList = selectedPlace ? mediaPlaceList : [];
+  const selectedPlaceList = props.selectedPlace ? props.mediaPlaceList : [];
 
   useEffect(() => {
     if (slider) {
       slider.slickGoTo(smIndex);
     }
+    console.log(smIndex);
   }, [smIndex]);
 
   return (
