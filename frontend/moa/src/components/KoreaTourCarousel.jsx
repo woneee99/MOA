@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-function KoreaTourCarousel(props) {
+function KoreaTourCarousel({ mediaPlaceList, selectedPlace, changeCenterByCarousel }) {
   const settings = {
     dots: true,
     infinite: true,
@@ -11,15 +11,15 @@ function KoreaTourCarousel(props) {
     slidesToShow: 1,
     slidesToScroll: 1,
     beforeChange: (current, next) => {
-      props.changeCenterByCarousel(next);
+      changeCenterByCarousel(next);
     },
   };
   const [slider, setSlider] = useState(null);
   //처음 화면이 랜더링 되었을때는 null 이라 캐러셀이 보이지 않음
 
-  const smIndex = props.mediaPlaceList.indexOf(props.selectedPlace);
+  const smIndex = mediaPlaceList.indexOf(selectedPlace);
 
-  const selectedPlaceList = props.selectedPlace ? props.mediaPlaceList : [];
+  const selectedPlaceList = selectedPlace ? mediaPlaceList : [];
 
   useEffect(() => {
     if (slider) {
@@ -33,8 +33,10 @@ function KoreaTourCarousel(props) {
     <Slider {...settings} ref={setSlider}>
       {selectedPlaceList &&
         selectedPlaceList.map((mart) => (
-          // <div>{mart.placeNm}</div>
-          <div>{mart.addr}</div>
+          <div>
+            <div>{mart.placeNm}</div>
+            <div>{mart.addr}</div>
+          </div>
           //   <SlideContent data={mart.id} handleRen={handleRen} />
           // <S.MartBox key={mart.id}>캐러셀 안에 content 작성</S.MartBox>
         ))}
