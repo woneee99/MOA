@@ -35,16 +35,13 @@ public class ChatController {
             chatRoomRepository.enterOpenChatRoom(message.getRoomId());
             message.setMessage(message.getSender() + "이 들어왔습니다.");
             redisPublisher.publish(chatRoomRepository.getOpenChatTopic(message.getRoomId()), message);
-        }
-        else if(ChatMessage.MessageType.BUDDY_ENTER.equals(message.getMessageType())){
+        } else if (ChatMessage.MessageType.BUDDY_ENTER.equals(message.getMessageType())) {
             chatRoomRepository.enterBuddyChatRoom(message.getRoomId());
             message.setMessage(message.getSender() + "이 들어왔습니다.");
             redisPublisher.publish(chatRoomRepository.getBuddyChatTopic(message.getRoomId()), message);
-        }
-        else if(ChatMessage.MessageType.OPEN_TALK.equals(message.getMessageType())){
+        } else if (ChatMessage.MessageType.OPEN_TALK.equals(message.getMessageType())) {
             redisPublisher.publish(chatRoomRepository.getOpenChatTopic(message.getRoomId()), message);
-        }
-        else if(ChatMessage.MessageType.BUDDY_TALK.equals(message.getMessageType())) {
+        } else if (ChatMessage.MessageType.BUDDY_TALK.equals(message.getMessageType())) {
             redisPublisher.publish(chatRoomRepository.getBuddyChatTopic(message.getRoomId()), message);
         }
         chatService.chatSave(message);
