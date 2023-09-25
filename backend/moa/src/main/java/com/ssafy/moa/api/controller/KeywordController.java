@@ -1,5 +1,6 @@
 package com.ssafy.moa.api.controller;
 
+import com.ssafy.moa.api.dto.KeywordDto;
 import com.ssafy.moa.api.dto.KeywordReqDto;
 import com.ssafy.moa.api.jwt.JwtTokenProvider;
 import com.ssafy.moa.api.service.KeywordService;
@@ -30,6 +31,15 @@ public class KeywordController {
 //        Long memberId = jwtTokenProvider.extractMemberId(token);
         Long memberId = 14L;
         return success(keywordService.createKeyword(memberId, keywordList));
+    }
+
+    @Operation(summary = "키워드 조회", description = "내가 등록한 키워드들을 조회 할 수 있습니다.", tags = { "Keyword Controller" })
+    @GetMapping
+    public ApiUtils.ApiResult<List<KeywordDto>> getAllKeyword(/* @RequestHeader("Authorization") String header,*/){
+//        String token = header.substring(7);
+//        Long memberId = jwtTokenProvider.extractMemberId(token);
+        Long memberId = 14L;
+        return success(keywordService.getAllKeyword(memberId));
     }
 
 }

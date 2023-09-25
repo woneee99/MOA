@@ -1,7 +1,11 @@
 package com.ssafy.moa.api.repository;
 
+import com.ssafy.moa.api.dto.KeywordDto;
 import com.ssafy.moa.api.entity.Keyword;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
+    List<Keyword> findByMember_MemberId(Long memberId);
 }

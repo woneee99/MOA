@@ -1,5 +1,6 @@
 package com.ssafy.moa.api.service.impl;
 
+import com.ssafy.moa.api.dto.KeywordDto;
 import com.ssafy.moa.api.dto.KeywordReqDto;
 import com.ssafy.moa.api.entity.Keyword;
 import com.ssafy.moa.api.entity.Member;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,5 +35,15 @@ public class KeywordServiceImpl implements KeywordService {
             keywordRepository.save(keyword);
         }
         return member.getMemberId();
+    }
+
+    @Override
+    public List<KeywordDto> getAllKeyword(Long memberId) {
+        List<Keyword> keywordList = keywordRepository.findByMember_MemberId(memberId);
+        List<KeywordDto> result = new ArrayList<>();
+        for (Keyword keyword : keywordList){
+            result.add(KeywordDto.from(keyword));
+        }
+        return result;
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.moa.api.dto;
 
+import com.ssafy.moa.api.entity.Keyword;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,9 @@ public class KeywordDto {
     public KeywordDto(Long keywordId, String keywordName) {
         this.keywordId = keywordId;
         this.keywordName = keywordName;
+    }
+
+    public static KeywordDto from(Keyword keyword){
+        return new KeywordDto(keyword.getKeywordId(), keyword.getKeywordName());
     }
 }
