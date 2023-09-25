@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import NewsArticleSentence from '../../components/Learning/NewsArticleSentence';
-import axios from 'axios';
+import { learningApi } from '../../api/learningApi';
 
 function NewsArticle(props) {
 
@@ -32,45 +32,64 @@ function NewsArticle(props) {
         }
     }
 
+    // 번역
     const translateSentence = async (sentence) => {
-        const term = sentence;
-        const url = 'papago/n2mt';
-
-        const params = new URLSearchParams();
-        params.append('source', 'ko');
-        params.append('target', 'en');
-        params.append('text', term);
-
-        const config = {
-            baseURL: 'https://openapi.naver.com/v1/',
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                'x-naver-client-id' : '6xvYr4AONUMN4goMvGlL',
-                'x-naver-client-secret' : 'zo1l1Wd1fA',
-            }
+        try{
+            const response = await learningApi.translateText(sentence);
+            setTranslatedSentence(response.data.response);
+        }
+        catch(error) {
+            console.error('번역 요청 실패', error);
         }
 
-        try {
-            const resposne = await axios.post(url, params, config);
-            const translatedText = resposne.data.message.result.translatedText;
-            setTranslatedSentence(translatedText);
-            console.log(translatedText);
-        } catch(error) {
-            console.error('Translation error: ', error);
-        }
     }
+
+    let voices = [];
+
+    //TTS
+    const setVoiceList = () => {
+        voices = window.speechSynthesis.getVoices();
+    };
+
+    if(window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = setVoiceList;
+    }
+
+    const speech = (text) => {
+        const lang = "ko-KR";
+        const utterThis = new SpeechSynthesisUtterance(text);
+
+        utterThis.lang = lang;
+
+        const korVoice = voices.find(
+            (elem) => elem.lang === lang || elem.lang === lang.replace("-", "_")
+        );
+
+        if(korVoice) {
+            utterThis = korVoice;
+        } else {
+            return;
+        }
+
+        window.speechSynthesis.speak(utterThis);
+    };
 
 
 
   return (
     <div>
         <div>제로베이스원 리더 성한빈, '엠카' 새 MC</div>
+        <div>
+                --------------------------
+        </div>
+        <button onClick={speech(articleSentences[currentSentenceIndex])}>소리듣기</button>
         <NewsArticleSentence sentence={articleSentences[currentSentenceIndex]} />
-        {/* <NewsArticle sentence={translatedSentence} /> */}
+        <NewsArticleSentence sentence={translatedSentence} />
         <div>
             {currentSentenceIndex > 0 && (
                 <button onClick={goToPreviousIndex}>이전</button>
             )}
+            {currentSentenceIndex + 1} / {articleSentences.length}
             {currentSentenceIndex < articleSentences.length - 1 && (
                 <button onClick={goToNextIndex}>다음</button>
             )}
