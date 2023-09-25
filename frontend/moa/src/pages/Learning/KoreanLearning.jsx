@@ -7,6 +7,7 @@ import PopularWords from '../../components/Learning/PopularWords';
 import Logo from '../../components/Logo';
 import News from '../../styles/news.css';
 import Modify from '../../assets/news/modifyKeyword.png';
+import RelatedNews from '../../components/Learning/RelatedNews';
 import { Link } from 'react-router-dom';
 
 function KoreanLearning(props) {
@@ -26,6 +27,8 @@ function KoreanLearning(props) {
       <hr />
       <div className='font'>Most Popular Word</div>
       <PopularWords />
+      
+      <Link to="/koreanlearning/article"> 뉴스보기 </Link>
     </div>
   );
 }

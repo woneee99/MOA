@@ -27,6 +27,8 @@ import CreateBalanceGame from './pages/Buddy/BalanceGame/CreateBalanceGame';
 import UpdateBalanceGame from './pages/Buddy/BalanceGame/UpdateBalanceGame';
 import KoreaTour from './pages/Buddy/KoreaTour';
 import NotFound404 from './pages/NotFound404';
+import RelatedNews from './components/Learning/RelatedNews';
+import NewsArticle from './pages/Learning/NewsArticle';
 
 function App() {
   
@@ -56,6 +58,7 @@ function App() {
           <Route path="/chatting/openchat/:id" element={<OpenChattingDetail />}/>
 
           <Route path="/koreanlearning" element={<KoreanLearning />} />
+          <Route path='/koreanlearning/article' element= {<NewsArticle />} />
 
           <Route path="/qna-board" element={<QnABoard />} />
           
