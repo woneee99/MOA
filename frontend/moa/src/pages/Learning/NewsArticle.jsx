@@ -88,6 +88,7 @@ function NewsArticle(props) {
         <div className={styles.container}>
             <img src="../../../assets/NewsArticle/background-img.png" className={styles.backgroundImg}></img>
             <div className={styles.articleTitle}>제로베이스원 리더 성한빈, '엠카' 새 MC</div>
+            <div className={styles.articleDate}>2023.09.24</div>
             <button className={styles.listenToSound} onClick={() =>
                 speech(articleSentences[currentSentenceIndex])}>
                 <img src="../../../assets/NewsArticle/listen-to-sound.png" alt=""></img>

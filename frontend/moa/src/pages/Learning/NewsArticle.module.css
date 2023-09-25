@@ -142,3 +142,25 @@
     box-shadow: 10.6744px 10.6744px 18.9767px rgba(177, 200, 244, 0.6), -10.6744px -10.6744px 18.9767px rgba(255, 255, 255, 0.6);
     border-radius: 23.7209px;
 }
+
+.articleDate {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 8px;
+    gap: 10px;
+
+    position: absolute;
+    width: 62.55px;
+    height: 21px;
+    left: 270px;
+    top: 171px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 15px;
+    color: #B1B1B1;
+}
