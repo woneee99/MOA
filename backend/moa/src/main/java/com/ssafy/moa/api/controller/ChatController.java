@@ -31,6 +31,7 @@ public class ChatController {
 
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {
+        log.info(message.getMessage());
         if (ChatMessage.MessageType.OPEN_ENTER.equals(message.getMessageType())) {
             chatRoomRepository.enterOpenChatRoom(message.getRoomId());
             message.setMessage(message.getSender() + "이 들어왔습니다.");
