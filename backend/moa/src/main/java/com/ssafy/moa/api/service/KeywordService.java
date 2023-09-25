@@ -9,4 +9,6 @@ public interface KeywordService {
     Long createKeyword(Long memberId, List<KeywordReqDto> keywordList);
 
     List<KeywordDto> getAllKeyword(Long memberId);
+
+    Long deleteKeyword(Long keywordId);
 }

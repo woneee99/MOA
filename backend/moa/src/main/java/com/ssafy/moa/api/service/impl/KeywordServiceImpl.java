@@ -11,6 +11,7 @@ import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,5 +46,11 @@ public class KeywordServiceImpl implements KeywordService {
             result.add(KeywordDto.from(keyword));
         }
         return result;
+    }
+
+    @Override
+    @Transactional
+    public Long deleteKeyword(Long keywordId) {
+        return keywordRepository.deleteByKeywordId(keywordId);
     }
 }

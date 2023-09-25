@@ -42,4 +42,10 @@ public class KeywordController {
         return success(keywordService.getAllKeyword(memberId));
     }
 
+    @Operation(summary = "키워드 삭제", description = "내가 등록한 키워드룰 삭제 할 수 있습니다.", tags = { "Keyword Controller" })
+    @DeleteMapping("/{keywordId}")
+    public ApiUtils.ApiResult<Long> deleteKeyword(@PathVariable("keywordId") Long keywordId){
+        return success(keywordService.deleteKeyword(keywordId));
+    }
+
 }
