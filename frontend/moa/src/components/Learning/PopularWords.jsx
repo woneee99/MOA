@@ -11,7 +11,6 @@ function PopularWords(props) {
 
   return (
     <div>
-      <h3>Most Popular Words</h3>
       {popularWords.map((popularWord, index) => {
         const { word, percentage } = popularWord;
 

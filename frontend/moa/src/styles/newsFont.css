@@ -1,0 +1,12 @@
+.font {
+    margin-left: 20px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.display{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10%;
+}

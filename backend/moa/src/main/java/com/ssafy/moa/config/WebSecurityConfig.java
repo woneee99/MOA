@@ -45,6 +45,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/quiz/**").permitAll()
                                 .requestMatchers("/chat/**").permitAll()
                                 .requestMatchers("/ws-stomp/**").permitAll()
+                                .requestMatchers("/keyword/**").permitAll()
                                 .anyRequest().authenticated())
                 .apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
 
