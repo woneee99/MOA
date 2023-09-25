@@ -47,6 +47,11 @@ function NewsArticle(props) {
     let voices = [];
 
     //TTS
+
+    useEffect(() => {
+        setVoiceList();
+    })
+
     const setVoiceList = () => {
         voices = window.speechSynthesis.getVoices();
     };
@@ -55,18 +60,21 @@ function NewsArticle(props) {
         window.speechSynthesis.onvoiceschanged = setVoiceList;
     }
 
+    
+
     const speech = (text) => {
         const lang = "ko-KR";
-        const utterThis = new SpeechSynthesisUtterance(text);
+        let utterThis = new SpeechSynthesisUtterance(text);
 
         utterThis.lang = lang;
+        utterThis.rate = 0.8;
 
         const korVoice = voices.find(
             (elem) => elem.lang === lang || elem.lang === lang.replace("-", "_")
         );
 
         if(korVoice) {
-            utterThis = korVoice;
+            utterThis.voice = korVoice;
         } else {
             return;
         }
@@ -82,7 +90,8 @@ function NewsArticle(props) {
         <div>
                 --------------------------
         </div>
-        <button onClick={speech(articleSentences[currentSentenceIndex])}>소리듣기</button>
+        <button onClick={() => 
+            speech(articleSentences[currentSentenceIndex])}>소리듣기</button>
         <NewsArticleSentence sentence={articleSentences[currentSentenceIndex]} />
         <NewsArticleSentence sentence={translatedSentence} />
         <div>
