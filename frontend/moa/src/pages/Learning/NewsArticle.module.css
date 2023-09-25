@@ -143,6 +143,19 @@
     border-radius: 23.7209px;
 }
 
+.scrap {
+    position: absolute;
+    width: 51px;
+    height: 51px;
+    left: 308px;
+    top: 210px;
+
+    background: #FFFFFF;
+    border: 2.37209px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 10.6744px 10.6744px 18.9767px rgba(177, 200, 244, 0.6), -10.6744px -10.6744px 18.9767px rgba(255, 255, 255, 0.6);
+    border-radius: 23.7209px;
+}
+
 .articleDate {
     display: flex;
     flex-direction: row;

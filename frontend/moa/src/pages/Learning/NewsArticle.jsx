@@ -96,6 +96,9 @@ function NewsArticle(props) {
             <button className={styles.recordSound}>
                 <img src="../../../assets/NewsArticle/record-sound.png"></img>
             </button>
+            <button className={styles.scrap}>
+                <img src="../../../assets/NewsArticle/scrap.png"></img>
+            </button>
             <div className={styles.articleContent}>
                 <div className={styles.articleSentences}>
                     <div>{articleSentences[currentSentenceIndex]} </div>
