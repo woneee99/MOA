@@ -90,8 +90,11 @@ function NewsArticle(props) {
             <div className={styles.articleTitle}>제로베이스원 리더 성한빈, '엠카' 새 MC</div>
             <button className={styles.listenToSound} onClick={() =>
                 speech(articleSentences[currentSentenceIndex])}>
-                    <img src="../../../assets/NewsArticle/listen-to-sound.png" alt=""></img>
-                </button>
+                <img src="../../../assets/NewsArticle/listen-to-sound.png" alt=""></img>
+            </button>
+            <button className={styles.recordSound}>
+                <img src="../../../assets/NewsArticle/record-sound.png"></img>
+            </button>
             <div className={styles.articleContent}>
                 <div className={styles.articleSentences}>
                     <div>{articleSentences[currentSentenceIndex]} </div>
@@ -99,14 +102,10 @@ function NewsArticle(props) {
                 </div>
             </div>
             <div className={styles.pageMoving}>
-                {currentSentenceIndex > 0 && (
-                    <button onClick={goToPreviousIndex} className={styles.pageButton}>이전</button>
-                )}
+                <button onClick={goToPreviousIndex} className={styles.pageButton}>이전</button>
                 <p className={styles.pageNumbers}>
                     {currentSentenceIndex + 1} / {articleSentences.length}</p>
-                {currentSentenceIndex < articleSentences.length - 1 && (
-                    <button onClick={goToNextIndex} className={styles.pageButton}>다음</button>
-                )}
+                <button onClick={goToNextIndex} className={styles.pageButton}>다음</button>
             </div>
         </div>
     );
