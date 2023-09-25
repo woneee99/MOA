@@ -2,10 +2,15 @@ import React from "react";
 import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
 import { useState, useEffect, useRef } from "react";
 import KoreaTourCarousel from "./KoreaTourCarousel";
+import cafe from "./cafe2.png";
+import playground from "./playground2.png";
+import restaurant from "./restaurant5.png";
+import stay from "./stay4.png";
+import station from "./station.png";
+import store from "./store.png";
+
 
 function KoreaTourMap({ mediaPlaceList }) {
-  //   const mediaPlaceList = props.mediaPlaceList;
-  //   console.log(mediaPlaceList);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const mapRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false); // 현재 선택된 마크가 존재하는지
@@ -43,6 +48,7 @@ function KoreaTourMap({ mediaPlaceList }) {
   }, [selectedPlace]);
 
   return (
+    <>
     <Map
       center={{ lat: 37.644825, lng: 127.681114 }}
       style={{ width: "800px", height: "600px" }}
@@ -50,14 +56,19 @@ function KoreaTourMap({ mediaPlaceList }) {
       ref={mapRef}
     >
       {mediaPlaceList.map((place) => (
-        // console.log(new kakao.maps.LatLng(place.latitude, place.longitude));
-        <div>
+        <>
           <MapMarker
             key={`${place.latitude}-${place.longitude}`}
             position={{ lat: `${place.latitude}`, lng: `${place.longitude}` }}
             image={{
-              src: "https://user-images.githubusercontent.com/91959791/169664489-10a08071-905f-4a44-9a14-ae065704ced5.png",
-              size: { width: 24, height: 35 },
+              src: place.placeTy === "cafe" ? cafe : 
+              place.placeTy === "playground" ? playground : 
+                  place.placeTy === "restaurant" ? restaurant : 
+                    place.placeTy === "stay" ? stay : 
+                      place.placeTy === "station" ? station : 
+                      place.placeTy === "store" ? store : 
+              "https://user-images.githubusercontent.com/91959791/169664489-10a08071-905f-4a44-9a14-ae065704ced5.png",
+              size: { width: 35, height: 35 },
               options: {
                 offset: {
                   x: 10,
@@ -74,7 +85,7 @@ function KoreaTourMap({ mediaPlaceList }) {
                 position={{ lat: `${place.latitude}`, lng: `${place.longitude}` }}
                 yAnchor={1}
               >
-                <div className="customoverlay" style={{padding:"9px", backgroundColor:"#fff", color:"#000", border: "2px solid green",  borderRadius: "50%"}}>
+                <div className="customoverlay" style={{padding:"9px", backgroundColor:"#fff", color:"#000", border: "2px solid green",  borderTopLeftRadius: "50% 100px", borderTopRightRadius: "50% 100px", borderBottomLeftRadius: "50% 100px", borderBottomRightRadius: "50% 100px"}}>
                   {/* <a
                     href="https://map.kakao.com/link/map/11394059"
                     target="_blank"
@@ -86,15 +97,18 @@ function KoreaTourMap({ mediaPlaceList }) {
                 </div>
               </CustomOverlayMap>
             )}
-        </div>
+        </>
       ))}
-      <KoreaTourCarousel
-        mediaPlaceList={mediaPlaceList}
-        selectedPlace={selectedPlace}
-        changeCenterByCarousel={changeCenterByCarousel}
-        // handleModal={handleModal}
-      />
+        
+        <KoreaTourCarousel
+          mediaPlaceList={mediaPlaceList}
+          selectedPlace={selectedPlace}
+          changeCenterByCarousel={changeCenterByCarousel}
+          // handleModal={handleModal}
+        />
     </Map>
+      </>
+    
   );
 }
 

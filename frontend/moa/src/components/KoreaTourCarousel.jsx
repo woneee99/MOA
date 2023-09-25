@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import SimpleSlider from "./SimpleSlider";
 
 function KoreaTourCarousel({ mediaPlaceList, selectedPlace, changeCenterByCarousel }) {
   const settings = {
     dots: true,
+    arrow: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -29,7 +31,6 @@ function KoreaTourCarousel({ mediaPlaceList, selectedPlace, changeCenterByCarous
   }, [smIndex]);
 
   return (
-    // <S.CarouselWholeContainer>
     <Slider {...settings} ref={setSlider}>
       {selectedPlaceList &&
         selectedPlaceList.map((mart) => (
@@ -44,7 +45,6 @@ function KoreaTourCarousel({ mediaPlaceList, selectedPlace, changeCenterByCarous
           return <SlideContent data={data} handleRen={handleRen} />;
         })} //Slider 안에 들어가는 내용(콘텐츠) */}
     </Slider>
-    // </S.CarouselWholeContainer>
   );
 }
 
