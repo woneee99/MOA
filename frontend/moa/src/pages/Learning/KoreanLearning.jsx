@@ -5,8 +5,9 @@ import KeywordItem from '../../components/Learning/KeywordItem';
 import WordCloud from '../../components/Learning/WordCloud';
 import PopularWords from '../../components/Learning/PopularWords';
 import Logo from '../../components/Logo';
-import FontCSS from '../../styles/newsFont.css';
+import News from '../../styles/news.css';
 import Modify from '../../assets/news/modifyKeyword.png';
+import { Link } from 'react-router-dom';
 
 function KoreanLearning(props) {
   return (
@@ -14,7 +15,9 @@ function KoreanLearning(props) {
       <Logo />
       <div className='display'>
         <div className='font'> View words about...</div>
-        <img src={Modify} alt="modify" style={{ width: '20px'}}/>
+        <Link to="">
+          <img src={Modify} alt="modify" style={{ width: '20px'}}/>
+        </Link>
       </div>
       <KeywordItem />
       <hr />

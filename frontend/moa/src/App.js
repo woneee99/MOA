@@ -12,6 +12,7 @@ import BuddyChattingModal from './pages/Chatting/BuddyChattingModal';
 import OpenChattingModal from './pages/Chatting/OpenChattingModal';
 import OpenChattingDetail from './pages/Chatting/OpenChattingDetail';
 import KoreanLearning from './pages/Learning/KoreanLearning';
+import KoreanLearning from './pages/Learning/Learning';
 import QnABoard from './pages/QnA/QnABoard';
 import Quiz from './pages/Quiz/Quiz';
 import IncorrectNote from './pages/Quiz/IncorrectNote';
