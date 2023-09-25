@@ -11,4 +11,6 @@ public interface KeywordService {
     List<KeywordDto> getAllKeyword(Long memberId);
 
     Long deleteKeyword(Long keywordId);
+
+    List<KeywordReqDto> getBestKeyword();
 }

@@ -53,4 +53,9 @@ public class KeywordServiceImpl implements KeywordService {
     public Long deleteKeyword(Long keywordId) {
         return keywordRepository.deleteByKeywordId(keywordId);
     }
+
+    @Override
+    public List<KeywordReqDto> getBestKeyword() {
+        return keywordRepository.getBestKeyword();
+    }
 }

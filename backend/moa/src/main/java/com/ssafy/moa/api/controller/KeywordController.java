@@ -48,4 +48,9 @@ public class KeywordController {
         return success(keywordService.deleteKeyword(keywordId));
     }
 
+    @Operation(summary = "인기 키워드 조회", description = "인기 키워드 3개를 조회 할 수 있습니다.", tags = { "Keyword Controller" })
+    @GetMapping("/popularity")
+    public ApiUtils.ApiResult<List<KeywordReqDto>> getBestKeyword(){
+        return success(keywordService.getBestKeyword());
+    }
 }
