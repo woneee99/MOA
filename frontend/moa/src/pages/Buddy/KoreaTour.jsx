@@ -9,10 +9,11 @@ import { koreaTourApi } from "../../api/KoreaTourApi";
 function KoreaTour(props) {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [mediaPlaceList, setmediaPlaceList] = useState([]);
+  const [mediaName, setMediaName] = useState("");
 
   const handleSearchClick = () => {
     const type = "all";
-    const mediaName = "nct";
+    console.log(mediaName);
     koreaTourApi.getMediaList(type, mediaName).then((response) => {
       setmediaPlaceList(response.data.response);
       console.log(response.data.response);
@@ -31,7 +32,7 @@ function KoreaTour(props) {
       <h1>한국 둘러보기</h1>
       <hr />
       <div>
-        <KoreaTourSearch />
+        <KoreaTourSearch setMediaName={ setMediaName} />
         <button onClick={handleSearchClick}>검색</button>
       </div>
       <hr />

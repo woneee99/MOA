@@ -56,12 +56,12 @@ function KoreaTourMap({ mediaPlaceList }) {
             key={`${place.latitude}-${place.longitude}`}
             position={{ lat: `${place.latitude}`, lng: `${place.longitude}` }}
             image={{
-              src: "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+              src: "https://user-images.githubusercontent.com/91959791/169664489-10a08071-905f-4a44-9a14-ae065704ced5.png",
               size: { width: 24, height: 35 },
               options: {
                 offset: {
-                  x: 27,
-                  y: 69,
+                  x: 10,
+                  y: -10,
                 },
               }, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
             }}
@@ -74,14 +74,15 @@ function KoreaTourMap({ mediaPlaceList }) {
                 position={{ lat: `${place.latitude}`, lng: `${place.longitude}` }}
                 yAnchor={1}
               >
-                <div className="customoverlay">
-                  <a
+                <div className="customoverlay" style={{padding:"9px", backgroundColor:"#fff", color:"#000", border: "2px solid green",  borderRadius: "50%"}}>
+                  {/* <a
                     href="https://map.kakao.com/link/map/11394059"
                     target="_blank"
                     rel="noreferrer"
                   >
                     <span className="title">{place.placeNm}</span>
-                  </a>
+                </a> */}
+                {place.placeNm}
                 </div>
               </CustomOverlayMap>
             )}
