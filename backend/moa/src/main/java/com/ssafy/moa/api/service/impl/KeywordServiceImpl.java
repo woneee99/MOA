@@ -1,0 +1,37 @@
+package com.ssafy.moa.api.service.impl;
+
+import com.ssafy.moa.api.dto.KeywordReqDto;
+import com.ssafy.moa.api.entity.Keyword;
+import com.ssafy.moa.api.entity.Member;
+import com.ssafy.moa.api.repository.KeywordRepository;
+import com.ssafy.moa.api.repository.MemberRepository;
+import com.ssafy.moa.api.service.KeywordService;
+import com.ssafy.moa.common.exception.NotFoundException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class KeywordServiceImpl implements KeywordService {
+    private final KeywordRepository keywordRepository;
+    private final MemberRepository memberRepository;
+
+    @Override
+    public Long createKeyword(Long memberId, List<KeywordReqDto> keywordList) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException("Not Found Member"));
+
+        for (KeywordReqDto kewordReqDto: keywordList){
+            Keyword keyword = Keyword.builder()
+                    .keywordName(kewordReqDto.getKeywordName())
+                    .member(member)
+                    .build();
+            keywordRepository.save(keyword);
+        }
+        return member.getMemberId();
+    }
+}
