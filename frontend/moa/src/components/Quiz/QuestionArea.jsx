@@ -22,17 +22,38 @@ function QuestionArea(props) {
 
   return (
     <div>
+      
         {quizData ? (
-          <div>
-            <h1>{quizData}</h1>
-              {quizData.map((answer, index) => {
-                return (
-                  // <div key={index}>{answer.quizQuestion}</div>
-                  <div key={index}>{answer.quizAnswerList}</div>
-                  // <div key={index}>{answer.quizQuestion}</div>
-                )
-              })}
-          </div>
+
+          quizData.map((quiz, index) => {
+            return(
+              <div key={index}>
+                <h1>{quiz.quizQuestion}</h1>
+              </div>
+            )
+          })
+          // quizData.map((quiz, index)=>(
+          //   <div key={index}>
+          //     <h1>{quiz.quizQuestion}</h1>
+          //     <ul>
+          //       {quiz.quizAnswerList.map((answer, answerIndex) => (
+          //         <li key={answerIndex}>{answer}</li>
+          //       ))}
+          //     </ul>
+          //   </div>
+          // ))
+
+          
+          // <div>
+          //   <h1>{quizData}</h1>
+          //     {quizData.map((answer, index) => {
+          //       return (
+          //         // <div key={index}>{answer.quizQuestion}</div>
+          //         <div key={index}>{answer.quizAnswerList}</div>
+          //         // <div key={index}>{answer.quizQuestion}</div>
+          //       )
+          //     })}
+          // </div>
         ) : (
           <p>로딩 중...</p>
         )}
