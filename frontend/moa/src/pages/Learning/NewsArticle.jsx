@@ -1,9 +1,10 @@
 
-import React, { useEffect, useState } from 'react';
-import NewsArticleSentence from '../../components/Learning/NewsArticleSentence';
+import React, { useCallback, useEffect, useState } from 'react';
 import { learningApi } from '../../api/learningApi';
+import styles from './NewsArticle.module.css'
 
 function NewsArticle(props) {
+
 
     const articleSentences = [
         "신인 보이그룹 제로베이스원(ZEROBASEONE) 리더 성한빈이 엠넷 음악방송 '엠카운트다운' 새 MC가 됐다.",
@@ -21,24 +22,24 @@ function NewsArticle(props) {
     }, [currentSentenceIndex]);
 
     const goToNextIndex = () => {
-        if(currentSentenceIndex < articleSentences.length - 1) {
+        if (currentSentenceIndex < articleSentences.length - 1) {
             setCurrentSentenceIndex(currentSentenceIndex + 1);
         }
     };
 
     const goToPreviousIndex = () => {
-        if(currentSentenceIndex > 0) {
+        if (currentSentenceIndex > 0) {
             setCurrentSentenceIndex(currentSentenceIndex - 1);
         }
     }
 
     // 번역
     const translateSentence = async (sentence) => {
-        try{
+        try {
             const response = await learningApi.translateText(sentence);
             setTranslatedSentence(response.data.response);
         }
-        catch(error) {
+        catch (error) {
             console.error('번역 요청 실패', error);
         }
 
@@ -56,11 +57,9 @@ function NewsArticle(props) {
         voices = window.speechSynthesis.getVoices();
     };
 
-    if(window.speechSynthesis.onvoiceschanged !== undefined) {
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
         window.speechSynthesis.onvoiceschanged = setVoiceList;
     }
-
-    
 
     const speech = (text) => {
         const lang = "ko-KR";
@@ -73,7 +72,7 @@ function NewsArticle(props) {
             (elem) => elem.lang === lang || elem.lang === lang.replace("-", "_")
         );
 
-        if(korVoice) {
+        if (korVoice) {
             utterThis.voice = korVoice;
         } else {
             return;
@@ -82,29 +81,36 @@ function NewsArticle(props) {
         window.speechSynthesis.speak(utterThis);
     };
 
+    // 녹음 기능 구현
 
 
-  return (
-    <div>
-        <div>제로베이스원 리더 성한빈, '엠카' 새 MC</div>
-        <div>
-                --------------------------
+    return (
+        <div className={styles.container}>
+            <img src="../../../assets/NewsArticle/background-img.png" className={styles.backgroundImg}></img>
+            <div className={styles.articleTitle}>제로베이스원 리더 성한빈, '엠카' 새 MC</div>
+            <button className={styles.listenToSound} onClick={() =>
+                speech(articleSentences[currentSentenceIndex])}>
+                    <img src="../../../assets/NewsArticle/listen-to-sound.png" alt=""></img>
+                </button>
+            <div className={styles.articleContent}>
+                <div className={styles.articleSentences}>
+                    <div>{articleSentences[currentSentenceIndex]} </div>
+                    <div>{translatedSentence} </div>
+                </div>
+            </div>
+            <div className={styles.pageMoving}>
+                {currentSentenceIndex > 0 && (
+                    <button onClick={goToPreviousIndex} className={styles.pageButton}>이전</button>
+                )}
+                <p className={styles.pageNumbers}>
+                    {currentSentenceIndex + 1} / {articleSentences.length}</p>
+                {currentSentenceIndex < articleSentences.length - 1 && (
+                    <button onClick={goToNextIndex} className={styles.pageButton}>다음</button>
+                )}
+            </div>
         </div>
-        <button onClick={() => 
-            speech(articleSentences[currentSentenceIndex])}>소리듣기</button>
-        <NewsArticleSentence sentence={articleSentences[currentSentenceIndex]} />
-        <NewsArticleSentence sentence={translatedSentence} />
-        <div>
-            {currentSentenceIndex > 0 && (
-                <button onClick={goToPreviousIndex}>이전</button>
-            )}
-            {currentSentenceIndex + 1} / {articleSentences.length}
-            {currentSentenceIndex < articleSentences.length - 1 && (
-                <button onClick={goToNextIndex}>다음</button>
-            )}
-        </div>
-    </div>
-  );
+    );
+
 }
 
 export default NewsArticle;
