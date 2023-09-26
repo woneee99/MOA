@@ -31,7 +31,7 @@ public class ScrapController {
     public ApiResult<Long> createArticleScrap(/*@RequestHeader("Authorization") String header,*/ @RequestBody ArticleReqDto articleReqDto){
 //        String token = header.substring(7);
 //        Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        Long memberId = 5L;
+        Long memberId = 15L;
         return success(articleService.createArticleScrap(memberId, articleReqDto));
     }
 
@@ -41,7 +41,7 @@ public class ScrapController {
     public ApiResult<List<ArticleDto>> getAllArticleScrap(/*@RequestHeader("Authorization") String header,*/){
 //        String token = header.substring(7);
 //        Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        Long memberId = 5L;
+        Long memberId = 15L;
         return success(articleService.getAllArticleScrap(memberId));
     }
 
@@ -57,6 +57,15 @@ public class ScrapController {
         return success(articleService.deleteArticle(articleId));
     }
 
+    @Operation(summary = "뉴스 스크랩 여부 조회", description = "사전에 스크랩 한 뉴스인지 스크랩여부를 조회할 수 있습니다.", tags = { "Scrap Controller" })
+    @GetMapping("/news/check/{articleOriginId}")
+    public ApiResult<Long> checkArticle(/*@RequestHeader("Authorization") String header,*/@PathVariable("articleOriginId") Long articleOriginId){
+        //        String token = header.substring(7);
+//        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        Long memberId = 15L;
+        return success(articleService.checkArticle(memberId, articleOriginId));
+    }
+
     // 단어
     // Todo : 추후 authentication를 사용해서 실제 memberId로 변경
     @Operation(summary = "단어 스크랩북 등록", description = "단어를 내 스크랩북에 등록할 수 있습니다.", tags = { "Scrap Controller" })
@@ -64,7 +73,7 @@ public class ScrapController {
     public ApiResult<Long> createWordScrap(/*@RequestHeader("Authorization") String header,*/ @RequestBody WordReqDto wordReqDto){
 //        String token = header.substring(7);
 //        Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        Long memberId = 5L;
+        Long memberId = 15L;
         return success(wordService.createWordScrap(memberId, wordReqDto));
     }
 
@@ -74,7 +83,7 @@ public class ScrapController {
     public ApiResult<List<WordDto>> getAllWordScrap(/*@RequestHeader("Authorization") String header,*/){
 //        String token = header.substring(7);
 //        Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        Long memberId = 5L;
+        Long memberId = 15L;
         return success(wordService.getAllWordScrap(memberId));
     }
 
