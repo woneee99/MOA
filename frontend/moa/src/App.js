@@ -12,7 +12,8 @@ import BuddyChattingModal from './pages/Chatting/BuddyChattingModal';
 import OpenChattingModal from './pages/Chatting/OpenChattingModal';
 import OpenChattingDetail from './pages/Chatting/OpenChattingDetail';
 import KoreanLearning from './pages/Learning/KoreanLearning';
-import KoreanLearning from './pages/Learning/Learning';
+import LearningKeyword from './pages/Learning/LearningMyKeyword';
+import KoreanLearningDefault from './pages/Learning/KoreanLearningDefault';
 import QnABoard from './pages/QnA/QnABoard';
 import Quiz from './pages/Quiz/Quiz';
 import IncorrectNote from './pages/Quiz/IncorrectNote';
@@ -59,6 +60,8 @@ function App() {
 
           <Route path="/koreanlearning" element={<KoreanLearning />} />
           <Route path='/koreanlearning/article' element= {<NewsArticle />} />
+          <Route path='/koreanlearning/keyword' element= {<LearningKeyword />} />
+          <Route path='/koreanlearning/default' element= {<KoreanLearningDefault />} />
 
           <Route path="/qna-board" element={<QnABoard />} />
           
