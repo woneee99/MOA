@@ -3,6 +3,8 @@ from pymongo import MongoClient
 from pydantic import BaseModel
 from typing import List, Optional
 import logging
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
 
 app = FastAPI()
 
@@ -36,7 +38,7 @@ def get_top_words(top_n: int = Query(30, description="빈도 상위 30개 단어
     try:
         top_words = list(
             words_collection.aggregate([
-                {"$group": {"word": "$word", "count": {"$sum": 1}}},
+                {"$group": {"_id": "$word", "count": {"$sum": 1}}},
                 {"$sort": {"count": -1}},
                 {"$limit": top_n}
             ])
@@ -149,23 +151,36 @@ def get_word(word_id: int):
         logger.error(str(e))
         raise
 
-# 특정 기사와 연관된 기사 목록 가져오기
+# TF-IDF 벡터화
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_matrix = tfidf_vectorizer.fit_transform([article["title"] for article in articles_collection.find()])
+
+# 코사인 유사도 계산
+cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
+
+# 연관 기사를 찾는 함수
+def get_related_articles(article_id: str, top_n: int = 5):
+    article_index = article_id
+    related_articles_indices = cosine_sim[article_index].argsort()[::-1][1:top_n + 1]
+    related_articles = []
+    for index in related_articles_indices:
+        article_info = articles_collection.find_one({"title": articles_collection.find()[index]["title"]})
+        related_articles.append(article_info)
+    return related_articles
+
+# 특정 기사와 연관된 기사 목록 가져오기 (상위 5개)
 @app.get("/articles/{article_id}/related")
-def get_related_articles(article_id: int):
+def get_related_articles_endpoint(article_id: int, top_n: int = Query(5, description="상위 연관 기사 수")):
     try:
         article = articles_collection.find_one({"article_id": article_id})
         if not article:
-            raise ItemNotFoundError(article_id)  # 오류 발생
+            return {"message": "기사를 찾을 수 없습니다."}
 
-        related_articles = articles_collection.find({"$text": {"$search": article["title"]}})
-        return list(related_articles)
-    except ItemNotFoundError as e:
-        logger.error(str(e))
-        raise
+        related_articles = get_related_articles(article["article_id"], top_n)
+        return related_articles
     except Exception as e:
-        logger.error(str(e))
-        raise
-
+        return {"error": str(e)}
+        
 # FastAPI 모델
 class SearchQuery(BaseModel):
     query: str
