@@ -98,4 +98,13 @@ public class ScrapController {
     public ApiResult<Long> deleteWord(@PathVariable("wordId") Long wordId){
         return success(wordService.deleteWord(wordId));
     }
+
+    @Operation(summary = "단어 스크랩 여부 조회", description = "사전에 스크랩 한 단어인지 스크랩여부를 조회할 수 있습니다.", tags = { "Scrap Controller" })
+    @GetMapping("/words/check/{wordName}")
+    public ApiResult<Long> checkWord(/*@RequestHeader("Authorization") String header,*/@PathVariable("wordName") String wordName){
+        //        String token = header.substring(7);
+//        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        Long memberId = 15L;
+        return success(wordService.checkWord(memberId, wordName));
+    }
 }
