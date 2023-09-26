@@ -8,6 +8,7 @@ import restaurant from "./restaurant5.png";
 import stay from "./stay4.png";
 import station from "./station.png";
 import store from "./store.png";
+import SimpleSlider from "./SimpleSlider";
 
 
 function KoreaTourMap({ mediaPlaceList }) {
@@ -100,13 +101,14 @@ function KoreaTourMap({ mediaPlaceList }) {
         </>
       ))}
         
-        <KoreaTourCarousel
+        {/* <KoreaTourCarousel
           mediaPlaceList={mediaPlaceList}
           selectedPlace={selectedPlace}
           changeCenterByCarousel={changeCenterByCarousel}
           // handleModal={handleModal}
-        />
-    </Map>
+        /> */}
+      </Map>
+      <SimpleSlider></SimpleSlider>
       </>
     
   );
