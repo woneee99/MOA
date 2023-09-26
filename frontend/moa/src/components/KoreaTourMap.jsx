@@ -101,14 +101,14 @@ function KoreaTourMap({ mediaPlaceList }) {
         </>
       ))}
         
-        {/* <KoreaTourCarousel
+        <KoreaTourCarousel
           mediaPlaceList={mediaPlaceList}
           selectedPlace={selectedPlace}
           changeCenterByCarousel={changeCenterByCarousel}
           // handleModal={handleModal}
-        /> */}
+        />
       </Map>
-      <SimpleSlider></SimpleSlider>
+      {/* <SimpleSlider></SimpleSlider> */}
       </>
     
   );
