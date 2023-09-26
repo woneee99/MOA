@@ -21,8 +21,10 @@ function NewsArticle(props) {
 
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
     const [translatedSentence, setTranslatedSentence] = useState('');
+    const [translatedWord, setTranslatedWord] = useState('');
     const [isNewsScrap, setIsNewsScrap] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false); //모달 관련
+    const [clickWord, setClickWord] = useState(null);
 
     // 스크랩 여부 확인
 
@@ -79,6 +81,16 @@ function NewsArticle(props) {
             console.error('번역 요청 실패', error);
         }
 
+    }
+
+    const translateWord = async (word) => {
+        try {
+            const response = await learningApi.translateText(word);
+            setTranslatedWord(response.data.response);
+        }
+        catch (error) {
+            console.error('단어 번역 요청 실패', error);
+        }
     }
 
     let voices = [];
@@ -151,6 +163,7 @@ function NewsArticle(props) {
 
     const wordModal = (word) => {
         console.log(word);
+        setClickWord(word);
         openModal();
     }
 
@@ -160,7 +173,7 @@ function NewsArticle(props) {
         <div className={styles.container}>
 
             <img src="../../../assets/NewsArticle/background-img.png" className={styles.backgroundImg}></img>
-            
+
             <div className={styles.articleTitle}>제로베이스원 리더 성한빈, '엠카' 새 MC</div>
             <div className={styles.articleDate}>2023.09.24</div>
             <button className={styles.listenToSound} onClick={() =>
@@ -185,19 +198,28 @@ function NewsArticle(props) {
             <div className={styles.articleContent}>
                 <div className={styles.articleSentences}>
                     <div>
-                        {splitSentenceIntoWords(articleSentences[currentSentenceIndex]).map((word, index) => (
-                            <span
-                                key={index}
-                                className={articleWords.some((highlightWord) =>
-                                    isWordMatching(word, highlightWord)
-                                )
-                                    ? styles.highlightWord : ''}
-                                onClick={() => {
-                                    if (articleWords.some((highlightWord) => isWordMatching(word, highlightWord))) {
-                                        wordModal(word);
-                                    }
-                                }}>{word}{' '}</span>
-                        ))}
+                        {splitSentenceIntoWords(articleSentences[currentSentenceIndex]).map((word, index) => {
+                            const matchingWord = articleWords.find((highlightWord) =>
+                                isWordMatching(word, highlightWord)
+                            );
+
+                            const matchingWordLength = matchingWord ? matchingWord.length : 0;
+                            return (
+                                <span>
+                                    <span
+                                        key={index}
+                                        className={matchingWord
+                                            ? styles.highlightWord : ''}
+                                        onClick={() => {
+                                            if (matchingWord) {
+                                                wordModal(matchingWord);
+                                                translateWord(matchingWord);
+                                            }
+                                        }}>{word.substring(0, matchingWordLength)}
+                                    </span>{word.substring(matchingWordLength)}{' '}
+                                </span>
+                            );
+                        })}
                     </div>
                     <div>{translatedSentence} </div>
                 </div>
@@ -208,9 +230,15 @@ function NewsArticle(props) {
                     {currentSentenceIndex + 1} / {articleSentences.length}</p>
                 <button onClick={goToNextIndex} className={styles.pageButton}>다음</button>
             </div>
-            
-            {!isModalOpen &&
-                <ArticleModal></ArticleModal>
+
+            {isModalOpen &&
+                <ArticleModal
+                    modalProps={{
+                        word: clickWord,
+                        onCloseModal: closeModal,
+                        translatedWord: translatedWord,
+                    }}
+                ></ArticleModal>
             }
 
         </div>
