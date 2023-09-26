@@ -3,16 +3,17 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SimpleSlider from "./SimpleSlider";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Container = styled.div`
-  overflow:hidden;
+  overflow: hidden;
+  margin: 20px;
 `;
 
 const StyledSlider = styled(Slider)`
-    .slick-slide div{
-      outline: none;
-    }
+  .slick-slide div {
+    outline: none;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -20,21 +21,21 @@ const ImageContainer = styled.div`
 `;
 
 const Image = styled.img`
-max-width:100%;
-max-height:100%;
+  max-width: 100%;
+  max-height: 100%;
 `;
 
-const imgUrl = require('./zero.jpg');
+const imgUrl = require("./zero.jpg");
 
 function KoreaTourCarousel({ mediaPlaceList, selectedPlace, changeCenterByCarousel }) {
   const settings = {
-    dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      arrows: false,
-      centerMode: true,
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    centerMode: true,
     beforeChange: (current, next) => {
       changeCenterByCarousel(next);
     },
@@ -54,11 +55,10 @@ function KoreaTourCarousel({ mediaPlaceList, selectedPlace, changeCenterByCarous
   }, [smIndex]);
 
   return (
-<Container>
-        <h2> Single Item</h2>
-        <StyledSlider {...settings}
-        >
-          {/* {items.map(item => {
+    <Container>
+      <h2> Single Item</h2>
+      <StyledSlider {...settings} ref={setSlider}>
+        {/* {items.map(item => {
             return (
               <div key={item.id}>
                 <ImageContainer>
@@ -69,21 +69,20 @@ function KoreaTourCarousel({ mediaPlaceList, selectedPlace, changeCenterByCarous
           })}
          */}
         {selectedPlaceList &&
-        selectedPlaceList.map((mart) => (
-          
-          <div>
-            <ImageContainer>
-              <Image src={imgUrl} />
-              <div>{mart.placeNm}</div>
-            <div>{mart.addr}</div>
-                </ImageContainer>
-          </div>
-          //   <SlideContent data={mart.id} handleRen={handleRen} />
-          // <S.MartBox key={mart.id}>캐러셀 안에 content 작성</S.MartBox>
-        ))}
-        </StyledSlider>
-      </Container>
-
+          selectedPlaceList.map((place) => (
+            <div>
+              <ImageContainer>
+                <Image src={imgUrl} />
+                <div>{place.placeNm}</div>
+                <div>{place.addr}</div>
+                <div>{place.relatePlaceDc}</div>
+              </ImageContainer>
+            </div>
+            //   <SlideContent data={mart.id} handleRen={handleRen} />
+            // <S.MartBox key={mart.id}>캐러셀 안에 content 작성</S.MartBox>
+          ))}
+      </StyledSlider>
+    </Container>
 
     // <Slider {...settings} ref={setSlider}>
     //   {selectedPlaceList &&

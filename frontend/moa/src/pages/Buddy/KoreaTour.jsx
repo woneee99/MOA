@@ -13,7 +13,6 @@ function KoreaTour(props) {
 
   const handleSearchClick = () => {
     const type = "all";
-    console.log(mediaName);
     koreaTourApi.getMediaList(type, mediaName).then((response) => {
       setmediaPlaceList(response.data.response);
       console.log(response.data.response);
@@ -32,14 +31,14 @@ function KoreaTour(props) {
       <h1>한국 둘러보기</h1>
       <hr />
       <div>
-        <KoreaTourSearch setMediaName={ setMediaName} />
+        <KoreaTourSearch setMediaName={setMediaName} />
         <button onClick={handleSearchClick}>검색</button>
       </div>
       <hr />
       {showSearchResults && (
         <div className="search-results-popup">
           <KoreaTourMap mediaPlaceList={mediaPlaceList} />
-          <KoreaTourSearchResult />
+          {/* <KoreaTourSearchResult /> */}
           <button onClick={closeSearchResults}>닫기</button>
         </div>
       )}
