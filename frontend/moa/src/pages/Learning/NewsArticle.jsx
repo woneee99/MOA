@@ -26,7 +26,7 @@ function NewsArticle(props) {
     // 스크랩 여부 확인
 
     useEffect(() => {
-        learningApi.getIsNewsScrap(1)
+        learningApi.getIsNewsScrap(3)
             .then((response) => {
                 console.log(response.data.response);
                 if (response.data.response) {
@@ -118,6 +118,27 @@ function NewsArticle(props) {
 
     // 녹음 기능 구현
 
+    // 스크랩 
+    const createNewsScrap = () => {
+        const data = {
+            // 나중에 useState로 관리하기
+            articleOriginId: 1,
+            articleTitle: "제로베이스원 리더 성한빈, '엠카' 새 MC",
+            articleContent: "TEST",
+            articleLink: "https://www.nocutnews.co.kr/news/6004744",
+        }
+
+        learningApi.createNewsScrap(data)
+            .then((response) => {
+                console.log(response);
+                alert('스크랩 완료');
+            })
+            .catch((error) => {
+                console.log("뉴스스크랩 오류 발생");
+                console.error(error);
+            })
+    }
+
 
 
     return (
@@ -133,8 +154,15 @@ function NewsArticle(props) {
                 <img src="../../../assets/NewsArticle/record-sound.png"></img>
             </button>
             {!isNewsScrap &&
-                <button className={styles.scrap}>
+                <button className={styles.scrap}
+                    onClick={createNewsScrap}>
                     <img src="../../../assets/NewsArticle/scrap.png"></img>
+                </button>
+            }
+            {isNewsScrap &&
+                <button className={styles.scrap}
+                    onClick={createNewsScrap}>
+                    <img src="../../../assets/NewsArticle/scrap_complete.png"></img>
                 </button>
             }
             <div className={styles.articleContent}>
