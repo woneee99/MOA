@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { learningApi } from '../../api/learningApi';
 import styles from './NewsArticle.module.css'
-import { async } from 'q';
+import ArticleModal from '../../components/Learning/ArticleModal';
 
 function NewsArticle(props) {
 
@@ -22,6 +22,7 @@ function NewsArticle(props) {
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
     const [translatedSentence, setTranslatedSentence] = useState('');
     const [isNewsScrap, setIsNewsScrap] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false); //모달 관련
 
     // 스크랩 여부 확인
 
@@ -122,7 +123,7 @@ function NewsArticle(props) {
     const createNewsScrap = () => {
         const data = {
             // 나중에 useState로 관리하기
-            articleOriginId: 1,
+            articleOriginId: 3,
             articleTitle: "제로베이스원 리더 성한빈, '엠카' 새 MC",
             articleContent: "TEST",
             articleLink: "https://www.nocutnews.co.kr/news/6004744",
@@ -132,6 +133,7 @@ function NewsArticle(props) {
             .then((response) => {
                 console.log(response);
                 alert('스크랩 완료');
+                setIsNewsScrap(true);
             })
             .catch((error) => {
                 console.log("뉴스스크랩 오류 발생");
@@ -139,11 +141,26 @@ function NewsArticle(props) {
             })
     }
 
+    const openModal = () => {
+        setIsModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+    }
+
+    const wordModal = (word) => {
+        console.log(word);
+        openModal();
+    }
+
 
 
     return (
         <div className={styles.container}>
+
             <img src="../../../assets/NewsArticle/background-img.png" className={styles.backgroundImg}></img>
+            
             <div className={styles.articleTitle}>제로베이스원 리더 성한빈, '엠카' 새 MC</div>
             <div className={styles.articleDate}>2023.09.24</div>
             <button className={styles.listenToSound} onClick={() =>
@@ -174,7 +191,12 @@ function NewsArticle(props) {
                                 className={articleWords.some((highlightWord) =>
                                     isWordMatching(word, highlightWord)
                                 )
-                                    ? styles.highlightWord : ''}>{word}{' '}</span>
+                                    ? styles.highlightWord : ''}
+                                onClick={() => {
+                                    if (articleWords.some((highlightWord) => isWordMatching(word, highlightWord))) {
+                                        wordModal(word);
+                                    }
+                                }}>{word}{' '}</span>
                         ))}
                     </div>
                     <div>{translatedSentence} </div>
@@ -186,6 +208,11 @@ function NewsArticle(props) {
                     {currentSentenceIndex + 1} / {articleSentences.length}</p>
                 <button onClick={goToNextIndex} className={styles.pageButton}>다음</button>
             </div>
+            
+            {!isModalOpen &&
+                <ArticleModal></ArticleModal>
+            }
+
         </div>
     );
 

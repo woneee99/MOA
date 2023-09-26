@@ -19,5 +19,5 @@ export const learningApi = {
     getIsNewsScrap : (articleOriginId) => authAxios.get(`scrap/news/check/${articleOriginId}`),
 
     // 스크랩 등록
-    createNewsScrap : (data) => authAxios.post('scrap/news', data)
+    createNewsScrap : (data) => authAxios.post('scrap/news', data),
 }
