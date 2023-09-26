@@ -1,9 +1,11 @@
 
-import React, { useEffect, useState } from 'react';
-import NewsArticleSentence from '../../components/Learning/NewsArticleSentence';
-import axios from 'axios';
+import React, { useCallback, useEffect, useState } from 'react';
+import { learningApi } from '../../api/learningApi';
+import styles from './NewsArticle.module.css'
+import { async } from 'q';
 
 function NewsArticle(props) {
+
 
     const articleSentences = [
         "신인 보이그룹 제로베이스원(ZEROBASEONE) 리더 성한빈이 엠넷 음악방송 '엠카운트다운' 새 MC가 됐다.",
@@ -13,70 +15,152 @@ function NewsArticle(props) {
         "지금까지 보여 드린 모습과는 다른 성한빈의 다양한 매력을 보여드릴 테니 제로즈(공식 팬덤명) 분들도 많이 기대해 주셨으면 한다라고 소감을 전했다."
     ]
 
+    const articleWords = [
+        "신인", "시청자", "소속사", "꿈", "영광", "행복", "동료", "성장", "모습", "기대", "소감"
+    ]
+
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
     const [translatedSentence, setTranslatedSentence] = useState('');
+    const [isNewsScrap, setIsNewsScrap] = useState(null);
+
+    // 스크랩 여부 확인
+
+    useEffect(() => {
+        learningApi.getIsNewsScrap(1)
+            .then((response) => {
+                console.log(response.data.response);
+                if (response.data.response) {
+                    setIsNewsScrap(true);
+                }
+                else {
+                    setIsNewsScrap(false);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    })
 
     useEffect(() => {
         translateSentence(articleSentences[currentSentenceIndex]);
     }, [currentSentenceIndex]);
 
     const goToNextIndex = () => {
-        if(currentSentenceIndex < articleSentences.length - 1) {
+        if (currentSentenceIndex < articleSentences.length - 1) {
             setCurrentSentenceIndex(currentSentenceIndex + 1);
         }
     };
 
     const goToPreviousIndex = () => {
-        if(currentSentenceIndex > 0) {
+        if (currentSentenceIndex > 0) {
             setCurrentSentenceIndex(currentSentenceIndex - 1);
         }
     }
 
-    const translateSentence = async (sentence) => {
-        const term = sentence;
-        const url = 'papago/n2mt';
-
-        const params = new URLSearchParams();
-        params.append('source', 'ko');
-        params.append('target', 'en');
-        params.append('text', term);
-
-        const config = {
-            baseURL: 'https://openapi.naver.com/v1/',
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                'x-naver-client-id' : '6xvYr4AONUMN4goMvGlL',
-                'x-naver-client-secret' : 'zo1l1Wd1fA',
-            }
-        }
-
-        try {
-            const resposne = await axios.post(url, params, config);
-            const translatedText = resposne.data.message.result.translatedText;
-            setTranslatedSentence(translatedText);
-            console.log(translatedText);
-        } catch(error) {
-            console.error('Translation error: ', error);
-        }
+    // 정규 표현식을 사용하여 문장을 단어로 분리
+    const splitSentenceIntoWords = (sentence) => {
+        return sentence.split(/\s+/);
     }
 
+    // 문장 단어를 받아 일치 여부 확인
+    const isWordMatching = (sentence, word) => {
+        const wordsInSentence = splitSentenceIntoWords(sentence);
+        return wordsInSentence.some((w) => w.includes(word));
+    }
+
+    // 번역
+    const translateSentence = async (sentence) => {
+        try {
+            const response = await learningApi.translateText(sentence);
+            setTranslatedSentence(response.data.response);
+        }
+        catch (error) {
+            console.error('번역 요청 실패', error);
+        }
+
+    }
+
+    let voices = [];
+
+    //TTS
+
+    useEffect(() => {
+        setVoiceList();
+    })
+
+    const setVoiceList = () => {
+        voices = window.speechSynthesis.getVoices();
+    };
+
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = setVoiceList;
+    }
+
+    const speech = (text) => {
+        const lang = "ko-KR";
+        let utterThis = new SpeechSynthesisUtterance(text);
+
+        utterThis.lang = lang;
+        utterThis.rate = 0.8;
+
+        const korVoice = voices.find(
+            (elem) => elem.lang === lang || elem.lang === lang.replace("-", "_")
+        );
+
+        if (korVoice) {
+            utterThis.voice = korVoice;
+        } else {
+            return;
+        }
+
+        window.speechSynthesis.speak(utterThis);
+    };
+
+    // 녹음 기능 구현
 
 
-  return (
-    <div>
-        <div>제로베이스원 리더 성한빈, '엠카' 새 MC</div>
-        <NewsArticleSentence sentence={articleSentences[currentSentenceIndex]} />
-        {/* <NewsArticle sentence={translatedSentence} /> */}
-        <div>
-            {currentSentenceIndex > 0 && (
-                <button onClick={goToPreviousIndex}>이전</button>
-            )}
-            {currentSentenceIndex < articleSentences.length - 1 && (
-                <button onClick={goToNextIndex}>다음</button>
-            )}
+
+    return (
+        <div className={styles.container}>
+            <img src="../../../assets/NewsArticle/background-img.png" className={styles.backgroundImg}></img>
+            <div className={styles.articleTitle}>제로베이스원 리더 성한빈, '엠카' 새 MC</div>
+            <div className={styles.articleDate}>2023.09.24</div>
+            <button className={styles.listenToSound} onClick={() =>
+                speech(articleSentences[currentSentenceIndex])}>
+                <img src="../../../assets/NewsArticle/listen-to-sound.png" alt=""></img>
+            </button>
+            <button className={styles.recordSound}>
+                <img src="../../../assets/NewsArticle/record-sound.png"></img>
+            </button>
+            {!isNewsScrap &&
+                <button className={styles.scrap}>
+                    <img src="../../../assets/NewsArticle/scrap.png"></img>
+                </button>
+            }
+            <div className={styles.articleContent}>
+                <div className={styles.articleSentences}>
+                    <div>
+                        {splitSentenceIntoWords(articleSentences[currentSentenceIndex]).map((word, index) => (
+                            <span
+                                key={index}
+                                className={articleWords.some((highlightWord) =>
+                                    isWordMatching(word, highlightWord)
+                                )
+                                    ? styles.highlightWord : ''}>{word}{' '}</span>
+                        ))}
+                    </div>
+                    <div>{translatedSentence} </div>
+                </div>
+            </div>
+            <div className={styles.pageMoving}>
+                <button onClick={goToPreviousIndex} className={styles.pageButton}>이전</button>
+                <p className={styles.pageNumbers}>
+                    {currentSentenceIndex + 1} / {articleSentences.length}</p>
+                <button onClick={goToNextIndex} className={styles.pageButton}>다음</button>
+            </div>
         </div>
-    </div>
-  );
+    );
+
 }
 
 export default NewsArticle;
