@@ -4,6 +4,7 @@ import com.ssafy.moa.api.dto.scrap.ArticleDto;
 import com.ssafy.moa.api.dto.scrap.ArticleReqDto;
 import com.ssafy.moa.api.dto.scrap.WordDto;
 import com.ssafy.moa.api.dto.scrap.WordReqDto;
+import com.ssafy.moa.api.entity.elastic.MediaInfoDocument;
 import com.ssafy.moa.api.jwt.JwtTokenProvider;
 import com.ssafy.moa.api.service.ArticleService;
 import com.ssafy.moa.api.service.WordService;
@@ -50,10 +51,13 @@ public class ScrapController {
         return success(articleService.getArticle(articleId));
     }
 
-    @Operation(summary = "스크랩북 뉴스 삭제", description = "내가 선택한 스크랩 뉴스를 삭제 할 수 있습니다.", tags = { "Scrap Controller" })
-    @DeleteMapping("/news/{articleId}")
-    public ApiResult<Long> deleteArticle(@PathVariable("articleId") Long articleId){
-        return success(articleService.deleteArticle(articleId));
+    @Operation(summary = "스크랩북 뉴스 삭제", description = "내가 선택한 스크랩 뉴스를 삭제 할 수 있습니다. <br> 뉴스에서 스크랩 삭제 : type=news&articleId={articleOriginId} <br> 스크랩북에서 뉴스 삭제 : type=scrap&articleId={articleId}", tags = { "Scrap Controller" })
+    @DeleteMapping("/news/delete")
+    public ApiResult<Long> deleteArticle(@RequestParam(name = "type") String type, @RequestParam(name = "articleId") Long articleId){
+//        String token = header.substring(7);
+//        Long memberId = jwtTokenProvider.extractMemberId(token);
+        Long memberId = 23L;
+        return success(articleService.deleteArticle(type, memberId, articleId));
     }
 
     @Operation(summary = "뉴스 스크랩 여부 조회", description = "사전에 스크랩 한 뉴스인지 스크랩여부를 조회할 수 있습니다.", tags = { "Scrap Controller" })
