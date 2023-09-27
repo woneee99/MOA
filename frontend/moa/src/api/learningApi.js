@@ -16,15 +16,18 @@ export const learningApi = {
 
     },
 
-    // 스크랩 여부 확인
+    // 뉴스 스크랩 여부 확인
     getIsNewsScrap: (articleOriginId) => authAxios.get(`scrap/news/check/${articleOriginId}`),
 
-    // 스크랩 등록
+    // 뉴스 스크랩 등록
     createNewsScrap: (data) => authAxios.post('scrap/news', data),
 
-    // 스크랩 삭제
+    // 뉴스 스크랩 삭제
     deleteNewsScrap: (articleId) => authAxios.delete(`scrap/news/delete?type=news&articleId=${articleId}`),
 
     // 뉴스 기사 조회
-    getNews: (articleId) => bigDataAxios.get(`articles/${articleId}`)
+    getNews: (articleId) => bigDataAxios.get(`articles/${articleId}`),
+
+    // 단어 스크랩 여부 조회
+    getIsWordScrap: (wordName) => authAxios.get(`scrap/words/check/${wordName}`)
 }
