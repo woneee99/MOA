@@ -1,7 +1,8 @@
-import { nonAuthAxios } from "./nonAuthAxios";
+// import { nonAuthAxios } from "./nonAuthAxios";
+import { authAxios } from './authAxios';
 
 export const quizApi = {
   getWordQuiz: () => {
-    return axios.get('/quiz/word');
+    return authAxios.get('/quiz/word');
   },
 }

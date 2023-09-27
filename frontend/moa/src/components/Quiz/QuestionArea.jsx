@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { quizApi } from '../../api/quizApi';
 
+
 function QuestionArea(props) {
   const [quizData, setQuizData] = useState(null);
 
@@ -29,6 +30,11 @@ function QuestionArea(props) {
             return(
               <div key={index}>
                 <h1>{quiz.quizQuestion}</h1>
+                <ul>
+                 {quiz.quizAnswerList.map((answer, answerIndex) => (
+                  <li key={answerIndex}>{answer}</li>
+                 ))}
+                </ul>
               </div>
             )
           })
