@@ -10,7 +10,7 @@ function ArticleModal(props) {
       <div className={styles.container}>
         <div className={styles.wordTitle}>
           <div className={styles.wordKoreanTitle}>{word}</div>
-          <div className={styles.wordPronunciation}>[Sadan Bobin]</div>
+          {/* <div className={styles.wordPronunciation}>[]</div> */}
           <button className={styles.scrap}>
             <img src="../../../assets/NewsArticle/scrap.png"></img>
           </button>
