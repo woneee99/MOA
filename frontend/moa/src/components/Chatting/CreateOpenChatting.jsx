@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { openChatApi } from '../../api/chatApi';
 
+import store from '../../store';
+
 import { useNavigate } from 'react-router-dom';
 
 import CloseButton from '../CloseButton';
 
 const createOpenChatStyle = {
+  background: 'linear-gradient(to bottom, #ffffff, silver)',
+  padding: '10px 0px',
   position: 'fixed',
   top: 0,
   right: '-100%',
@@ -16,8 +20,58 @@ const createOpenChatStyle = {
   zIndex: 999,
 };
 
+const headerStyle = {
+  display: 'block',
+  margin: '20px',
+  padding: '10px',
+  textAlign: 'left',
+};
+
 const modalOpenStyle = {
   right: 0,
+};
+
+const labelStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginRight: '10px',
+};
+
+const inputContainerStyle = {
+  display: 'flex',  // 가운데 정렬
+  margin: '20px',
+};
+
+const titleInputStyle = {
+  // display: 'block',  // 가운데 정렬
+  // margin: '20px auto',
+  padding: '10px 20px',
+  width: '80%',
+  height: '20px',
+  backgroundColor: '#f2f2f2',
+  borderRadius: '20px',
+  border: 'none',
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+};
+
+const contentInputStyle = {
+  padding: '10px 20px',
+  width: '80%',
+  height: '40px',
+  backgroundColor: '#f2f2f2',
+  borderRadius: '20px',
+  border: 'none',
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+};
+
+const createButtonStyle = {
+  background: 'linear-gradient(to bottom, lightgreen, green)',
+  color: 'white',
+  border: 'none',
+  padding: '10px 20px',
+  borderRadius: '32px',
+  cursor: 'pointer',
 };
 
 function CreateOpenChatting(props) {
@@ -26,6 +80,11 @@ function CreateOpenChatting(props) {
   const [openChatTitle, setOpenChatTitle] = useState('');
   const [openChatContent, setOpenChatContent] = useState('');
   const [imageFile, setImageFile] = useState(null); // 이미지 파일 상태 변경
+
+  // const state = store.getState();
+  // const accessToken = state.accessToken;
+
+  // console.log(accessToken);
 
   const navigate = useNavigate();
 
@@ -72,16 +131,21 @@ function CreateOpenChatting(props) {
       .catch((error) => {
         console.log('오픈채팅방 생성 에러 발생');
         console.log(error);
-      });
+      }
+    );
   };
 
   return (
     <div style={modalStyle}>
       <CloseButton onClose={props.onClose} />
-      <h3>오픈채팅방 생성</h3>
+      <h2 style={headerStyle}>오픈채팅방 생성</h2>
 
-      <div>
-        <label htmlFor="openChatImage">이미지 업로드</label>
+      <div style={inputContainerStyle}>
+        <label style={labelStyle} htmlFor="file">
+          <div>
+            이미지 업로드
+          </div>
+        </label>
         <input
           type="file"
           id="openChatImage"
@@ -90,18 +154,21 @@ function CreateOpenChatting(props) {
         />
       </div>
 
-      <div>
-        <label htmlFor="openChatTitle">제목</label>
+      <div style={inputContainerStyle}>
+        <label style={labelStyle} htmlFor="openChatTitle">제목</label>
         <input
+          style={titleInputStyle}
           type="text"
           id="openChatTitle"
           value={openChatTitle}
           onChange={handleTitleChange}
         />
       </div>
-      <div>
-        <label htmlFor="openChatContent">설명</label>
+
+      <div style={inputContainerStyle}>
+        <label style={labelStyle} htmlFor="openChatContent">설명</label>
         <input
+          style={contentInputStyle}
           type="text"
           id="openChatContent"
           value={openChatContent}
@@ -109,7 +176,7 @@ function CreateOpenChatting(props) {
         />
       </div>
 
-      <button onClick={createOpenChatRoom}>생성하기</button>
+      <button style={createButtonStyle} onClick={createOpenChatRoom}>생성하기</button>
     </div>
   );
 }
