@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { quizApi } from '../../api/quizApi';
+import { Link } from 'react-router-dom';
 
 function QuestionArea(props) {
   const [quizData, setQuizData] = useState([]);
@@ -7,6 +8,8 @@ function QuestionArea(props) {
   // TTS
   const [voices, setVoices] = useState([]);
   const [isListening, setIsListening] = useState(false);
+
+  const [showResultButton, setShowResultButton] = useState(false);
 
 
   useEffect(() => {
@@ -61,6 +64,9 @@ function QuestionArea(props) {
     if (currentQuizIndex < quizData.length - 1) {
       setCurrentQuizindex(currentQuizIndex + 1);
       setIsListening(false); // 다음 퀴즈 이동 시 듣기 비활성화 
+    } else {
+      // 현재 퀴즈가 마지막 퀴즈인 경우
+      setShowResultButton(true);
     }
   }; 
 
@@ -79,6 +85,11 @@ function QuestionArea(props) {
     }
   };
 
+  // 결과보기 버튼
+  const handleShowResult = () => {
+    console.log("결과를 보여줍니다")
+  }
+
   return (
     <div>
       {currentQuiz ? (
@@ -95,7 +106,9 @@ function QuestionArea(props) {
               <button key = {answerIndex}>{answer}</button>
             ))}
           </ul>
-          {currentQuizIndex < quizData.length -1 && (
+          {showResultButton ? (
+            <button onClick={handleShowResult}>결과보기</button>
+          ) : (
             <button onClick={handleNextQuiz}>다음</button>
           )}
         </div>
