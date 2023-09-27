@@ -32,5 +32,8 @@ export const learningApi = {
     getIsWordScrap: (wordName) => authAxios.get(`scrap/words/check/${wordName}`),
 
     // 단어 스크랩 등록
-    createWordScrap: (data) => authAxios.post('scrap/words', data)
+    createWordScrap: (data) => authAxios.post('scrap/words', data),
+
+    // 단어 스크랩 삭제
+    deleteWordScrap: (wordName) => authAxios.delete(`scrap/words/delete-news/${wordName}`),
 }

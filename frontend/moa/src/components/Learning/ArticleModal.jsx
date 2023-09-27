@@ -40,6 +40,18 @@ function ArticleModal(props) {
       })
   }
 
+  // 스크랩 삭제
+  const deleteWordScrap = () => {
+    learningApi.deleteWordScrap(word)
+      .then((response) => {
+        console.log(response);
+        setIsWordScrap(false);
+      })
+      .catch((error) => {
+        console.error('단어 스크랩 삭제 오류', error);
+      })
+  }
+
   return (
     <Fragment>
       <div className={styles.modalBackground} onClick={onCloseModal}></div>
@@ -54,7 +66,8 @@ function ArticleModal(props) {
             </button>
           }
           {isWordScrap &&
-            <button className={styles.scrap}>
+            <button className={styles.scrap}
+              onClick={deleteWordScrap}>
               <img src="../../../assets/NewsArticle/scrap_complete.png"></img>
             </button>
           }
