@@ -29,5 +29,8 @@ export const learningApi = {
     getNews: (articleId) => bigDataAxios.get(`articles/${articleId}`),
 
     // 단어 스크랩 여부 조회
-    getIsWordScrap: (wordName) => authAxios.get(`scrap/words/check/${wordName}`)
+    getIsWordScrap: (wordName) => authAxios.get(`scrap/words/check/${wordName}`),
+
+    // 단어 스크랩 등록
+    createWordScrap: (data) => authAxios.post('scrap/words', data)
 }

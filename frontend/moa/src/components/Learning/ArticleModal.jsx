@@ -7,6 +7,7 @@ function ArticleModal(props) {
 
   const [isWordScrap, setIsWordScrap] = useState(null);
 
+  // 스크랩 여부 조회
   useEffect(() => {
     learningApi.getIsWordScrap(word)
       .then((response) => {
@@ -22,6 +23,23 @@ function ArticleModal(props) {
       })
   }, [word])
 
+  // 스크랩 등록
+  const createWordScrap = () => {
+    const data = {
+      wordName: word,
+      wordMean: '테스트', // 나중에 파파고 번역한 거 값 넘겨주기
+    }
+
+    learningApi.createWordScrap(data)
+      .then((response) => {
+        console.log(response);
+        setIsWordScrap(true);
+      })
+      .catch((error) => {
+        console.log('단어 스크랩 등록 오류', error);
+      })
+  }
+
   return (
     <Fragment>
       <div className={styles.modalBackground} onClick={onCloseModal}></div>
@@ -30,7 +48,8 @@ function ArticleModal(props) {
           <div className={styles.wordKoreanTitle}>{word}</div>
           {/* <div className={styles.wordPronunciation}>[]</div> */}
           {!isWordScrap &&
-            <button className={styles.scrap}>
+            <button className={styles.scrap}
+              onClick={createWordScrap}>
               <img src="../../../assets/NewsArticle/scrap.png"></img>
             </button>
           }
