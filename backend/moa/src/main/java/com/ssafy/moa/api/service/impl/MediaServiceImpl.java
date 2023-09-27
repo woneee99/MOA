@@ -1,6 +1,8 @@
 package com.ssafy.moa.api.service.impl;
 
+import com.ssafy.moa.api.entity.elastic.MediaAutoComplete;
 import com.ssafy.moa.api.entity.elastic.MediaInfoDocument;
+import com.ssafy.moa.api.repository.elastic.MediaAutoCompleteRepository;
 import com.ssafy.moa.api.repository.elastic.MediaInfoRepository;
 import com.ssafy.moa.api.service.MediaService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class MediaServiceImpl implements MediaService {
 
     private final RestHighLevelClient restHighLevelClient;
     private final MediaInfoRepository mediaInfoRepository;
+    private final MediaAutoCompleteRepository mediaAutoCompleteRepository;
 
 
     @Override
@@ -43,7 +46,7 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public List<String> getMediaType() throws IOException {
-        SearchRequest searchRequest = new SearchRequest("media-info-example");
+        SearchRequest searchRequest = new SearchRequest("media-info-imgs");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
         TermsAggregationBuilder aggregation = new TermsAggregationBuilder("mediaTy_terms")
@@ -65,5 +68,10 @@ public class MediaServiceImpl implements MediaService {
         }
 
         return mediaTitleList;
+    }
+
+    @Override
+    public List<MediaAutoComplete> autoComplete(String mediaName) {
+        return mediaAutoCompleteRepository.autoConfig(mediaName);
     }
 }

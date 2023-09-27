@@ -1,5 +1,6 @@
 package com.ssafy.moa.api.controller;
 
+import com.ssafy.moa.api.entity.elastic.MediaAutoComplete;
 import com.ssafy.moa.api.entity.elastic.MediaInfoDocument;
 import com.ssafy.moa.api.service.MediaService;
 import com.ssafy.moa.common.utils.ApiUtils;
@@ -51,8 +52,13 @@ public class MediaController {
 //    }
 
 
-    // 미디어 재목 or 아티스트 자동완성
-
+    // 미디어 제목 or 아티스트 자동완성
+    @Operation(summary = "자동완성", description = "미디어 제목이나 아티스트 이름으로 연관되는 단어를 반환합니다.", tags = { "Media Controller" })
+    @GetMapping("/auto-complete")
+    public ApiUtils.ApiResult<List<MediaAutoComplete>> autoComplete(@RequestParam(name = "mediaName") String mediaName){
+        List<MediaAutoComplete> mediaList = mediaService.autoComplete(mediaName);
+        return success(mediaList);
+    }
 
     // 미디어 내용 자동완성
 }
