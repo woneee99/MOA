@@ -22,8 +22,8 @@ export const learningApi = {
     // 스크랩 등록
     createNewsScrap: (data) => authAxios.post('scrap/news', data),
 
-    // // 스크랩 삭제
-    // deleteNewsScrap: authAxios.delete('scrap/')
+    // 스크랩 삭제
+    deleteNewsScrap: (articleId) => authAxios.delete(`scrap/news/delete?type=news&articleId=${articleId}`),
 
     // 뉴스 기사 조회
     getNews: (articleId) => bigDataAxios.get(`articles/${articleId}`)

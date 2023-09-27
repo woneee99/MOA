@@ -175,7 +175,6 @@ function NewsArticle(props) {
         learningApi.createNewsScrap(data)
             .then((response) => {
                 console.log(response);
-                alert('스크랩 완료'); // 추후에 토스트 알림으로 바꾸고 싶다. 
                 setIsNewsScrap(true);
             })
             .catch((error) => {
@@ -185,9 +184,16 @@ function NewsArticle(props) {
     }
 
     // 스크랩 삭제
-    // const deleteNewsScrap = () => {
-
-    // }
+    const deleteNewsScrap = () => {
+        learningApi.deleteNewsScrap(articleId)
+            .then((response) => {
+                console.log(response);
+                setIsNewsScrap(false);
+            })
+            .catch((error) => {
+                console.error('스크랩 삭제 오류 발생', error);
+            })
+    }
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -227,7 +233,7 @@ function NewsArticle(props) {
             }
             {isNewsScrap &&
                 <button className={styles.scrap}
-                // onClick={deleteNewsScrap}
+                    onClick={deleteNewsScrap}
                 >
                     <img src="../../../assets/NewsArticle/scrap_complete.png"></img>
                 </button>
