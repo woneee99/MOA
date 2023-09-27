@@ -36,4 +36,7 @@ export const learningApi = {
 
     // 단어 스크랩 삭제
     deleteWordScrap: (wordName) => authAxios.delete(`scrap/words/delete-news/${wordName}`),
+
+    // chat GPT에게 질문하기
+    askToChatGpt: (data) => nonAuthAxios.post('/chat-gpt', data)
 }

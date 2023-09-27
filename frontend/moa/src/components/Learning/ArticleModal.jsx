@@ -6,6 +6,8 @@ function ArticleModal(props) {
   const { word, onCloseModal, translatedWord } = props.modalProps;
 
   const [isWordScrap, setIsWordScrap] = useState(null);
+  const [chatGptAsk, setChatGptAsk] = useState(false);
+  const [chatGptAnswer, setChatGptAnswer] = useState('');
 
   // 스크랩 여부 조회
   useEffect(() => {
@@ -52,37 +54,85 @@ function ArticleModal(props) {
       })
   }
 
+  // chatGPT에게 물어보는 상태로 변경
+  const goChatGPTAsk = () => {
+    setChatGptAsk(true);
+    const data = {
+      question: "what does " + word + " means in English?",
+    }
+
+    learningApi.askToChatGpt(data)
+      .then((response) => {
+        console.log(response);
+        setChatGptAnswer(response.data.response);
+      })
+      .catch((error) => {
+        console.log('chat gpt 오류', error);
+      })
+  }
+
+  const closeChatGpt = () => {
+    setChatGptAsk(false);
+  }
+
   return (
     <Fragment>
       <div className={styles.modalBackground} onClick={onCloseModal}></div>
       <div className={styles.container}>
-        <div className={styles.wordTitle}>
-          <div className={styles.wordKoreanTitle}>{word}</div>
-          {/* <div className={styles.wordPronunciation}>[]</div> */}
-          {!isWordScrap &&
-            <button className={styles.scrap}
-              onClick={createWordScrap}>
-              <img src="../../../assets/NewsArticle/scrap.png"></img>
+        {!chatGptAsk && ( // chatGPTAsk가 false일 때만 아래 내용을 렌더링
+          <div className={styles.wordTitle}>
+            <div className={styles.wordKoreanTitle}>{word}</div>
+            {/* <div className={styles.wordPronunciation}>[]</div> */}
+            {!isWordScrap &&
+              <button className={styles.scrap} onClick={createWordScrap}>
+                <img src="../../../assets/NewsArticle/scrap.png"></img>
+              </button>
+            }
+            {isWordScrap &&
+              <button className={styles.scrap} onClick={deleteWordScrap}>
+                <img src="../../../assets/NewsArticle/scrap_complete.png"></img>
+              </button>
+            }
+          </div>
+        )}
+        {!chatGptAsk && ( // chatGPTAsk가 false일 때만 아래 내용을 렌더링
+          <div className={styles.wordTranslation}>{translatedWord}</div>
+        )}
+        {!chatGptAsk && ( // chatGPTAsk가 false일 때만 아래 내용을 렌더링
+          <div className={styles.wordButton}>
+            <button className={styles.chatGptButton}
+              onClick={goChatGPTAsk}>
+              GPT에게 <br /> 물어보기
             </button>
-          }
-          {isWordScrap &&
-            <button className={styles.scrap}
-              onClick={deleteWordScrap}>
-              <img src="../../../assets/NewsArticle/scrap_complete.png"></img>
+            <button className={styles.BuddyButton}>
+              버디에게 <br /> 물어보기
             </button>
-          }
-        </div>
-        <div className={styles.wordTranslation}>
-          {translatedWord}
-        </div>
-        <div className={styles.wordButton}>
-          <button className={styles.chatGptButton}>
-            GPT에게 <br /> 물어보기
-          </button>
-          <button className={styles.BuddyButton}>
-            버디에게 <br /> 물어보기
-          </button>
-        </div>
+          </div>
+        )}
+        {chatGptAsk && (
+          <div>
+            <div className={styles.chatGptTitle}>
+              <button className={styles.leftArrow}
+                onClick={closeChatGpt}>
+                <img src='../../../assets/NewsArticle/left_arrow.png'
+                ></img>
+              </button>
+              <div className={styles.chatGptTitleName}>GPT</div>
+            </div>
+            <div
+              className={styles.chatGPTQuestion}
+            >What does {word} means in English?</div>
+            <img src='../../../assets/NewsArticle/chat_gpt_logo.png'
+              className={styles.chatGptLogo}></img>
+            <div className={styles.chatGptAnswerDiv}>
+            </div>
+            <div
+              className={styles.chatGPTAnswer}>
+              {chatGptAnswer}
+            </div>
+          </div>
+
+        )}
       </div>
     </Fragment>
   );
