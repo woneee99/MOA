@@ -8,6 +8,22 @@ function ArticleModal(props) {
   const [isWordScrap, setIsWordScrap] = useState(null);
   const [chatGptAsk, setChatGptAsk] = useState(false);
   const [chatGptAnswer, setChatGptAnswer] = useState('');
+  const [text, setText] = useState('');
+  const [count, setCount] = useState(0);
+
+  // 타이핑 효과
+  useEffect(() => {
+    if (chatGptAnswer.length > 0) {
+      const interval = setInterval(() => {
+        setText(text + chatGptAnswer[count]);
+        setCount(count + 1);
+      }, 50);
+      if (count == chatGptAnswer.length) {
+        clearInterval(interval);
+      }
+      return () => clearInterval(interval)
+    }
+  })
 
   // 스크랩 여부 조회
   useEffect(() => {
@@ -73,6 +89,9 @@ function ArticleModal(props) {
 
   const closeChatGpt = () => {
     setChatGptAsk(false);
+    setChatGptAnswer('');
+    setText('');
+    setCount(0);
   }
 
   return (
@@ -128,7 +147,7 @@ function ArticleModal(props) {
             </div>
             <div
               className={styles.chatGPTAnswer}>
-              {chatGptAnswer}
+              {text}
             </div>
           </div>
 
