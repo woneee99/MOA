@@ -14,6 +14,6 @@ public interface MediaAutoCompleteRepository extends ElasticsearchRepository<Med
     List<MediaAutoComplete> searchByTitleNm(String mediaName);
 
     @Query("{\"match\": {\"titleNm.ngram\": {\"query\": \"?0\"}}}")
-    List<MediaAutoComplete> autoConfig(String mediaName);
+    List<MediaAutoComplete> findByTitleNm(String mediaName);
 
 }
