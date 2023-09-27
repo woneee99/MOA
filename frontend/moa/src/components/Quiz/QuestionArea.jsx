@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { quizApi } from '../../api/quizApi';
 
-
 function QuestionArea(props) {
-  const [quizData, setQuizData] = useState(null);
+  const [quizData, setQuizData] = useState([]);
+  const [currentQuizIndex, setCurrentQuizindex] = useState(0);
+  // TTS
+  const [voices, setVoices] = useState([]);
+  const [isListening, setIsListening] = useState(false);
+
 
   useEffect(() => {
     // 퀴즈 데이터 가져오기
@@ -11,7 +15,7 @@ function QuestionArea(props) {
       try {
         const response = await quizApi.getWordQuiz(); // 퀴즈 데이터 가져오기 
         setQuizData(response.data.response); // 가져온 데이터 상태에 설정
-        console.log(response.data.response);
+        console.log('퀴즈 데이터',response.data.response);
       } catch (error) {
         console.error('퀴즈 데이터 가져오는 중 에러 발생:', error);
       }
@@ -20,49 +24,84 @@ function QuestionArea(props) {
     fetchQuizData();
   },[]);
 
+  // TTS 
+  useEffect(() => {
+    setVoiceList();
+  }, []);
+
+  const setVoiceList = () => {
+    setVoices(window.speechSynthesis.getVoices());
+  };
+
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = setVoiceList;
+  }
+
+  const speech = (text) => {
+    const lang = "ko-KR";
+    let utterThis = new SpeechSynthesisUtterance(text);
+
+    utterThis.lang = lang;
+    utterThis.rate = 0.8;
+
+    const korVoice = voices.find(
+      (elem) => elem.lang === lang || elem.lang === lang.replace("-","_")
+    );
+
+    if (korVoice) {
+      utterThis.voice = korVoice;
+      window.speechSynthesis.speak(utterThis);
+    } else {
+      console.error("한국어 음성 데이터를 찾을 수 없습니다.")
+    }
+  };
+
+  // 한 문제씩 가져오는 함수
+  const handleNextQuiz = () => {
+    if (currentQuizIndex < quizData.length - 1) {
+      setCurrentQuizindex(currentQuizIndex + 1);
+      setIsListening(false); // 다음 퀴즈 이동 시 듣기 비활성화 
+    }
+  }; 
+
+  const currentQuiz = quizData[currentQuizIndex];
+
+  // TTS 
+  const toggleListening = () => {
+    setIsListening(!isListening);
+
+    if (!isListening) {
+      // 듣기 모드일 때 퀴즈 읽기
+      speech(currentQuiz.quizQuestion);
+    } else {
+      // 듣기 모드 해제 시 읽기 중지
+      window.speechSynthesis.cancel();
+    }
+  };
 
   return (
     <div>
-      
-        {quizData ? (
-
-          quizData.map((quiz, index) => {
-            return(
-              <div key={index}>
-                <h1>{quiz.quizQuestion}</h1>
-                <ul>
-                 {quiz.quizAnswerList.map((answer, answerIndex) => (
-                  <li key={answerIndex}>{answer}</li>
-                 ))}
-                </ul>
-              </div>
-            )
-          })
-          // quizData.map((quiz, index)=>(
-          //   <div key={index}>
-          //     <h1>{quiz.quizQuestion}</h1>
-          //     <ul>
-          //       {quiz.quizAnswerList.map((answer, answerIndex) => (
-          //         <li key={answerIndex}>{answer}</li>
-          //       ))}
-          //     </ul>
-          //   </div>
-          // ))
-
-          
-          // <div>
-          //   <h1>{quizData}</h1>
-          //     {quizData.map((answer, index) => {
-          //       return (
-          //         // <div key={index}>{answer.quizQuestion}</div>
-          //         <div key={index}>{answer.quizAnswerList}</div>
-          //         // <div key={index}>{answer.quizQuestion}</div>
-          //       )
-          //     })}
-          // </div>
-        ) : (
-          <p>로딩 중...</p>
-        )}
+      {currentQuiz ? (
+        <div>
+          {currentQuiz.quizCategoryId === 2 ? (
+            <button onClick={toggleListening}>
+              {isListening ? "듣기 중지" : "듣기"}
+            </button>
+          ) : (
+            <h1>{currentQuiz.quizQuestion}</h1> 
+          )}
+          <ul>
+            {currentQuiz.quizAnswerList.map((answer,answerIndex) =>(
+              <button key = {answerIndex}>{answer}</button>
+            ))}
+          </ul>
+          {currentQuizIndex < quizData.length -1 && (
+            <button onClick={handleNextQuiz}>다음</button>
+          )}
+        </div>
+      ) : (
+        <p>로딩중...</p>
+      )}
     </div>
   );
 }

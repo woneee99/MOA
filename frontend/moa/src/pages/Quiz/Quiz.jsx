@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-import BackButton from '../../components/BackButton';
+import AppBar from '../../components/AppBar';
+import styles from '../../styles/Quiz/Quiz.module.css'
 
 function Quiz(props) {
   const [questions, setQuestions] = useState([]);
@@ -17,15 +17,17 @@ function Quiz(props) {
 
   return (
     <div>
-      <BackButton />
-      <h1>일상 한국어 배우기</h1>
-      <div>
-        <Link to="/quiz/question-page">
-          <button>퀴즈풀기</button>
-        </Link>
-        <Link to="/quiz/incorrect-note">
-          <button>오답노트</button>
-        </Link>
+      <AppBar />
+      <div className={styles.quizContainer}>
+        <h1>일상 한국어 배우기</h1>
+        <div>
+          <Link to="/quiz/question-page">
+            <button>퀴즈풀기</button>
+          </Link>
+          <Link to="/quiz/incorrect-note">
+            <button>오답노트</button>
+          </Link>
+        </div>
       </div>
 
     </div>
