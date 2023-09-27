@@ -5,8 +5,25 @@ from typing import List, Optional
 import logging
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# CORS 미들웨어 설정
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://moamore.site",
+    "https://moamore.site",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],  
+)
 
 # MongoDB에 연결
 mongo_uri = "mongodb://localhost:27017/"
@@ -43,10 +60,46 @@ def get_top_words(top_n: int = Query(30, description="빈도 상위 30개 단어
                 {"$limit": top_n}
             ])
         )
-        return top_words
+        response_data = [{"text": word["_id"], "value": word["count"]} for word in top_words]
+
+        return response_data
     except Exception as e:
         logger.error(str(e))
         raise
+
+# 키워드 연관 단어의 상위 N개 가져오기
+@app.get("/words/top/{word}")
+def get_top_related_words(word: str, top_n: int = Query(30, description="빈도 상위 30개 단어 수")):
+    try:
+        # 특정 단어를 포함하는 기사 목록 가져오기
+        word_cursor = words_collection.find({"word": word})
+        article_ids = [word["article_id"] for word in word_cursor]
+
+        # 해당 기사들에 포함된 모든 단어 가져오기
+        all_words_cursor = words_collection.find({"article_id": {"$in": article_ids}})
+        all_words = [word["word"] for word in all_words_cursor]
+
+        # 단어 빈도수 계산
+        word_counts = {}
+        for w in all_words:
+            if w != word:  # 검색어 자체는 제외
+                if w in word_counts:
+                    word_counts[w] += 1
+                else:
+                    word_counts[w] = 1
+
+        # 빈도 상위 N개 단어 추출
+        sorted_words = sorted(word_counts.items(), key=lambda x: x[1], reverse=True)
+        top_words = sorted_words[:top_n]
+
+        # 응답 데이터 구성
+        response_data = [{"text": word, "value": count} for word, count in top_words]
+
+        return response_data
+    except Exception as e:
+        logger.error(str(e))
+        raise
+
 
 # 특정 단어를 포함하는 기사 목록 가져오기
 @app.get("/articles/with_word")
@@ -144,6 +197,21 @@ def get_word(word_id: int):
         if not word:
             raise ItemNotFoundError(word_id)  # 오류 발생
         return word
+    except ItemNotFoundError as e:
+        logger.error(str(e))
+        raise
+    except Exception as e:
+        logger.error(str(e))
+        raise
+
+# 특정 기사 내  단어 목록  가져오기
+@app.get("/words/in-article/{article_id}")
+def get_words_in_article(article_id: int):
+    try:
+        words_cursor = words_collection.find({"article_id": article_id}).distinct("word")
+        if not words_cursor:
+            raise ItemNotFoundError(article_id)  # 오류 발생
+        return words_cursor
     except ItemNotFoundError as e:
         logger.error(str(e))
         raise

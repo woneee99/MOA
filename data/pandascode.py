@@ -38,7 +38,7 @@ stopwords = ['"', ',', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\
      '한다', '한테', '할', '해', '해야', '했다', '후', '히', '돼다', '밝히다', '지난', '며', '위',
      '까지', '위해', '제', '이번', '부터', '차', '오다', '시', '및', '날', '달', '뉴스', '김',
      '라며', '대다', '간', '에도', '계', '당', '연', '이후', '권', '성', '이상', '들다', '조', '비',
-     'kr', '최근', 'LG', '\n\n\n\n', '\\n\\n\\n\\n'
+     'kr', '최근', 'LG', '\n\n\n\n', '\\n\\n\\n\\n', '오전', '오후', '연합뉴스', '뉴시스', 
 ]
 
 # 문장과 단어 데이터를 저장할 리스트
@@ -59,7 +59,7 @@ for i, article in enumerate(data):
         words = okt.morphs(sentence, stem=True)
         words = [word for word in words if word not in stopwords]
         for word_id, word in enumerate(words):
-            if len(word) <= 1:
+            if len(word) <= 1 or word[0] in ',".0123456789\\△!@#$%^&*()_-=+[]{}|\\;:<>.,/?~`\'"\\n\\t\\':
                 continue
             words_data.append({"article_id": i, "sentence_id": sentence_id, "word_id": word_id, "word": word})
 
