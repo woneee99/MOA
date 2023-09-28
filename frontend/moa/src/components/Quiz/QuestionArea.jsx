@@ -10,9 +10,9 @@ function QuestionArea(props) {
   const [showResultButton, setShowResultButton] = useState(false);
 
   // 정답 처리
-  const [userAnswer, setUserAnswer] = useState(''); // 사용자 답 저장
+  // const [userAnswer, setUserAnswer] = useState(''); 
   const [isCorrect, setIsCorrect] = useState(null); // 정답 여부 저장 
-
+  const [correctAnswers, setCorrectAnswers] = useState(0);
 
   useEffect(() => {
     // 퀴즈 데이터 가져오기
@@ -65,11 +65,38 @@ function QuestionArea(props) {
     }
   };
 
+  // 정답 확인 함수
+  const checkAnswer = async (userAnswer) => {
+    try {
+      console.log('사용자 답:', userAnswer);
+      const response = await quizApi.submitAnswer({
+        quizId: currentQuiz.quizId,
+        quizSubmitAnswer: userAnswer, // 사용자 답 저장 
+      });
+
+      console.log('서버응답:', response.data.response.quizAnswer);
+      const isAnswerCorrect = response.data.response.isQuizCorrect;
+
+      if (isAnswerCorrect){
+        // 정답 처리
+        setCorrectAnswers(correctAnswers + 1);
+        console.log('정답입니다!');
+      } else {
+        // 오답 처리
+        console.log('틀렸습니다!')
+      }
+      setIsCorrect(isAnswerCorrect);
+    } catch (error) {
+      console.error('정답 확인 중 에러 발생 :', error);
+    }
+  }
+
   // 한 문제씩 가져오는 함수
   const handleNextQuiz = () => {
     if (currentQuizIndex < quizData.length - 1) {
       setCurrentQuizindex(currentQuizIndex + 1);
       setIsListening(false); // 다음 퀴즈 이동 시 듣기 비활성화 
+      setIsCorrect(null); // 다음 문제 넘어갈 때 정답 초기화 
     } else {
       // 현재 퀴즈가 마지막 퀴즈인 경우
       setShowResultButton(true);
@@ -93,31 +120,10 @@ function QuestionArea(props) {
 
   // 결과보기 버튼
   const handleShowResult = () => {
-    console.log("결과를 보여줍니다")
+    console.log("결과를 보여줍니다", correctAnswers);
   }
 
-  // 정답 확인 함수
-  const checkAnswer = async () => {
-    try {
-      const response = await quizApi.submitAnswer({
-        quizId: currentQuiz.quizId,
-        quizSubmitAnswer: userAnswer, // 사용자 답 저장 
-      });
 
-      const isAnswerCorrect = response.data.response.isQuizCorrect;
-      setIsCorrect(isAnswerCorrect);
-
-      if (isAnswerCorrect){
-        // 정답 처리
-        console.log('정답입니다!');
-      } else {
-        // 오답 처리
-        console.log('틀렸습니다!')
-      }
-    } catch (error) {
-      console.error('정답 확인 중 에러 발생 :', error);
-    }
-  }
 
   return (
     <div>
@@ -138,8 +144,8 @@ function QuestionArea(props) {
               <button 
                 key = {answerIndex}
                 onClick={() => {
-                  setUserAnswer(answer);
-                  checkAnswer(); // 정답 확인 함수 호출 
+                  // setUserAnswer(answer);
+                  checkAnswer(answer); // 정답 확인 함수 호출 
                 }}
                 disabled={isCorrect !== null}
               >

@@ -1,9 +1,9 @@
-// import { nonAuthAxios } from "./nonAuthAxios";
+import { nonAuthAxios } from "./nonAuthAxios";
 import { authAxios } from './authAxios';
 
 export const quizApi = {
   getWordQuiz: () => {
-    return authAxios.get('/quiz/word');
+    return nonAuthAxios.get('/quiz/word');
   },
 
   // 정답 확인
