@@ -40,25 +40,36 @@ function ExchangeDiary(props) {
   return (
     <div className={styles.container}>
       <Logo></Logo>
-      <p>교환일기</p>
 
-      <div>
+
+      <div className={styles.diary}>
+        <img className={styles.diaryImg}
+          src='../../../assets/ExchangeDiary/diary_img.png'></img>
+
+        <div className={styles.diaryTitle}>
+          <p className={styles.diaryTitleText}>교환일기</p></div>
+
+      </div>
+
+      {/* <p>교환일기</p> */}
+
+      {/* <div>
         <Link to="/buddy/exchangediary/create">
           <button>생성하기</button>
         </Link>
-      </div>
+      </div> */}
 
       {/* 검색 필터 */}
-      <div>
+      {/* <div>
         <label htmlFor="searchInput">검색 | </label>
         <input type="text" id="searchInput" />
       </div>
 
-      <hr />
+      <hr /> */}
 
       {/* 일기 리스트에 따른 일기 나열 */}
       {/* 같은 날짜일 때 묶어서 component화 해야함 */}
-      {diaries.map((diary, index) => {
+      {/* {diaries.map((diary, index) => {
         const exchangeDiaryId = diary.exchangeDiaryId;
 
         return (
@@ -70,7 +81,7 @@ function ExchangeDiary(props) {
         );
       })}
 
-      <BackButton />
+      <BackButton /> */}
     </div>
   );
 }
