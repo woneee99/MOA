@@ -47,6 +47,37 @@
     color: #000000;
 }
 
+.button {
+    display: flex;
+    width: 130px;
+    height: 15px;
+    padding: 17px 65px;
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: #FFEDD8;
+    text-decoration: none;
+    color: #F58A4E;
+    font-weight: bold;
+    font-size: 20px;
+    
+  }
+
+.button_view {
+    position: absolute;
+    bottom: 330px;
+    left: 100px;
+}
+
+.button_write {
+    position: absolute;
+    bottom: 275px;
+    left: 100px;
+}
+
 @font-face {
     font-family: 'KCC-Ganpan';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCC-Ganpan.woff2') format('woff2');

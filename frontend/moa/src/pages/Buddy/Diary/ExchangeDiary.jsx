@@ -48,16 +48,19 @@ function ExchangeDiary(props) {
 
         <div className={styles.diaryTitle}>
           <p className={styles.diaryTitleText}>교환일기</p></div>
-
       </div>
 
-      {/* <p>교환일기</p> */}
-
-      {/* <div>
-        <Link to="/buddy/exchangediary/create">
-          <button>생성하기</button>
+      <div>
+        <Link to="/buddy/exchangediary/create" className={`${styles.button} ${styles.button_view}`}>
+          일기 보기
         </Link>
-      </div> */}
+      </div>
+      
+      <div>
+        <Link to="/buddy/exchangediary/create" className={`${styles.button} ${styles.button_write}`}>
+          일기 쓰기
+        </Link>
+      </div>
 
       {/* 검색 필터 */}
       {/* <div>
