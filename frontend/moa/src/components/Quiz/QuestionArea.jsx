@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { quizApi } from '../../api/quizApi';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
+import MenuHeader from '../MenuHeader';
 
 function QuestionArea(props) {
   const [quizData, setQuizData] = useState([]);
@@ -78,9 +79,9 @@ function QuestionArea(props) {
 
       if (isAnswerCorrect){
         setCorrectAnswers(correctAnswers + 1);
-        setAnswerMessage('정답입니다!');
+        setAnswerMessage('맞았어요!');
       } else {
-        setAnswerMessage('틀렸습니다!')
+        setAnswerMessage('틀렸어요!')
       }
 
       setShowAnswerModal(true);
@@ -140,6 +141,7 @@ function QuestionArea(props) {
 
   return (
     <div>
+      <MenuHeader title="단어퀴즈"/>
       {currentQuiz ? (
         <div>
           <h1>
@@ -183,7 +185,6 @@ function QuestionArea(props) {
 
       <Modal show={showAnswerModal} >
         <Modal.Body>{answerMessage}</Modal.Body>
-
       </Modal>
     </div>
   );
