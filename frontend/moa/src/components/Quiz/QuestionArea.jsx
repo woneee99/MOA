@@ -18,9 +18,8 @@ function QuestionArea(props) {
     // 퀴즈 데이터 가져오기
     const fetchQuizData = async () => {
       try {
-        const response = await quizApi.getWordQuiz(); // 퀴즈 데이터 가져오기 
-        setQuizData(response.data.response); // 가져온 데이터 상태에 설정
-        // console.log('퀴즈 데이터',response.data.response);
+        const response = await quizApi.getWordQuiz(); 
+        setQuizData(response.data.response); 
       } catch (error) {
         console.error('퀴즈 데이터 가져오는 중 에러 발생:', error);
       }
@@ -30,7 +29,7 @@ function QuestionArea(props) {
     if (quizData.length === 0 && !showResultButton) {
       fetchQuizData();
     }
-  },[quizData, showResultButton]); // 퀴즈가 바뀔 때만 useEffect 발생 
+  },[quizData, showResultButton]); // 퀴즈가 바뀔 때만
 
   // TTS 
   useEffect(() => {
@@ -71,7 +70,7 @@ function QuestionArea(props) {
       console.log('사용자 답:', userAnswer);
       const response = await quizApi.submitAnswer({
         quizId: currentQuiz.quizId,
-        quizSubmitAnswer: userAnswer, // 사용자 답 저장 
+        quizSubmitAnswer: userAnswer, 
       });
 
       console.log('서버응답:', response.data.response.quizAnswer);
@@ -95,7 +94,7 @@ function QuestionArea(props) {
   const handleNextQuiz = () => {
     if (currentQuizIndex < quizData.length - 1) {
       setCurrentQuizindex(currentQuizIndex + 1);
-      setIsListening(false); // 다음 퀴즈 이동 시 듣기 비활성화 
+      setIsListening(false); 
       setIsCorrect(null); // 다음 문제 넘어갈 때 정답 초기화 
     } else {
       // 현재 퀴즈가 마지막 퀴즈인 경우
@@ -110,15 +109,13 @@ function QuestionArea(props) {
     setIsListening(!isListening);
 
     if (!isListening) {
-      // 듣기 모드일 때 퀴즈 읽기
       speech(currentQuiz.quizQuestion);
     } else {
-      // 듣기 모드 해제 시 읽기 중지
       window.speechSynthesis.cancel();
     }
   };
 
-  // 결과보기 버튼
+  // 결과
   const handleShowResult = () => {
     console.log("결과를 보여줍니다", correctAnswers);
   }
@@ -133,11 +130,17 @@ function QuestionArea(props) {
             문제 {currentQuizIndex + 1} 번 
           </h1>
           {currentQuiz.quizCategoryId === 2 ? (
-            <button onClick={toggleListening}>
-              {isListening ? "듣기 중지" : "듣기"}
-            </button>
+            <div>
+              <p>다음 단어를 듣고 맞춰보세요</p>
+              <button onClick={toggleListening}>
+                {isListening ? "듣기 중지" : "듣기"}
+              </button>
+            </div>
           ) : (
-            <h1>{currentQuiz.quizQuestion}</h1> 
+            <div>
+              <p>다음 단어의 뜻을 맞춰보세요</p>
+              <h1>{currentQuiz.quizQuestion}</h1> 
+            </div>
           )}
           <ul>
             {currentQuiz.quizAnswerList.map((answer,answerIndex) =>(
@@ -145,7 +148,7 @@ function QuestionArea(props) {
                 key = {answerIndex}
                 onClick={() => {
                   // setUserAnswer(answer);
-                  checkAnswer(answer); // 정답 확인 함수 호출 
+                  checkAnswer(answer); // 정답 확인
                 }}
                 disabled={isCorrect !== null}
               >
