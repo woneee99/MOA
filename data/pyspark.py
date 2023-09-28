@@ -3,6 +3,7 @@ from pyspark.sql.functions import udf
 from pyspark.sql.types import IntegerType, StringType, StructType, StructField
 from konlpy.tag import Okt
 from pymongo import MongoClient
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 # Spark 세션 생성
 spark = SparkSession.builder \
@@ -50,6 +51,7 @@ stopwords = set(['"', ',', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
 articles_data = []
 sentences_data = []
 words_data = []
+tfidf_data = []
 
 for i, article in enumerate(data):
     # 기사 데이터 저장
@@ -125,6 +127,25 @@ words_df.write \
     .mode("overwrite") \
     .format("com.mongodb.spark.sql.DefaultSource") \
     .save()
+
+# TF-IDF 벡터화
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+corpus = [article["content"] for article in articles_data]
+
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_matrix = tfidf_vectorizer.fit_transform(corpus)
+
+# MongoDB에 TF-IDF 벡터 저장
+mongo_uri = "mongodb://localhost:27017/"
+client = MongoClient(mongo_uri)
+db = client["moa"]
+collection = db["articlesample"]
+
+for i, article in enumerate(articles_data):
+    tfidf_vector = tfidf_matrix[i].toarray().tolist()[0]
+    article["tfidf_vector"] = tfidf_vector
+    collection.update_one({"article_id": article["article_id"]}, {"$set": {"tfidf_vector": tfidf_vector}})
 
 # Spark 세션 종료
 spark.stop()
