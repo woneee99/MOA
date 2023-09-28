@@ -21,7 +21,6 @@ import QuestionPage from './pages/Quiz/QuestionPage';
 import IncorrectNote from './pages/Quiz/IncorrectNote';
 import BuddyHome from './components/BuddyHome';
 import QuizResult from './pages/Quiz/QuizResult';
-import BuddyHome from './components/BuddyHome';
 import ExchangeDiary from './pages/Buddy/Diary/ExchangeDiary';
 import ExchangeDiaryDetail from './pages/Buddy/Diary/ExchangeDiaryDetail';
 import CreateExchangeDiary from './pages/Buddy/Diary/CreateExchangeDiary';
