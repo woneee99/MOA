@@ -16,6 +16,7 @@ import LearningKeyword from './pages/Learning/LearningMyKeyword';
 import WordLearning from './pages/Learning/WordLearning';
 import KoreanLearningDefault from './pages/Learning/KoreanLearningDefault';
 // import QnABoard from './pages/QnA/QnABoard';
+import QuizHome from './components/QuizHome';
 import Quiz from './pages/Quiz/Quiz';
 import QuestionPage from './pages/Quiz/QuestionPage';
 import IncorrectNote from './pages/Quiz/IncorrectNote';
