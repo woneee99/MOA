@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { quizApi } from '../../api/quizApi';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 
 function QuestionArea(props) {
@@ -121,7 +121,7 @@ function QuestionArea(props) {
   };
 
   // 결과
-  const location = useLocation();
+  // const location = useLocation();
   const navigate = useNavigate();
   const handleShowResult = async() => {
     try {
