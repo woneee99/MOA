@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { diaryApi } from '../../../api/diaryApi';
-
 import { useNavigate } from 'react-router-dom';
-
 import BackButton from '../../../components/BackButton';
 
-function CreateExchangeDiary(props) {
+function CreateExchangeDiary() {
   const [exchangeDiaryContent, setExchangeDiaryContent] = useState('');
   const [imageFile, setImageFile] = useState(null);
 
@@ -14,37 +12,44 @@ function CreateExchangeDiary(props) {
   const handleContentChange = (e) => {
     setExchangeDiaryContent(e.target.value);
   };
+
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]); // 이미지 파일 설정
   };
+  
+  const exchangeDiaryRequest = {
+    exchangeDiaryContent: exchangeDiaryContent,
+  };
 
   const createDiary = () => {
-    const exchangeDiaryRequest = {
-      exchangeDiaryContent: exchangeDiaryContent,
-    };
-
     const formData = new FormData();
-    const jsonBlob = new Blob([JSON.stringify(exchangeDiaryRequest)], { type: "application/json" });
 
+    const jsonBlob = new Blob([JSON.stringify(exchangeDiaryRequest)], { type: "application/json" });
+   
     formData.append('exchangeDiaryRequest', jsonBlob);
-    formData.append('multipartFile', imageFile);
+
+    if (imageFile) {
+      formData.append('multipartFile', imageFile);
+    }
 
     const headers = {
       'Content-Type': 'multipart/form-data',
     };
 
     diaryApi.createDiary(formData, { headers })
-    .then((response) => {
-      alert('일기가 생성되었습니다!');
-      navigate('/buddy/exchangediary');
-    })
-    .catch((error) => {
-      console.log('교환일기 생성 에러 발생');
-      console.log(error);
-    })
+      .then((response) => {
+        if (response.data.success) {
+          alert('일기가 생성되었습니다!');
+          navigate('/buddy/exchangediary');
+        } else {
+          console.log('교환일기 생성 실패:', response.data.error.message);
+        }
+      })
+      .catch((error) => {
+        console.error('교환일기 생성 에러 발생:', error);
+      });
+  };
 
-
-  }
   return (
     <div>
       <BackButton />
