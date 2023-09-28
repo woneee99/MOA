@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { quizApi } from '../../api/quizApi';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 
 function QuestionArea(props) {
@@ -73,7 +73,7 @@ function QuestionArea(props) {
         quizId: currentQuiz.quizId,
         quizSubmitAnswer: userAnswer, 
       });
-      
+
       const isAnswerCorrect = response.data.response.isQuizCorrect;
 
       if (isAnswerCorrect){
@@ -121,6 +121,7 @@ function QuestionArea(props) {
   };
 
   // 결과
+  const location = useLocation();
   const navigate = useNavigate();
   const handleShowResult = async() => {
     try {
@@ -128,7 +129,8 @@ function QuestionArea(props) {
         correctQuizAnswerCnt : correctAnswers,
       });
       console.log('퀴즈 완료 응답', response.data);
-      navigate('/quiz/quiz-result');
+      
+      navigate('/quiz/quiz-result',{ state : correctAnswers });
     } catch (error) {
       console.error('퀴즈 완료 API 호출 중 에러:', error);
     }
