@@ -10,4 +10,9 @@ export const quizApi = {
   submitAnswer: (data) => {
     return authAxios.post('/quiz', data);
   },
+
+  // 퀴즈 완료(정답 수)
+  finishQuiz : (correctQuizAnswerCnt) => {
+    return authAxios.put('/quiz/finish', correctQuizAnswerCnt);
+  }
 };

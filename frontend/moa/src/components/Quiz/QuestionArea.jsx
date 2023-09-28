@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { quizApi } from '../../api/quizApi';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 
 function QuestionArea(props) {
   const [quizData, setQuizData] = useState([]);
@@ -9,9 +10,10 @@ function QuestionArea(props) {
   const [isListening, setIsListening] = useState(false);
   const [showResultButton, setShowResultButton] = useState(false);
 
-  // 정답 처리
-  // const [userAnswer, setUserAnswer] = useState(''); 
-  const [isCorrect, setIsCorrect] = useState(null); // 정답 여부 저장 
+  const [answerMessage, setAnswerMessage] = useState('');
+  const [showAnswerModal, setShowAnswerModal] = useState(false);
+
+  const [isCorrect, setIsCorrect] = useState(null);
   const [correctAnswers, setCorrectAnswers] = useState(0);
 
   useEffect(() => {
@@ -67,23 +69,27 @@ function QuestionArea(props) {
   // 정답 확인 함수
   const checkAnswer = async (userAnswer) => {
     try {
-      console.log('사용자 답:', userAnswer);
       const response = await quizApi.submitAnswer({
         quizId: currentQuiz.quizId,
         quizSubmitAnswer: userAnswer, 
       });
-
-      console.log('서버응답:', response.data.response.quizAnswer);
+      
       const isAnswerCorrect = response.data.response.isQuizCorrect;
 
       if (isAnswerCorrect){
-        // 정답 처리
         setCorrectAnswers(correctAnswers + 1);
-        console.log('정답입니다!');
+        setAnswerMessage('정답입니다!');
       } else {
-        // 오답 처리
-        console.log('틀렸습니다!')
+        setAnswerMessage('틀렸습니다!')
       }
+
+      setShowAnswerModal(true);
+
+      setTimeout(() => {
+        setShowAnswerModal(false);
+        handleNextQuiz();
+      }, 1000)
+
       setIsCorrect(isAnswerCorrect);
     } catch (error) {
       console.error('정답 확인 중 에러 발생 :', error);
@@ -95,9 +101,8 @@ function QuestionArea(props) {
     if (currentQuizIndex < quizData.length - 1) {
       setCurrentQuizindex(currentQuizIndex + 1);
       setIsListening(false); 
-      setIsCorrect(null); // 다음 문제 넘어갈 때 정답 초기화 
+      setIsCorrect(null); 
     } else {
-      // 현재 퀴즈가 마지막 퀴즈인 경우
       setShowResultButton(true);
     }
   }; 
@@ -116,8 +121,17 @@ function QuestionArea(props) {
   };
 
   // 결과
-  const handleShowResult = () => {
-    console.log("결과를 보여줍니다", correctAnswers);
+  const navigate = useNavigate();
+  const handleShowResult = async() => {
+    try {
+      const response = await quizApi.finishQuiz({
+        correctQuizAnswerCnt : correctAnswers,
+      });
+      console.log('퀴즈 완료 응답', response.data);
+      navigate('/quiz/quiz-result');
+    } catch (error) {
+      console.error('퀴즈 완료 API 호출 중 에러:', error);
+    }
   }
 
 
@@ -147,8 +161,7 @@ function QuestionArea(props) {
               <button 
                 key = {answerIndex}
                 onClick={() => {
-                  // setUserAnswer(answer);
-                  checkAnswer(answer); // 정답 확인
+                  checkAnswer(answer);
                 }}
                 disabled={isCorrect !== null}
               >
@@ -159,12 +172,17 @@ function QuestionArea(props) {
           {showResultButton ? (
             <button onClick={handleShowResult}>결과보기</button>
           ) : (
-            <button onClick={handleNextQuiz} disabled={isCorrect === null}>다음</button>
+            <div></div>
           )}
         </div>
       ) : (
         <p>로딩중...</p>
       )}
+
+      <Modal show={showAnswerModal} >
+        <Modal.Body>{answerMessage}</Modal.Body>
+
+      </Modal>
     </div>
   );
 }
