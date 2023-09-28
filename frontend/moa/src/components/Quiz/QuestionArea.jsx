@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 function QuestionArea(props) {
   const [quizData, setQuizData] = useState([]);
   const [currentQuizIndex, setCurrentQuizindex] = useState(0);
-  // TTS
   const [voices, setVoices] = useState([]);
   const [isListening, setIsListening] = useState(false);
-
   const [showResultButton, setShowResultButton] = useState(false);
+
+  // 정답 처리
+  const [userAnswer, setUserAnswer] = useState(''); // 사용자 답 저장
+  const [isCorrect, setIsCorrect] = useState(null); // 정답 여부 저장 
 
 
   useEffect(() => {
@@ -18,27 +20,31 @@ function QuestionArea(props) {
       try {
         const response = await quizApi.getWordQuiz(); // 퀴즈 데이터 가져오기 
         setQuizData(response.data.response); // 가져온 데이터 상태에 설정
-        console.log('퀴즈 데이터',response.data.response);
+        // console.log('퀴즈 데이터',response.data.response);
       } catch (error) {
         console.error('퀴즈 데이터 가져오는 중 에러 발생:', error);
       }
     };
 
-    fetchQuizData();
-  },[]);
+    // 배열이 비어있을 때만 데이터를 가져오는 조건 
+    if (quizData.length === 0 && !showResultButton) {
+      fetchQuizData();
+    }
+  },[quizData, showResultButton]); // 퀴즈가 바뀔 때만 useEffect 발생 
 
   // TTS 
   useEffect(() => {
+    const setVoiceList = () => {
+      setVoices(window.speechSynthesis.getVoices());
+    };
+
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = setVoiceList;
+    }
+
     setVoiceList();
   }, []);
 
-  const setVoiceList = () => {
-    setVoices(window.speechSynthesis.getVoices());
-  };
-
-  if (window.speechSynthesis.onvoiceschanged !== undefined) {
-    window.speechSynthesis.onvoiceschanged = setVoiceList;
-  }
 
   const speech = (text) => {
     const lang = "ko-KR";
@@ -90,10 +96,36 @@ function QuestionArea(props) {
     console.log("결과를 보여줍니다")
   }
 
+  // 정답 확인 함수
+  const checkAnswer = async () => {
+    try {
+      const response = await quizApi.submitAnswer({
+        quizId: currentQuiz.quizId,
+        quizSubmitAnswer: userAnswer, // 사용자 답 저장 
+      });
+
+      const isAnswerCorrect = response.data.response.isQuizCorrect;
+      setIsCorrect(isAnswerCorrect);
+
+      if (isAnswerCorrect){
+        // 정답 처리
+        console.log('정답입니다!');
+      } else {
+        // 오답 처리
+        console.log('틀렸습니다!')
+      }
+    } catch (error) {
+      console.error('정답 확인 중 에러 발생 :', error);
+    }
+  }
+
   return (
     <div>
       {currentQuiz ? (
         <div>
+          <h1>
+            문제 {currentQuizIndex + 1} 번 
+          </h1>
           {currentQuiz.quizCategoryId === 2 ? (
             <button onClick={toggleListening}>
               {isListening ? "듣기 중지" : "듣기"}
@@ -103,13 +135,22 @@ function QuestionArea(props) {
           )}
           <ul>
             {currentQuiz.quizAnswerList.map((answer,answerIndex) =>(
-              <button key = {answerIndex}>{answer}</button>
+              <button 
+                key = {answerIndex}
+                onClick={() => {
+                  setUserAnswer(answer);
+                  checkAnswer(); // 정답 확인 함수 호출 
+                }}
+                disabled={isCorrect !== null}
+              >
+                {answer}
+              </button>
             ))}
           </ul>
           {showResultButton ? (
             <button onClick={handleShowResult}>결과보기</button>
           ) : (
-            <button onClick={handleNextQuiz}>다음</button>
+            <button onClick={handleNextQuiz} disabled={isCorrect === null}>다음</button>
           )}
         </div>
       ) : (
