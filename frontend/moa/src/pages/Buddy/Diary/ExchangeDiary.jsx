@@ -48,6 +48,9 @@ function ExchangeDiary(props) {
 
         <div className={styles.diaryTitle}>
           <p className={styles.diaryTitleText}>교환일기</p></div>
+
+        <img className={styles.diaryCharacterImg}
+          src='../../../assets/ExchangeDiary/diary_character.png'></img>
       </div>
 
       <div>
@@ -55,7 +58,7 @@ function ExchangeDiary(props) {
           일기 보기
         </Link>
       </div>
-      
+
       <div>
         <Link to="/buddy/exchangediary/create" className={`${styles.button} ${styles.button_write}`}>
           일기 쓰기

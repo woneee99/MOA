@@ -63,8 +63,8 @@
     color: #F58A4E;
     font-weight: bold;
     font-size: 20px;
-    
-  }
+
+}
 
 .button_view {
     position: absolute;
@@ -76,6 +76,14 @@
     position: absolute;
     bottom: 275px;
     left: 100px;
+}
+
+.diaryCharacterImg {
+    position: absolute;
+    width: 113px;
+    height: 60.17px;
+    left: 150px;
+    top: 295px;
 }
 
 @font-face {
