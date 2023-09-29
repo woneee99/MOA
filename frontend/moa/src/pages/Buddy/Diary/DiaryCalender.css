@@ -87,13 +87,13 @@ abbr[title] {
 .react-calendar__tile--active abbr {
     background: rgb(209, 231, 215) !important;
     border-radius: 50% !important;
-    padding: 15%;
+    padding: 5%;
 }
 
 
 .react-calendar__tile--now abbr {
     background: #ffbb69 !important;
-    padding: 15%;
+    padding: 5%;
     border-radius: 50% !important;
 }
 
