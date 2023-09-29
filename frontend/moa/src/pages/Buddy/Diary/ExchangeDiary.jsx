@@ -12,6 +12,7 @@ import DiaryItem from '../../../components/DiaryItem';
 import Logo from '../../../components/Logo';
 
 import styles from './ExchangeDiary.module.css'
+import AppBar from '../../../components/AppBar';
 
 function ExchangeDiary(props) {
   const [diaries, setDiaries] = useState([]);
@@ -39,7 +40,7 @@ function ExchangeDiary(props) {
 
   return (
     <div className={styles.container}>
-      <Logo></Logo>
+      <AppBar></AppBar>
 
 
       <div className={styles.diary}>

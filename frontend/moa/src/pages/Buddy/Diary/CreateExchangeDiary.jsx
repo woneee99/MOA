@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { diaryApi } from '../../../api/diaryApi';
 import { useNavigate } from 'react-router-dom';
 import BackButton from '../../../components/BackButton';
+import MenuHeader from '../../../components/MenuHeader';
 
 function CreateExchangeDiary() {
   const [exchangeDiaryContent, setExchangeDiaryContent] = useState('');
@@ -52,7 +53,7 @@ function CreateExchangeDiary() {
 
   return (
     <div>
-      <BackButton text='일기쓰기' />
+      <MenuHeader title="일기쓰기"></MenuHeader>
       <h1>교환일기 작성</h1>
       <div>
         <label htmlFor="diaryImage">이미지 업로드</label>
