@@ -1,11 +1,19 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../styles/Quiz/QuizResult.module.css';
 
 function QuizResult(props) {
   // const location = props.location;
   const location = useLocation();
   const { state } = location;
+
+  const navigate = useNavigate();
+  const handleOtherQuiz = () => {
+    navigate('/quiz/question-page');
+  };
+  const handleGoBack= () => {
+    navigate('/quiz');
+  };
 
   // const correctAnswers = props.location.state?.correctAnswers || 0;
 
@@ -29,8 +37,8 @@ function QuizResult(props) {
         </div>
 
         <div className={styles.resultBtn}>
-          <p>다른문제풀기</p>
-          <p>돌아가기</p>
+          <p onClick={handleOtherQuiz}>다른문제풀기</p>
+          <p onClick={handleGoBack}>돌아가기</p>
         </div>
       </div>
 
