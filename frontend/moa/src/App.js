@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import Intro from './pages/Intro';
 import Main from './pages/Main';
@@ -15,10 +16,13 @@ import KoreanLearning from './pages/Learning/KoreanLearning';
 import LearningKeyword from './pages/Learning/LearningMyKeyword';
 import WordLearning from './pages/Learning/WordLearning';
 import KoreanLearningDefault from './pages/Learning/KoreanLearningDefault';
-import QnABoard from './pages/QnA/QnABoard';
-import Quiz from './components/QuizHome';
+// import QnABoard from './pages/QnA/QnABoard';
+import QuizHome from './components/QuizHome';
+import Quiz from './pages/Quiz/Quiz';
+import QuestionPage from './pages/Quiz/QuestionPage';
 import IncorrectNote from './pages/Quiz/IncorrectNote';
 import BuddyHome from './components/BuddyHome';
+import QuizResult from './pages/Quiz/QuizResult';
 import ExchangeDiary from './pages/Buddy/Diary/ExchangeDiary';
 import ExchangeDiaryDetail from './pages/Buddy/Diary/ExchangeDiaryDetail';
 import CreateExchangeDiary from './pages/Buddy/Diary/CreateExchangeDiary';
@@ -33,49 +37,60 @@ import RelatedNews from './components/Learning/RelatedNews';
 import NewsArticle from './pages/Learning/NewsArticle';
 
 function App() {
-    return (
-    
+  const refreshToken = Cookies.get('refreshToken');
+
+  console.log(refreshToken);
+
+  return (
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/intro" element={<Intro />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          {refreshToken ? ( // refreshToken이 있는 경우
+            <>
+              <Route path="/" element={<Main />} />
 
-          <Route path="/matching" element={<Matching />}/>
+              <Route path="/matching" element={<Matching />}/>
 
-          <Route path="/chatting" element={<ChattingHome />}/>
-          <Route path="/chatting/buddy" element={<BuddyChattingModal />}/>
-          <Route path="/chatting/openchat" element={<OpenChattingModal />}/>
-          <Route path="/chatting/openchat/:id" element={<OpenChattingDetail />}/>
+              <Route path="/chatting" element={<ChattingHome />}/>
+              <Route path="/chatting/buddy" element={<BuddyChattingModal />}/>
+              <Route path="/chatting/openchat" element={<OpenChattingModal />}/>
+              <Route path="/chatting/openchat/:id" element={<OpenChattingDetail />}/>
 
-          <Route path="/koreanlearning" element={<KoreanLearning />} />
-          <Route path="/koreanlearning/word" element={<WordLearning />} />
-          <Route path='/koreanlearning/article' element= {<NewsArticle />} />
-          <Route path='/koreanlearning/keyword' element= {<LearningKeyword />} />
-          <Route path='/koreanlearning/default' element= {<KoreanLearningDefault />} />
+              <Route path="/koreanlearning" element={<KoreanLearning />} />
+              <Route path="/koreanlearning/word" element={<WordLearning />} />
+              <Route path='/koreanlearning/article' element= {<NewsArticle />} />
+              <Route path='/koreanlearning/keyword' element= {<LearningKeyword />} />
+              <Route path='/koreanlearning/default' element= {<KoreanLearningDefault />} />
+              
+              <Route path="/quiz" element={<Quiz />} />
+              <Route path="/quiz/question-page" element={<QuestionPage />} />
+              <Route path="/quiz/incorrect-note" element={<IncorrectNote />} />
+              <Route path="/quiz/quiz-result" element={<QuizResult />} />
 
-          <Route path="/qna-board" element={<QnABoard />} />
-          
-          <Route path="/quiz" element={<Quiz />} />
-          <Route path="/quiz/incorrect-note" element={<IncorrectNote />} />
+              <Route path="/buddy" element={<BuddyHome />} />
 
-          <Route path="/buddy" element={<BuddyHome />} />
+              <Route path="/buddy/exchangediary" element={<ExchangeDiary />} />
+              <Route path="/buddy/exchangediary/:id" element={<ExchangeDiaryDetail />} />
+              <Route path="/buddy/exchangediary/create" element={<CreateExchangeDiary />} />
+              <Route path="/buddy/exchangediary/:id/update" element={<UpdateExchangeDiary />} />
 
-          <Route path="/buddy/exchangediary" element={<ExchangeDiary />} />
-          <Route path="/buddy/exchangediary/:id" element={<ExchangeDiaryDetail />} />
-          <Route path="/buddy/exchangediary/create" element={<CreateExchangeDiary />} />
-          <Route path="/buddy/exchangediary/:id/update" element={<UpdateExchangeDiary />} />
+              <Route path="/buddy/balancegame" element={<BalanceGame />} />
+              <Route path="/buddy/balancegame/:id" element={<BalanceGameDetail />} />
+              <Route path="/buddy/balancegame/create" element={<CreateBalanceGame />} />
+              <Route path="/buddy/balancegame/:id/update" element={<UpdateBalanceGame />} />
 
-          <Route path="/buddy/balancegame" element={<BalanceGame />} />
-          <Route path="/buddy/balancegame/:id" element={<BalanceGameDetail />} />
-          <Route path="/buddy/balancegame/create" element={<CreateBalanceGame />} />
-          <Route path="/buddy/balancegame/:id/update" element={<UpdateBalanceGame />} />
-
-          <Route path="/buddy/koreatour" element={<KoreaTour />} />
-          
-          <Route path="*" element={<NotFound404 />} />
+              <Route path="/buddy/koreatour" element={<KoreaTour />} />
+              
+              <Route path="*" element={<NotFound404 />} />
+            </>
+          ) : ( // refreshToken이 없는 경우
+            <>
+              <Route path="/intro" element={<Intro />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/*" element={<Navigate to="/login" />} />
+            </>
+          )}
         </Routes>    
       </div>
     </BrowserRouter>
