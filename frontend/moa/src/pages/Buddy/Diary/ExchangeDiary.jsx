@@ -44,7 +44,7 @@ function ExchangeDiary(props) {
 
 
       <div className={styles.diary}>
-        <img className={styles.diaryImg}
+        <img
           src='../../../assets/ExchangeDiary/diary_img.png'></img>
 
         <div className={styles.diaryTitle}>

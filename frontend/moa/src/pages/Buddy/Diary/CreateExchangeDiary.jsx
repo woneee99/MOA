@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { diaryApi } from '../../../api/diaryApi';
 import { useNavigate } from 'react-router-dom';
-import BackButton from '../../../components/BackButton';
 import MenuHeader from '../../../components/MenuHeader';
+import styles from '../Diary/CreateExchangeDiary.module.css'
 
 function CreateExchangeDiary() {
   const [exchangeDiaryContent, setExchangeDiaryContent] = useState('');
   const [imageFile, setImageFile] = useState(null);
+  const [todayDate, setTodayDate] = useState(null);
+
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    const today = new Date();
+    const week = ['일', '월', '화', '수', '목', '금', '토'];
+    setTodayDate(`${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()} (${week[today.getDay()]})`);
+  }, [])
 
   const navigate = useNavigate();
 
@@ -15,7 +24,18 @@ function CreateExchangeDiary() {
   };
 
   const handleImageChange = (e) => {
-    setImageFile(e.target.files[0]); // 이미지 파일 설정
+    const file = e.target.files[0];
+
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setImageFile(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    else {
+      alert('이미지 파일을 선택해주세요!');
+    }
   };
 
   const exchangeDiaryRequest = {
@@ -29,8 +49,8 @@ function CreateExchangeDiary() {
 
     formData.append('exchangeDiaryRequest', jsonBlob);
 
-    if (imageFile) {
-      formData.append('multipartFile', imageFile);
+    if (imgRef.current.files[0]) {
+      formData.append('multipartFile', imgRef.current.files[0]);
     }
 
     const headers = {
@@ -51,30 +71,53 @@ function CreateExchangeDiary() {
       });
   };
 
+
+
   return (
     <div>
-      <MenuHeader title="일기쓰기"></MenuHeader>
-      <h1>교환일기 작성</h1>
-      <div>
-        <label htmlFor="diaryImage">이미지 업로드</label>
-        <input
-          type="file"
-          id="diaryImage"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
+      <div className={styles.container}>
+        <MenuHeader title="일기쓰기"></MenuHeader>
+        <div className={styles.diaryInside}>
+          <img
+            className={styles.diaryInsideImg}
+            src={process.env.PUBLIC_URL + '/assets/ExchangeDiary/diary_inside.png'}></img>
+          <div className={styles.diaryDate}>{todayDate}</div>
+
+          <div className={styles.diaryPhoto}>
+            {!imageFile ? (
+              <label htmlFor='diaryImage'>
+                <img
+                  src={process.env.PUBLIC_URL + '/assets/ExchangeDiary/diary_upload_photo.png'}></img>
+              </label>
+            ) : <img
+              src={imageFile}
+              style={{ maxWidth: '100%', maxHeight: '100%' }}></img>}
+          </div>
+
+          <div>
+            <label htmlFor="diaryContent"></label>
+            <textarea
+              id="diaryContent"
+              className={styles.diaryContentInput}
+              value={exchangeDiaryContent}
+              onChange={handleContentChange}
+            />
+          </div>
+
+          <button
+            className={styles.diaryCreateButton}
+            onClick={createDiary}>다 썼어요</button>
+
+          <input
+            style={{ display: "none" }}
+            type="file"
+            id="diaryImage"
+            accept="image/*"
+            ref={imgRef}
+            onChange={handleImageChange}
+          />
+        </div>
       </div>
-      <div>
-        <label htmlFor="diaryContent">설명</label>
-        <input
-          type="text"
-          id="diaryContent"
-          value={exchangeDiaryContent}
-          onChange={handleContentChange}
-        />
-      </div>
-      <hr />
-      <button onClick={createDiary}>생성하기</button>
     </div>
   );
 }
