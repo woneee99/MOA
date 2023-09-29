@@ -16,7 +16,7 @@ function CreateExchangeDiary() {
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]); // 이미지 파일 설정
   };
-  
+
   const exchangeDiaryRequest = {
     exchangeDiaryContent: exchangeDiaryContent,
   };
@@ -25,7 +25,7 @@ function CreateExchangeDiary() {
     const formData = new FormData();
 
     const jsonBlob = new Blob([JSON.stringify(exchangeDiaryRequest)], { type: "application/json" });
-   
+
     formData.append('exchangeDiaryRequest', jsonBlob);
 
     if (imageFile) {
@@ -52,7 +52,7 @@ function CreateExchangeDiary() {
 
   return (
     <div>
-      <BackButton />
+      <BackButton text='일기쓰기' />
       <h1>교환일기 작성</h1>
       <div>
         <label htmlFor="diaryImage">이미지 업로드</label>
