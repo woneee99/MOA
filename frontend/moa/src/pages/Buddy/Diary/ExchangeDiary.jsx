@@ -15,28 +15,28 @@ import styles from './ExchangeDiary.module.css'
 import AppBar from '../../../components/AppBar';
 
 function ExchangeDiary(props) {
-  const [diaries, setDiaries] = useState([]);
+  // const [diaries, setDiaries] = useState([]);
 
-  useEffect(() => {
-    diaryApi.getDiaryList()
-      .then((response) => {
-        console.log(response.data);
-        setDiaries(response.data.response);
-      })
-      .catch((e) => {
-        const error = e.error;
-        console.log('교환일기 전체 조회 에러 발생');
-        console.log(e);
-      })
-  }, []);
+  // useEffect(() => {
+  //   diaryApi.getDiaryList()
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setDiaries(response.data.response);
+  //     })
+  //     .catch((e) => {
+  //       const error = e.error;
+  //       console.log('교환일기 전체 조회 에러 발생');
+  //       console.log(e);
+  //     })
+  // }, []);
 
   const navigate = useNavigate();
 
-  const handleDiaryClick = (exchangeDiaryId) => {
-    navigate(`/buddy/exchangediary/${exchangeDiaryId}`, {
-      state: { exchangeDiaryId }, // 다이어리 데이터를 state에 전달
-    });
-  };
+  // const handleDiaryClick = (exchangeDiaryId) => {
+  //   navigate(`/buddy/exchangediary/${exchangeDiaryId}`, {
+  //     state: { exchangeDiaryId }, // 다이어리 데이터를 state에 전달
+  //   });
+  // };
 
   return (
     <div className={styles.container}>
@@ -55,7 +55,7 @@ function ExchangeDiary(props) {
       </div>
 
       <div>
-        <Link to="/buddy/exchangediary/create" className={`${styles.button} ${styles.button_view}`}>
+        <Link to="/buddy/exchangediary/content" className={`${styles.button} ${styles.button_view}`}>
           일기 보기
         </Link>
       </div>
