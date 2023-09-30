@@ -45,20 +45,22 @@ function NewsArticle(props) {
 
     // 스크랩 여부 확인
     useEffect(() => {
-        learningApi.getIsNewsScrap(1) // 나중에 articleId 값 받아오면 넣어주기 
-            .then((response) => {
-                console.log(response.data.response);
-                if (response.data.response) {
-                    setIsNewsScrap(true);
-                }
-                else {
-                    setIsNewsScrap(false);
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }, [])
+        if (articleContent !== '') {
+            learningApi.getIsNewsScrap(1) // 나중에 articleId 값 받아오면 넣어주기 
+                .then((response) => {
+                    console.log(response.data.response);
+                    if (response.data.response) {
+                        setIsNewsScrap(true);
+                    }
+                    else {
+                        setIsNewsScrap(false);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
+    }, [articleContent])
 
     useEffect(() => {
         if (articleSentences.length > 0) {
@@ -220,22 +222,26 @@ function NewsArticle(props) {
             <div className={styles.articleDate}>{articleDate}</div>
             <button className={styles.listenToSound} onClick={() =>
                 speech(articleSentences[currentSentenceIndex])}>
-                <img src="../../../assets/NewsArticle/listen-to-sound.png" alt=""></img>
+                <img src="../../../assets/NewsArticle/listen-to-sound.png"
+                    style={{ width: "35px", height: "35px", paddingTop: "5px" }} alt=""></img>
             </button>
             <button className={styles.recordSound}>
-                <img src="../../../assets/NewsArticle/record-sound.png"></img>
+                <img src="../../../assets/NewsArticle/record-sound.png"
+                    style={{ width: "35px", height: "35px", paddingTop: "5px" }}></img>
             </button>
             {!isNewsScrap &&
                 <button className={styles.scrap}
                     onClick={createNewsScrap}>
-                    <img src="../../../assets/NewsArticle/scrap.png"></img>
+                    <img src="../../../assets/NewsArticle/scrap.png"
+                        style={{ width: "35px", height: "35px" }}></img>
                 </button>
             }
             {isNewsScrap &&
                 <button className={styles.scrap}
                     onClick={deleteNewsScrap}
                 >
-                    <img src="../../../assets/NewsArticle/scrap_complete.png"></img>
+                    <img src="../../../assets/NewsArticle/scrap_complete.png"
+                        style={{ width: "35px", height: "35px" }}></img>
                 </button>
             }
 
