@@ -8,6 +8,9 @@ import '../Diary/DiaryCalender.css';
 // import 'react-calendar/dist/Calendar.css'; // css import
 import moment from 'moment/moment';
 
+import { WOW } from 'wowjs';
+
+
 function ExchangeDiaryContent() {
     const [value, onChange] = useState(new Date());
     const [exchangeDiaryContent, setExchangeDiaryContent] = useState('');
@@ -17,11 +20,18 @@ function ExchangeDiaryContent() {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        // wowjs 초기화
+        const wow = new WOW();
+        wow.init();
+        wow.sync();
+    }, []);
+
     return (
         <div>
             <div className={styles.container}>
                 <MenuHeader title="나의 일기"></MenuHeader>
-                <div className={styles.diaryInside}>
+                <div className={styles.diaryInside + ' wow fadeInLeft'} >
                     <img
                         className={styles.diaryInsideImg}
                         src={process.env.PUBLIC_URL + '/assets/ExchangeDiary/diary_inside.png'}></img>

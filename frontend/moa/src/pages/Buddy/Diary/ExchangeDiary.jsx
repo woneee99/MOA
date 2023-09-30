@@ -7,14 +7,19 @@ import { diaryApi } from '../../../api/diaryApi';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import BackButton from '../../../components/BackButton';
-import DiaryItem from '../../../components/DiaryItem';
-import Logo from '../../../components/Logo';
-
 import styles from './ExchangeDiary.module.css'
 import AppBar from '../../../components/AppBar';
 
+import { WOW } from 'wowjs';
+
+
 function ExchangeDiary(props) {
+
+  useEffect(() => {
+    // wowjs 초기화
+    const wow = new WOW();
+    wow.init();
+  }, []);
   // const [diaries, setDiaries] = useState([]);
 
   // useEffect(() => {
@@ -43,7 +48,7 @@ function ExchangeDiary(props) {
       <AppBar></AppBar>
 
 
-      <div className={styles.diary}>
+      <div className={styles.diary + ' wow fadeInUp'}>
         <img
           src='../../../assets/ExchangeDiary/diary_img.png'></img>
 
@@ -52,19 +57,21 @@ function ExchangeDiary(props) {
 
         <img className={styles.diaryCharacterImg}
           src='../../../assets/ExchangeDiary/diary_character.png'></img>
+
+        <div>
+          <Link to="/buddy/exchangediary/content" className={`${styles.button} ${styles.button_view}`}>
+            일기 보기
+          </Link>
+        </div>
+
+        <div>
+          <Link to="/buddy/exchangediary/create" className={`${styles.button} ${styles.button_write}`}>
+            일기 쓰기
+          </Link>
+        </div>
       </div>
 
-      <div>
-        <Link to="/buddy/exchangediary/content" className={`${styles.button} ${styles.button_view}`}>
-          일기 보기
-        </Link>
-      </div>
 
-      <div>
-        <Link to="/buddy/exchangediary/create" className={`${styles.button} ${styles.button_write}`}>
-          일기 쓰기
-        </Link>
-      </div>
 
       {/* 검색 필터 */}
       {/* <div>
