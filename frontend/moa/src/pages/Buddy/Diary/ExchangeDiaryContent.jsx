@@ -14,11 +14,35 @@ import { WOW } from 'wowjs';
 function ExchangeDiaryContent() {
     const [value, onChange] = useState(new Date());
     const [exchangeDiaryContent, setExchangeDiaryContent] = useState('');
+    const [diaries, setDiaries] = useState([]);
+    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
     const mark = ["2023-09-02", "2023-09-14", "2023-09-27"];
     const foreignerMark = ["2023-09-14", "2023-09-26"];
 
     const navigate = useNavigate();
+
+    const dateToExchangeDiaryIdMap = {};
+
+    useEffect(() => {
+        diaryApi.getDiaryList(selectedMonth)
+            .then((response) => {
+                response.data.response.forEach((item) => {
+                    const exchangeDiaryDate = item.exchangeDiaryDate.split('T')[0];
+                    const exchangeDiaryId = item.exchangeDiaryId;
+                    const exchangeDiaryKorean = item.member.memberName;
+                    console.log(exchangeDiaryKorean);
+                    dateToExchangeDiaryIdMap[exchangeDiaryDate] = exchangeDiaryId;
+                    console.log(exchangeDiaryDate, exchangeDiaryId);
+                })
+                setDiaries(response.data.response);
+            })
+            .catch((e) => {
+                const error = e.error;
+                console.log('교환일기 전체 조회 에러 발생');
+                console.log(e);
+            })
+    }, [selectedMonth]);
 
     useEffect(() => {
         // wowjs 초기화
@@ -26,6 +50,11 @@ function ExchangeDiaryContent() {
         wow.init();
         wow.sync();
     }, []);
+
+    // 달을 변경할 때 호출되는 콜백
+    const handleActiveStartDateChange = ({ activeStartDate }) => {
+        setSelectedMonth(activeStartDate.getMonth() + 1);
+    }
 
     return (
         <div>
@@ -37,6 +66,7 @@ function ExchangeDiaryContent() {
                         src={process.env.PUBLIC_URL + '/assets/ExchangeDiary/diary_inside.png'}></img>
                     <div className={styles.diaryCalender}>
                         <Calendar onChange={onChange}
+                            onActiveStartDateChange={handleActiveStartDateChange}
                             value={value}
                             formatDay={(locale, date) => moment(date).format("DD")}
                             showNeighboringMonth={false}

@@ -20,20 +20,7 @@ function ExchangeDiary(props) {
     const wow = new WOW();
     wow.init();
   }, []);
-  // const [diaries, setDiaries] = useState([]);
 
-  // useEffect(() => {
-  //   diaryApi.getDiaryList()
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setDiaries(response.data.response);
-  //     })
-  //     .catch((e) => {
-  //       const error = e.error;
-  //       console.log('교환일기 전체 조회 에러 발생');
-  //       console.log(e);
-  //     })
-  // }, []);
 
   const navigate = useNavigate();
 
