@@ -5,21 +5,24 @@ import { userApi } from '../api/userApi';
 import Cookies from 'js-cookie';
 
 import { useAppDispatch } from '../store'; // useDispatch를 사용하는 부분을 변경
-import { setAccessToken } from '../store';
+import { setAccessToken, setIsMatching } from '../store';
 
 const appBarStyle = {
+  background: 'white',
+  display: 'flex', // Flexbox 컨테이너 설정
+  justifyContent: 'space-between', // 로고 이미지와 로그아웃 버튼 사이 공간을 최대화
   padding: '0 10px',
   marginBottom: '10px',
-  display: 'flex',
   alignItems: 'center',
   boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+  height: '7.5625rem',
 };
 
 const imgContainerStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  margin: 'auto',
+  marginLeft: '120px',
 };
 
 const imgStyle = {
@@ -41,22 +44,27 @@ function AppBar(props) {
   const dispatch = useAppDispatch();
 
   // 로그아웃 핸들러 함수
-  const handleLogout = async () => {
-    try{
-      const response = await userApi.logout();
+  const handleLogout = () => {
+    // Cookies에서 refreshToken 삭제
+    Cookies.remove('refreshToken');
 
-      if (response.data.success){
-        console.log('로그아웃 성공');
-        Cookies.remove('refreshToken');
-        dispatch(setAccessToken(null));
-        navigate('/login');
-      } else {
-        console.error('로그아웃 오류:', response.data.error.message);
-      }
-    } catch(error) {
-      console.error('API Request Error:', error);
-    }
-  }
+    // localStorage에서 accessToken 삭제
+    localStorage.removeItem('accessToken');
+
+    // Redux 스토어에서 accessToken 업데이트
+    dispatch(setAccessToken(null));
+    dispatch(setIsMatching(null));
+
+    if (!Cookies.get('refreshToken')) {
+      alert('로그아웃 되었습니다');
+      // 로그인 페이지로 이동
+      window.location.reload();
+      navigate('/login');
+
+    } else {
+      console.log('로그아웃 오류 발생');
+    };
+  };
 
   return (
     <div style={appBarStyle}>
