@@ -6,7 +6,7 @@ const initialState = {
   // 임시로 하드코딩 적용(로그인 시 토큰 자동 저장하는 식으로 바꿀 예정)
   accessToken: localStorage.getItem('accessToken') || null,
   isMatching: null,
-  isForeigner: null,
+  isForeigner: false,
 };
 
 // Actions

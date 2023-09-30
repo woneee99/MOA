@@ -39,8 +39,6 @@ import NewsArticle from './pages/Learning/NewsArticle';
 function App() {
   const refreshToken = Cookies.get('refreshToken');
 
-  console.log(refreshToken);
-
   return (
     <BrowserRouter>
       <div className="App">
