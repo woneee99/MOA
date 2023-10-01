@@ -31,6 +31,7 @@ public class WebSecurityConfig {
                         authorizeHttpRequests
                                 .requestMatchers("/member/signup/**").permitAll()
                                 .requestMatchers("/member/login").permitAll()
+                                .requestMatchers("/member/**").permitAll()
                                 .requestMatchers("/nation").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/**").permitAll()
