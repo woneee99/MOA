@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import Intro from './pages/Intro';
 import Main from './pages/Main';
@@ -35,53 +36,62 @@ import KoreaTour from './pages/Buddy/KoreaTour';
 import NotFound404 from './pages/NotFound404';
 import RelatedNews from './components/Learning/RelatedNews';
 import NewsArticle from './pages/Learning/NewsArticle';
+import ExchangeDiaryContent from './pages/Buddy/Diary/ExchangeDiaryContent';
 
 function App() {
-    return (
-    
+  const refreshToken = Cookies.get('refreshToken');
+
+  return (
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/intro" element={<Intro />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          {refreshToken ? ( // refreshToken이 있는 경우
+            <>
+              <Route path="/" element={<Main />} />
 
-          <Route path="/matching" element={<Matching />}/>
+              <Route path="/matching" element={<Matching />} />
 
-          <Route path="/chatting" element={<ChattingHome />}/>
-          <Route path="/chatting/buddy" element={<BuddyChattingModal />}/>
-          <Route path="/chatting/openchat" element={<OpenChattingModal />}/>
-          <Route path="/chatting/openchat/:id" element={<OpenChattingDetail />}/>
+              <Route path="/chatting" element={<ChattingHome />} />
+              <Route path="/chatting/buddy" element={<BuddyChattingModal />} />
+              <Route path="/chatting/openchat" element={<OpenChattingModal />} />
+              <Route path="/chatting/openchat/:id" element={<OpenChattingDetail />} />
 
-          <Route path="/koreanlearning" element={<KoreanLearning />} />
-          <Route path="/koreanlearning/word" element={<WordLearning />} />
-          <Route path='/koreanlearning/article' element= {<NewsArticle />} />
-          <Route path='/koreanlearning/keyword' element= {<LearningKeyword />} />
-          <Route path='/koreanlearning/default' element= {<KoreanLearningDefault />} />
-          
-          <Route path="/quiz" element={<Quiz />} />
-          <Route path="/quiz/question-page" element={<QuestionPage />} />
-          <Route path="/quiz/sentence-quiz" elemenet={<SentenceQuiz />} />
-          <Route path="/quiz/incorrect-note" element={<IncorrectNote />} />
-          <Route path="/quiz/quiz-result" element={<QuizResult />} />
+              <Route path="/koreanlearning" element={<KoreanLearning />} />
+              <Route path="/koreanlearning/word" element={<WordLearning />} />
+              <Route path='/koreanlearning/article' element={<NewsArticle />} />
+              <Route path='/koreanlearning/keyword' element={<LearningKeyword />} />
+              <Route path='/koreanlearning/default' element={<KoreanLearningDefault />} />
 
-          <Route path="/buddy" element={<BuddyHome />} />
+              <Route path="/quiz" element={<Quiz />} />
+              <Route path="/quiz/question-page" element={<QuestionPage />} />
+              <Route path="/quiz/sentence-quiz" elemenet={<SentenceQuiz />} />
+              <Route path="/quiz/incorrect-note" element={<IncorrectNote />} />
+              <Route path="/quiz/quiz-result" element={<QuizResult />} />
 
-          <Route path="/buddy/exchangediary" element={<ExchangeDiary />} />
-          <Route path="/buddy/exchangediary/:id" element={<ExchangeDiaryDetail />} />
-          <Route path="/buddy/exchangediary/create" element={<CreateExchangeDiary />} />
-          <Route path="/buddy/exchangediary/:id/update" element={<UpdateExchangeDiary />} />
+              <Route path="/buddy/exchangediary" element={<ExchangeDiary />} />
+              <Route path="/buddy/exchangediary/:id" element={<ExchangeDiaryDetail />} />
+              <Route path="/buddy/exchangediary/content" element={<ExchangeDiaryContent />} />
+              <Route path="/buddy/exchangediary/create" element={<CreateExchangeDiary />} />
+              <Route path="/buddy/exchangediary/:id/update" element={<UpdateExchangeDiary />} />
 
-          <Route path="/buddy/balancegame" element={<BalanceGame />} />
-          <Route path="/buddy/balancegame/:id" element={<BalanceGameDetail />} />
-          <Route path="/buddy/balancegame/create" element={<CreateBalanceGame />} />
-          <Route path="/buddy/balancegame/:id/update" element={<UpdateBalanceGame />} />
+              <Route path="/buddy/balancegame" element={<BalanceGame />} />
+              <Route path="/buddy/balancegame/:id" element={<BalanceGameDetail />} />
+              <Route path="/buddy/balancegame/create" element={<CreateBalanceGame />} />
+              <Route path="/buddy/balancegame/:id/update" element={<UpdateBalanceGame />} />
 
-          <Route path="/buddy/koreatour" element={<KoreaTour />} />
-          
-          <Route path="*" element={<NotFound404 />} />
-        </Routes>    
+              <Route path="/buddy/koreatour" element={<KoreaTour />} />
+
+              <Route path="*" element={<Navigate to="/" />} />
+            </>
+          ) : ( // refreshToken이 없는 경우
+            <>
+              <Route path="/intro" element={<Intro />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/*" element={<Navigate to="/intro" />} />
+            </>
+          )}
+        </Routes>
       </div>
     </BrowserRouter>
   );
