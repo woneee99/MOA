@@ -28,6 +28,7 @@
   align-items: center;
 }
 
+
 .questionArea p{
   text-align: center;
   margin: 0;
@@ -63,4 +64,34 @@ button img{
   border-radius: 18px;
   background: var(--SELECT, radial-gradient(50% 50% at 50% 50%, #FFF 48.23%, #FAF8F8 100%), radial-gradient(50% 50% at 50% 50%, #FFF 0%, rgba(255, 255, 255, 0.00) 100%));
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.20));
+}
+
+
+/* 문장 */
+
+.sentenceArea{
+  margin: 0 20px 0;
+  width: 350px;
+  height: 97px;
+
+  border-radius: 18px;
+  border: 7px solid rgba(222, 255, 149, 0.91);
+  background: #FFF;
+  filter: drop-shadow(-9px -9px 16px rgba(255, 255, 255, 0.60)) drop-shadow(9px 9px 16px rgba(226, 226, 227, 0.60));
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sentenceArea p{
+  text-align: center;
+  margin: 0;
+  font-family: "Ganpan";
+  font-size: 18px;
+  margin: 0 20px;
+}
+
+.sentenceArea img{
+  width: 70px;
 }
