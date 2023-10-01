@@ -6,9 +6,9 @@ import ArticleModal from '../../components/Learning/ArticleModal';
 
 function NewsArticle(props) {
 
-    const articleWords = [
-        "법원", "출석", "단식"
-    ]
+    // const articleWords = [
+    //     "법원", "출석", "단식"
+    // ]
 
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
     const [translatedSentence, setTranslatedSentence] = useState('');
@@ -23,6 +23,7 @@ function NewsArticle(props) {
     const [articleSentences, setArticleSentences] = useState([]);
     const [articleDate, setArticleDate] = useState('');
     const [articleUrl, setArticleUrl] = useState('');
+    const [articleWords, setArticleWords] = useState([]);
 
     useEffect(() => {
         learningApi.getNews(1)
@@ -42,6 +43,16 @@ function NewsArticle(props) {
             })
     }, []);
 
+    useEffect(() => {
+        learningApi.getNewsWords(1)
+            .then((response) => {
+                console.log(response.data);
+                setArticleWords(response.data);
+            })
+            .catch((error) => {
+                console.error('기사 단어 조회 에러', error);
+            })
+    }, [])
 
     // 스크랩 여부 확인
     useEffect(() => {
