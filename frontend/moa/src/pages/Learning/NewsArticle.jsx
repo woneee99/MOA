@@ -244,7 +244,7 @@ function NewsArticle(props) {
                 <button className={styles.scrap}
                     onClick={createNewsScrap}>
                     <img src="../../../assets/NewsArticle/scrap.png"
-                        style={{ width: "35px", height: "35px" }}></img>
+                        style={{ width: "30px", height: "30px" }}></img>
                 </button>
             }
             {isNewsScrap &&
@@ -252,7 +252,7 @@ function NewsArticle(props) {
                     onClick={deleteNewsScrap}
                 >
                     <img src="../../../assets/NewsArticle/scrap_complete.png"
-                        style={{ width: "35px", height: "35px" }}></img>
+                        style={{ width: "28px", height: "35px" }}></img>
                 </button>
             }
 
@@ -260,13 +260,16 @@ function NewsArticle(props) {
                 <div className={styles.articleSentences}>
                     <div>
                         {articleSentences[currentSentenceIndex] && splitSentenceIntoWords(articleSentences[currentSentenceIndex]).map((word, index) => {
+
                             const matchingWord = articleWords.find((highlightWord) =>
                                 isWordMatching(word, highlightWord)
                             );
 
                             const matchingWordLength = matchingWord ? matchingWord.length : 0;
+                            const startIdx = word.indexOf(matchingWord);
                             return (
                                 <span>
+                                    <span>{word.substring(0, startIdx)}</span>
                                     <span
                                         key={index}
                                         className={matchingWord
@@ -276,8 +279,8 @@ function NewsArticle(props) {
                                                 wordModal(matchingWord);
                                                 translateWord(matchingWord);
                                             }
-                                        }}>{word.substring(0, matchingWordLength)}
-                                    </span>{word.substring(matchingWordLength)}{' '}
+                                        }}>{word.substring(startIdx, startIdx + matchingWordLength)}
+                                    </span>{word.substring(startIdx + matchingWordLength)}{' '}
                                 </span>
                             );
                         })}
