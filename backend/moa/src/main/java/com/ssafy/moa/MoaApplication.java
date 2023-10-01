@@ -1,9 +1,11 @@
 package com.ssafy.moa;
 
+import com.ssafy.moa.api.jwt.MemberInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.http.HttpMethod;
 
@@ -26,6 +28,11 @@ public class MoaApplication {
                                         HttpMethod.DELETE.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(),
                                         HttpMethod.PATCH.name())
                         .maxAge(1800);
+            }
+
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                registry.addInterceptor(new MemberInterceptor());
             }
         };
     }
