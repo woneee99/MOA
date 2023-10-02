@@ -5,6 +5,7 @@ import Word from '../../components/Learning/Word';
 import Usecase from '../../components/Learning/Usecase';
 import RelatedNews from '../../components/Learning/RelatedNews';
 import { useLocation  } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function WordLearning(props) {
   const location = useLocation();
@@ -12,7 +13,7 @@ function WordLearning(props) {
 
   return (
     <div >
-        <WordLogo />
+        <WordLogo word={"단어"}/>
         <div className={News.display}>
           <div className={News.font}> Word </div>
         </div>
@@ -23,7 +24,9 @@ function WordLearning(props) {
         <Usecase/>
         <div className={News.displayPlus}>
           <div className={News.font}> Related News </div>
-          <div className={News.displayPlusRightFont}>더보기</div>
+          <Link to="/koreanlearning/word/news">
+            <div className={News.displayPlusRightFont}>더보기</div>
+          </Link>
         </div>
         <RelatedNews word={word} />
     </div>

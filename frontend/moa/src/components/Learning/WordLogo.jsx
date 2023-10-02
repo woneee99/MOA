@@ -6,10 +6,12 @@ const logoStyle = {
 };
 
 function WordLogo(props) {
+  const { word } = props;
+
   return (
     <div className={News.topContainer}>
         <div className={News.leftWrap}> {'<'} </div>
-        <div className={News.rightWrap}>단어보기</div>
+        <div className={News.rightWrap}> {word}보기</div>
     </div>
   );
 }
