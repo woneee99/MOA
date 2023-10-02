@@ -9,12 +9,12 @@ function QuizResult(props) {
 
   const navigate = useNavigate();
   const handleOtherQuiz = () => {
-    navigate('/quiz/question-page');
+    navigate(-1);
   };
   const handleGoBack= () => {
     navigate('/quiz');
   };
-
+  // const correctAnswers = state || 0;
   // const correctAnswers = props.location.state?.correctAnswers || 0;
 
   return (

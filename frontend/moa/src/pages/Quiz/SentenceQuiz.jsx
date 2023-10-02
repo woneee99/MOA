@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import { quizApi } from "../../api/quizApi";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MenuHeader from "../../components/MenuHeader";
 import styles from '../../styles/Quiz/WordQuiz.module.css';
 import Modal from 'react-bootstrap/Modal';
@@ -10,19 +10,26 @@ function SentenceQuiz(props) {
   const [sentenceData, setSentenceData] = useState([]);
   const [sentenceIndex, setSentenceIndex] = useState(0);
   const [showResultButton, setShowResultButton] = useState(false);
-  const currentSentence = sentenceData[sentenceIndex];
-
+  
   const [voices, setVoices] = useState([]);
   const [isListening, setIsListening] = useState(false);
-
+  
   const [sentence, setSentence] = useState([]);
   
   const [answerMessage, setAnswerMessage] = useState('');
   const [showAnswerModal, setShowAnswerModal] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
   const [correctAnswers,setCorrectAnswers] = useState(0);
+  
+  const currentSentence = sentenceData[sentenceIndex];
 
+  const handleButtonClick = (answer) => {
+    setSentence([...sentence, answer])
+  };
 
+  const handleResetButton = () => {
+    setSentence([]);
+  }
 
   useEffect(()=>{
     const fetchSentenceData = async () => {
@@ -84,7 +91,7 @@ function SentenceQuiz(props) {
   };
 
   // 정답 확인
-  const checkAnswer = async (r) =>{
+  const checkAnswer = async () =>{
     const selecetedSentece = sentence.join(' ');
     
     if (selecetedSentece === currentSentence.quizAnswer) {
@@ -95,6 +102,7 @@ function SentenceQuiz(props) {
     }
     
     setShowAnswerModal(true);
+
     setTimeout(() => {
       setShowAnswerModal(false);
       handleNextQuiz();
@@ -112,6 +120,21 @@ function SentenceQuiz(props) {
       setShowResultButton(true);
     }
   };
+
+  // 결과
+  const navigate = useNavigate();
+  const handleShowResult = async() => {
+    try {
+      const response = await quizApi.finishQuiz({
+        correctQuizAnswerCnt : correctAnswers,
+      });
+      console.log('퀴즈 완료 응답', response.data);
+      
+      navigate('/quiz/quiz-result',{ state : correctAnswers });
+    } catch (error) {
+      console.error('퀴즈 완료 API 호출 중 에러:', error);
+    }
+  }
   
   
 
@@ -120,9 +143,9 @@ function SentenceQuiz(props) {
       <MenuHeader title="문장퀴즈" />
       {currentSentence ? (
         <div>
-          <h1>
-            문제 {sentenceIndex + 1} 번
-          </h1>
+          <p>
+            문제 {sentenceIndex + 1} / 15
+          </p>
           {currentSentence.quizCategoryId === 4 ? (
             <div>
               <p className={styles.quizTitle}>다음을 듣고 문장을 완성해보세요</p>
@@ -144,24 +167,32 @@ function SentenceQuiz(props) {
               </div>
             </div>           
           )}
-          <div>
-            <p>선택한 보기 목록</p>
-            <p>{sentence.join(' ')}</p>
+          <p className={styles.quizTitle}>정답을 완성하세요</p>
+          <div className={styles.answerContainer}>
+            <p className={styles.completeAnswer}>{sentence.join(' ')}</p>
+            <div className={styles.btnContainer}>
+              <button onClick={handleResetButton}>초기화</button>
+              <button onClick={checkAnswer}>정답 확인</button>
+            </div>
           </div>
-          <button onClick={checkAnswer}>정답 확인</button>
 
-          <ul>
+          <p className={styles.quizTitle}>보기</p>
+          <ul className={styles.sentenceQuizUl}>
             {currentSentence.quizAnswerList.map((answer, answerIndex) => (
               <button
                 key={answerIndex}
-                onClick={() => {
-                  setSentence([...sentence, answer]);
-              }}>
+                onClick={() => handleButtonClick(answer)}
+                className={`${styles.selectBtns} ${sentence.includes(answer) ? styles.selected :''}`}
+                >
                 {answer}
               </button>
             ))}
           </ul>
-
+          {showResultButton ? (
+            <button onClick={handleShowResult} className={styles.resultBtn}>결과보기</button>
+          ) : (
+            <div></div>
+          )}
         </div>
       ) : (
         <p>로딩중...</p>
@@ -169,8 +200,8 @@ function SentenceQuiz(props) {
       <div>
         
       </div>
-
-      <Modal show={showAnswerModal} >
+      
+      <Modal show={showAnswerModal} className={styles.resultModal}>
         <Modal.Body>{answerMessage}</Modal.Body>
       </Modal>
     </div>

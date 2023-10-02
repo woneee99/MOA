@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import MenuHeader from '../MenuHeader';
 import styles from '../../styles/Quiz/WordQuiz.module.css'
+import ModalDialog from 'react-bootstrap/esm/ModalDialog';
 
 function QuestionArea(props) {
   const [quizData, setQuizData] = useState([]);
@@ -150,7 +151,7 @@ function QuestionArea(props) {
           </h1>
           {currentQuiz.quizCategoryId === 2 ? (
             <div>
-              <p className={styles.quizTitle}>다음 단어를 듣고 맞춰보세요</p>
+              <p className={styles.quizTitle}>다음 단어를 듣고 맞혀보세요</p>
               <div className={styles.questionContainer}>
 
                 <div onClick={toggleListening}
@@ -163,7 +164,7 @@ function QuestionArea(props) {
             </div>
           ) : (
             <div>
-              <p className={styles.quizTitle}>다음 단어의 뜻을 맞춰보세요</p>
+              <p className={styles.quizTitle}>다음 단어의 뜻을 맞혀보세요</p>
               <div className={styles.questionContainer}>
                 <div className={styles.questionArea}>
                   <p>{currentQuiz.quizQuestion}</p>
@@ -195,8 +196,20 @@ function QuestionArea(props) {
         <p>로딩중...</p>
       )}
 
-      <Modal show={showAnswerModal} >
-        <Modal.Body>{answerMessage}</Modal.Body>
+      <Modal show={showAnswerModal} className={styles.resultModal}>
+          <Modal.Body className={styles.resultModalContent}>        
+            {answerMessage === '맞았어요!' ? (
+              <div className={styles.correctMessage}>
+                <img src={process.env.PUBLIC_URL + '/assets/Quiz/success.png'} alt="듣기" /> 
+                <p>맞았어요!</p>
+              </div>
+            ):(
+              <div className={styles.incorrectMessage}>
+                <img src={process.env.PUBLIC_URL + '/assets/Quiz/fail.png'} alt="듣기" /> 
+                <p>틀렸어요</p>
+              </div>
+            )}
+          </Modal.Body>
       </Modal>
     </div>
   );
