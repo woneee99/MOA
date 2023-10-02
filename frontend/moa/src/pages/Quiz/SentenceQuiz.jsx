@@ -197,12 +197,21 @@ function SentenceQuiz(props) {
       ) : (
         <p>로딩중...</p>
       )}
-      <div>
-        
-      </div>
       
       <Modal show={showAnswerModal} className={styles.resultModal}>
-        <Modal.Body>{answerMessage}</Modal.Body>
+          <Modal.Body className={styles.resultModalContent}>        
+            {answerMessage === '맞았어요!' ? (
+              <div className={styles.correctMessage}>
+                <img src={process.env.PUBLIC_URL + '/assets/Quiz/success.png'} alt="듣기" /> 
+                <p>맞았어요!</p>
+              </div>
+            ):(
+              <div className={styles.incorrectMessage}>
+                <img src={process.env.PUBLIC_URL + '/assets/Quiz/fail.png'} alt="듣기" /> 
+                <p>틀렸어요</p>
+              </div>
+            )}
+          </Modal.Body>
       </Modal>
     </div>
   );
