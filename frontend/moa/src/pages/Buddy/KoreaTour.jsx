@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 
-import BackButton from "../../components/BackButton";
-import KoreaTourSearch from "../../components/KoreaTourSearch";
+import AppBar from '../../components/AppBar';
 import KoreaTourMap from "../../components/KoreaTourMap";
 import KoreaTourSearchResult from "../../components/KoreaTourSearchResult";
 import { koreaTourApi } from "../../api/KoreaTourApi";
+import styles from '../../styles/KoreaTour/KoreaTourSearch.module.css';
 
 function KoreaTour(props) {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [mediaPlaceList, setmediaPlaceList] = useState([]);
   const [mediaName, setMediaName] = useState("");
+
+  const onChange = (event) => {
+    setMediaName(event.target.value);
+  }
 
   const handleSearchClick = () => {
     const type = "all";
@@ -25,14 +29,24 @@ function KoreaTour(props) {
   };
 
   return (
-    <div>
-      <BackButton />
-      <br />
-      <h1>한국 둘러보기</h1>
-      <hr />
-      <div>
-        <KoreaTourSearch setMediaName={setMediaName} />
-        <button onClick={handleSearchClick}>검색</button>
+    <div className={styles.container}>
+      <div className={styles.inner}>
+        <AppBar></AppBar>
+        <div className={styles.bg}>
+        <div className={styles.searchContainer}>
+          <div className={styles.searchContents}>
+            <div className={styles.searchLabel}>
+              <label htmlFor="mediaName">검색어를 입력하세요</label>
+            </div>
+            <div className={styles.searchArea}>
+              <div className={styles.searchInput}>
+                <span className={styles.vector}></span>
+                <input className={styles.input} type="text" id="mediaName" onChange={onChange} placeholder="K-DRAMA or K-POP" />
+              </div>
+              <button className={styles.searchBtn} onClick={handleSearchClick}>검색하기</button>
+            </div>
+            </div>
+            </div>
       </div>
       <hr />
       {showSearchResults && (
@@ -41,7 +55,8 @@ function KoreaTour(props) {
           {/* <KoreaTourSearchResult /> */}
           <button onClick={closeSearchResults}>닫기</button>
         </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

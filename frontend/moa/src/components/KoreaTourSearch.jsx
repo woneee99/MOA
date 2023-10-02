@@ -13,22 +13,6 @@ function KoreaTourSearch(props) {
         <label htmlFor="mediaName">검색어를 입력하세요</label>
         <input type="text" id="mediaName" onChange ={onChange} placeholder="K-DRAMA or K-POP"/>
       </div>
-      {/* <div>
-        <label htmlFor="mediaType">매체 분류</label>
-        <input type="text" id="mediaType" />
-      </div>
-      <div>
-        <label htmlFor="title">이름</label>
-        <input type="text" id="title" />
-      </div>
-      <div>
-        <label htmlFor="place">장소</label>
-        <input type="text" id="place" />
-      </div>
-      <div>
-        <label htmlFor="placeType">장소 분류</label>
-        <input type="text" id="placeType" />
-      </div> */}
     </div>
   );
 }
