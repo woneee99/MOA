@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import store from './store';
 import Cookies from 'js-cookie';
 
 import Intro from './pages/Intro';
 import Main from './pages/Main';
 import Login from './pages/Login';
+import LoginLoading from './pages/LoginLoading';
 import SignUp from './pages/SignUp';
 import Matching from './pages/Matching';
 import ChattingHome from './components/ChattingHome';
@@ -20,6 +22,7 @@ import KoreanLearningDefault from './pages/Learning/KoreanLearningDefault';
 import QuizHome from './components/QuizHome';
 import Quiz from './pages/Quiz/Quiz';
 import QuestionPage from './pages/Quiz/QuestionPage';
+import SentenceQuiz from './pages/Quiz/SentenceQuiz';
 import IncorrectNote from './pages/Quiz/IncorrectNote';
 import BuddyHome from './components/BuddyHome';
 import QuizResult from './pages/Quiz/QuizResult';
@@ -38,15 +41,16 @@ import NewsArticle from './pages/Learning/NewsArticle';
 import ExchangeDiaryContent from './pages/Buddy/Diary/ExchangeDiaryContent';
 
 function App() {
+  const state = store.getState();
+  const accessToken = state.accessToken;
+  const isMatching = state.isMatching;
   const refreshToken = Cookies.get('refreshToken');
-
-  console.log(refreshToken);
 
   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
-          {refreshToken ? ( // refreshToken이 있는 경우
+          {refreshToken? ( // refreshToken이 있는 경우
             <>
               <Route path="/" element={<Main />} />
 
@@ -65,13 +69,12 @@ function App() {
 
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/quiz/question-page" element={<QuestionPage />} />
+              <Route path="/quiz/sentence-quiz" elemenet={<SentenceQuiz />} />
               <Route path="/quiz/incorrect-note" element={<IncorrectNote />} />
               <Route path="/quiz/quiz-result" element={<QuizResult />} />
 
-              <Route path="/buddy" element={<BuddyHome />} />
-
               <Route path="/buddy/exchangediary" element={<ExchangeDiary />} />
-              <Route path="/buddy/exchangediary/:id" element={<ExchangeDiaryDetail />} />
+              <Route path="/buddy/exchangediary/:exchangeDiaryId" element={<ExchangeDiaryDetail />} />
               <Route path="/buddy/exchangediary/content" element={<ExchangeDiaryContent />} />
               <Route path="/buddy/exchangediary/create" element={<CreateExchangeDiary />} />
               <Route path="/buddy/exchangediary/:id/update" element={<UpdateExchangeDiary />} />
@@ -89,6 +92,7 @@ function App() {
             <>
               <Route path="/intro" element={<Intro />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/login-load" element={<LoginLoading />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/*" element={<Navigate to="/intro" />} />
             </>
