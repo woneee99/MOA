@@ -15,10 +15,8 @@ function KoreanLearning(props) {
     learningApi.getPopularWord()
       .then((response) => {
         const res = response.data;
-        console.log(res)
         setWords(res);
         setPopularWords(res);
-        console.log(res);
       })
   }, []);
 

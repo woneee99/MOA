@@ -6,22 +6,21 @@ import { useLocation  } from 'react-router-dom';
 
 
 function WordLearning(props) {
-  const location = useLocation();
-  const word = {...location.state};
+    const location = useLocation();
+    const news = location.state.news;
+    const word = location.state.word;
+    return (
+        <div >
+            <WordLogo word={"뉴스"}/>
+            <div className={News.textContainer}>
+                <div className={News.newsAbout}>News About</div>
+                <div className={News.word}>{word.word}</div>
+            </div>
 
-  return (
-    <div >
-        <WordLogo word={"뉴스"}/>
-        <div className={News.textContainer}>
-            <div className={News.newsAbout}>News About</div>
-            <div className={News.word}>노르딕워킹</div>
+            <div className={News.line}></div>
+            <RelatedNews news={news}/>
         </div>
-        <div className={News.line}></div>
-        
-        
-        <RelatedNews word={word} />
-    </div>
-  );
+    );
 }
 
 export default WordLearning;
