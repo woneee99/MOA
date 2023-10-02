@@ -4,10 +4,19 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SimpleSlider from "./SimpleSlider";
 import styled from "styled-components";
+import styles from '../styles/KoreaTour/KoreaTourCarousel.module.css';
 
 const Container = styled.div`
   overflow: hidden;
-  margin: 20px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 320px;
+  z-index:10;
+
+  background: #FFFFFF;
+  border-radius: 40px 40px 0px 0px;
 `;
 
 const StyledSlider = styled(Slider)`
@@ -21,8 +30,14 @@ const ImageContainer = styled.div`
 `;
 
 const Image = styled.img`
+  width: 300px;
+  height: 200px;
   max-width: 100%;
   max-height: 100%;
+  object-fit: cover;
+  border-radius: 10px 10px 0px 0px;
+}
+
 `;
 
 const imgUrl = require("./zero.jpg");
@@ -56,7 +71,10 @@ function KoreaTourCarousel({ mediaPlaceList, selectedPlace, changeCenterByCarous
 
   return (
     <Container>
-      <h2> Single Item</h2>
+      <div className={styles.header}>
+        <div className={styles.headerTop}> 검색결과 </div>
+      </div>
+      <div  className={styles.main}>
       <StyledSlider {...settings} ref={setSlider}>
         {/* {items.map(item => {
             return (
@@ -70,18 +88,21 @@ function KoreaTourCarousel({ mediaPlaceList, selectedPlace, changeCenterByCarous
          */}
         {selectedPlaceList &&
           selectedPlaceList.map((place) => (
-            <div>
+            <div className={styles.placeContent}>
               <ImageContainer>
-                <Image src={imgUrl} />
-                <div>{place.placeNm}</div>
-                <div>{place.addr}</div>
-                <div>{place.relatePlaceDc}</div>
+                <Image src={place.realImg} />
+                  <div className={styles.content}>
+                    <div className={styles.contentDetail}>{place.placeNm}</div>
+                    <div className={styles.contentDetail}>{place.addr}</div>
+                    <div className={styles.contentDetail}>{place.relatePlaceDc}</div>
+                  </div>
               </ImageContainer>
             </div>
             //   <SlideContent data={mart.id} handleRen={handleRen} />
             // <S.MartBox key={mart.id}>캐러셀 안에 content 작성</S.MartBox>
           ))}
-      </StyledSlider>
+        </StyledSlider>
+        </div>
     </Container>
 
     // <Slider {...settings} ref={setSlider}>

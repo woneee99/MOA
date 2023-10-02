@@ -9,9 +9,12 @@ import stay from "./stay4.png";
 import station from "./station.png";
 import store from "./store.png";
 import SimpleSlider from "./SimpleSlider";
+import styles from '../styles/KoreaTour/KoreaTourMap.module.css';
+import { style } from "d3-selection";
 
-function KoreaTourMap({ mediaPlaceList }) {
+function KoreaTourMap({mediaName, mediaPlaceList }) {
   const [selectedPlace, setSelectedPlace] = useState();
+  const [visible, setVisible] = useState(true);
   const mapRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false); // 현재 선택된 마크가 존재하는지
 
@@ -22,7 +25,16 @@ function KoreaTourMap({ mediaPlaceList }) {
   //   setIsOpen(true);
   // }
 
+  const handleMapClick = (e) => {
+    setVisible(false);
+    if (mapRef.current) {
+      console.log(mapRef.current.style);
+    }
+    // mapRef.current.style.height = '100%';
+  }
+
   const handleMarkerClick = (e, place) => {
+    setVisible(true);
     setSelectedPlace(place);
     setIsOpen(true);
   };
@@ -55,18 +67,21 @@ function KoreaTourMap({ mediaPlaceList }) {
   useEffect(() => {
     if (mapRef.current) {
       const newCenter = new kakao.maps.LatLng(selectedPlace.latitude, selectedPlace.longitude);
-      mapRef.current.setCenter(newCenter);
+      mapRef.current.panTo(newCenter);
     }
   }, [selectedPlace]);
 
   return (
-    <>
+    <div className={styles.container}>
+      <div className={styles.searchName}>'{mediaName}' 검색 결과</div>
+      <div className={(visible ? styles.mapActive : styles.map)}>
       <Map
+        className={(visible ? styles.mapActive : styles.map)}
         center={{ lat: 37.644825, lng: 127.681114 }}
-        style={{ width: "390px", height: "300px" }}
         level={3}
         ref={mapRef}
         draggable={true}
+        onClick={(e) => handleMapClick(e)}
       >
         {mediaPlaceList.map((place) => (
           <>
@@ -131,16 +146,18 @@ function KoreaTourMap({ mediaPlaceList }) {
               )}
           </>
         ))}
-
+        </Map>
+        </div>
+      {visible &&
         <KoreaTourCarousel
-          mediaPlaceList={mediaPlaceList}
-          selectedPlace={selectedPlace}
-          changeCenterByCarousel={changeCenterByCarousel}
-          // handleModal={handleModal}
-        />
-      </Map>
+        mediaPlaceList={mediaPlaceList}
+        selectedPlace={selectedPlace}
+        changeCenterByCarousel={changeCenterByCarousel}
+        // handleModal={handleModal}
+      />
+      }
       {/* <SimpleSlider></SimpleSlider> */}
-    </>
+    </div>
   );
 }
 
