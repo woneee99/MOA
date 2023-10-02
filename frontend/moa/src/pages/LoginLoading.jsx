@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import store from '../store';
-import { useAppDispatch } from '../store';
+import { useAppDispatch, useAppSelector } from '../store';
 import { setIsForeigner, setIsMatching } from '../store';
 
 import { userApi } from '../api/userApi';
@@ -32,8 +32,7 @@ const commentStyle = {
 }
 
 function LoginLoading(props) {
-  const state = store.getState();
-  const isMatching = state.isMatching;
+  const isMatching = useAppSelector((state) => state.isMatching);
   
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -61,6 +60,7 @@ function LoginLoading(props) {
     .catch((error) => {
       console.log(`매칭여부 조회 오류 : ${error}`);
     })
+
 
     setTimeout(() => {
       window.location.reload();

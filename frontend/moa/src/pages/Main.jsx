@@ -48,6 +48,7 @@ function Main(props) {
   const isLoggedIn = props.inLoggedIn;
   const [isBottomBarVisible, setBottomBarVisible] = useState(false);
 
+
   const toggleBottomBar = () => {
     setBottomBarVisible(!isBottomBarVisible);
   };
