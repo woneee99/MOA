@@ -22,7 +22,13 @@ export const quizApi = {
     return authAxios.put('/quiz/finish', correctQuizAnswerCnt);
   },
 
+  // 오답 수 
   getWrongAnswerCount: () => {
     return authAxios.get('/quiz/wrong-answer');
+  },
+
+  // 랜덤으로 틀린 문제 가져오기
+  getRandomWrongAnswer: (data) => {
+    return authAxios.post('/quiz/wrong-answer', data);
   },
 };
