@@ -4,6 +4,7 @@ import com.ssafy.moa.api.dto.ChatRoom;
 import com.ssafy.moa.common.handler.RedisSubscriber;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class ChatRoomRepository {
@@ -45,14 +47,22 @@ public class ChatRoomRepository {
         else  return opsHashChatRoom.get(BUDDY_CHAT_ROOMS, id);
     }
 
-    public ChatRoom createChatRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.builder().name(name).build();
+    public ChatRoom createChatRoom(String roomId, String name) {
+        ChatRoom chatRoom = ChatRoom.builder().roomId(roomId).name(name).build();
+        log.info(chatRoom.getRoomId());
+        log.info(chatRoom.toString());
+        opsHashChatRoom.put(OPEN_CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
+        return chatRoom;
+    }
+
+    public ChatRoom createBuddyRoom(String roomId, String name) {
+        ChatRoom chatRoom = ChatRoom.builder().roomId(roomId).name(name).build();
         opsHashChatRoom.put(OPEN_CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
         return chatRoom;
     }
 
     public void enterOpenChatRoom(String roomId) {
-        String key = "open_chat:" + roomId;
+        String key = "open_chat: " + roomId;
         ChannelTopic topic = openChatTopics.get(key);
         if (topic == null) {
             topic = new ChannelTopic(key);
@@ -66,7 +76,7 @@ public class ChatRoomRepository {
 
 
     public void enterBuddyChatRoom(String roomId) {
-        String key = "buddy:" + roomId;
+        String key = "buddy: " + roomId;
         ChannelTopic topic = buddyChatTopics.get(key);
         if (topic == null) {
             topic = new ChannelTopic(key);

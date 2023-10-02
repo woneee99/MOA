@@ -27,16 +27,26 @@ spring:
           ssl:
             enable: true
             trust: smtp.naver.com
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+  freemarker:
+    cache: false
+
   profiles:
     include:
       - mail
       - chat
+      - papago
   main:
     allow-bean-definition-overriding: true
 
+
 jwt:
   secret-key: WGmDjeValRGtlGnSOLmXPW8Ht36zv571HcMi1HnG9TTsAzG5q5SW8cGkLJKf7L2CTWqI7K27tmdFgakdhBtoFQ==
-  token-validity-in-sec: 3600 #1시간
+  token-validity-in-sec: 604800 #1시간
   refresh-token-validity-in-sec: 604800 #1주
 
 server:
@@ -44,3 +54,4 @@ server:
     key-store: classpath:keystore.p12
     key-store-password: ssafy
     key-store-type: PKCS12
+

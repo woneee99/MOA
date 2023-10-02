@@ -4,19 +4,20 @@ import com.ssafy.moa.api.dto.quiz.*;
 import com.ssafy.moa.api.entity.DailyKoreanQuiz;
 import com.ssafy.moa.api.entity.Level;
 import com.ssafy.moa.api.entity.Member;
+import com.ssafy.moa.api.entity.QuizWrongAnswer;
 import com.ssafy.moa.api.repository.DailyKoreanQuizRepository;
 import com.ssafy.moa.api.repository.LevelRepository;
 import com.ssafy.moa.api.repository.MemberRepository;
+import com.ssafy.moa.api.repository.QuizWrongAnswerRepository;
 import com.ssafy.moa.api.repository.querydsl.QuizQueryRepository;
 import com.ssafy.moa.api.service.QuizService;
 import com.ssafy.moa.common.exception.NotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -25,6 +26,7 @@ public class QuizServiceImpl implements QuizService {
 
     private final DailyKoreanQuizRepository dailyKoreanQuizRepository;
     private final QuizQueryRepository quizQueryRepository;
+    private final QuizWrongAnswerRepository quizWrongAnswerRepository;
     private final MemberRepository memberRepository;
     private final LevelRepository levelRepository;
 
@@ -34,32 +36,17 @@ public class QuizServiceImpl implements QuizService {
     public List<QuizQuestionDto> questionWordQuiz() {
         // QuizRepository에서 랜덤으로 15개의 Quiz를 가져온다.
         List<QuizQuestionDto> quizQuestionDtoList = quizQueryRepository.getRandomQuizzes();
+
         // 퀴즈에 따라 보기를 생성한다.
         // 퀴즈 유형 1,2는 답을 포함한 보기가 4개
-
-        // 단어 보기 생성
-        for (int i = 0; i < quizQuestionDtoList.size(); i++) {
-            QuizQuestionDto quizQuestionDto = quizQuestionDtoList.get(i);
-            if (quizQuestionDto.getQuizCategoryId() == 1 || quizQuestionDto.getQuizCategoryId() == 2) {
-                log.info(quizQuestionDto.toString());
-
-                // 퀴즈 보기 가져오기
-                String quizAnswer = quizQuestionDto.getQuizAnswer();
-                List<String> quizAnswerList = quizQueryRepository.getWordQuizAnswerList(quizAnswer);
-                quizAnswerList.add(quizAnswer);
-                Collections.shuffle(quizAnswerList);
-                quizQuestionDto.setQuizAnswerList(quizAnswerList);
-
-                quizQuestionDtoList.set(i, quizQuestionDto);
-            }
-        }
+        createWordOptions(quizQuestionDtoList);
 
         return quizQuestionDtoList;
     }
 
-    // 단어 퀴즈 한 개씩 제출 API
+    // 퀴즈 한 개씩 제출 API
     @Override
-    public QuizSubmitRespDto submitWordQuiz(QuizSubmitReqDto quizSubmitReqDto) {
+    public QuizSubmitRespDto submitWordQuiz(Long memberId, QuizSubmitReqDto quizSubmitReqDto) {
         // quiz
         Long quizId = quizSubmitReqDto.getQuizId();
         DailyKoreanQuiz dailyKoreanQuiz = dailyKoreanQuizRepository.findByQuizId(quizId)
@@ -67,6 +54,24 @@ public class QuizServiceImpl implements QuizService {
 
         String quizAnswer = dailyKoreanQuiz.getQuizAnswer();
         Boolean isQuizCorrect = quizAnswer.equals(quizSubmitReqDto.getQuizSubmitAnswer());
+
+        // quiz가 틀렸을 경우 오답노트에 추가해야한다.
+        if(!isQuizCorrect) {
+            Member member = memberRepository.findByMemberId(memberId)
+                    .orElseThrow(() -> new NotFoundException(memberId + "에 해당하는 member가 없습니다."));
+
+            QuizWrongAnswer existingWrongAnswer = quizWrongAnswerRepository.findByMemberIdAndQuizId(memberId, quizId);
+
+            if(existingWrongAnswer == null) {
+                QuizWrongAnswer quizWrongAnswer = QuizWrongAnswer.builder()
+                        .member(member)
+                        .quiz(dailyKoreanQuiz)
+                        .build();
+
+                quizWrongAnswerRepository.save(quizWrongAnswer);
+            }
+
+        }
 
         return QuizSubmitRespDto.builder()
                 .quizId(quizId)
@@ -110,6 +115,103 @@ public class QuizServiceImpl implements QuizService {
                 .quizMessage(quizMessage)
                 .memberGetExp(memberGetExp)
                 .build();
+    }
+
+    // 문장 퀴즈 출제 API
+    @Override
+    public List<QuizQuestionDto> questionSentenceQuiz() {
+        List<QuizQuestionDto> quizQuestionDtoList = quizQueryRepository.getRandomSentenceQuizzes();
+
+        // 퀴즈 보기 생성
+        // 1. StringTokenizer를 사용하여 문제 답을 토큰화 시켜 나누자.
+        // 2. 보기는 총 9개가 있어야한다.
+        createSentenceOptions(quizQuestionDtoList);
+
+        return quizQuestionDtoList;
+    }
+
+
+    @Override
+    public QuizWrongCountDto getWrongQuizCount(Long memberId) {
+        return QuizWrongCountDto.builder()
+                .quizWrongCount(quizWrongAnswerRepository.getWrongQuizCount(memberId).intValue())
+                .build();
+    }
+
+    // 틀린 문제에서 퀴즈 랜덤 출제
+    @Override
+    public List<QuizQuestionDto> submitWrongQuiz(Long memberId, QuizWrongCountDto quizWrongCountDto) {
+        Integer quizWrongCount = quizWrongCountDto.getQuizWrongCount();
+
+        // 퀴즈를 랜덤으로 가져온다.
+        List<QuizQuestionDto> quizQuestionDtoList = quizWrongAnswerRepository.getRandomWrongQuizzes(memberId, quizWrongCount);
+
+        for(QuizQuestionDto quizQuestionDto : quizQuestionDtoList) {
+            Long quizCategoryId = quizQuestionDto.getQuizCategoryId();
+            if(quizCategoryId == 1 || quizCategoryId == 2) createWordOptions(quizQuestionDtoList);
+            else if(quizCategoryId == 3 || quizCategoryId == 4) createSentenceOptions(quizQuestionDtoList);
+        }
+
+        return quizQuestionDtoList;
+    }
+
+    // 틀린 문제에서 문제 삭제
+    @Transactional
+    @Override
+    public Long deleteWrongQuiz(Long memberId, Long quizId) {
+        return quizWrongAnswerRepository.deleteWrongQuiz(memberId, quizId);
+    }
+
+    // 단어 퀴즈 보기 생성
+    private void createWordOptions(List<QuizQuestionDto> quizQuestionDtoList) {
+        // 단어 보기 생성
+        for (int i = 0; i < quizQuestionDtoList.size(); i++) {
+            QuizQuestionDto quizQuestionDto = quizQuestionDtoList.get(i);
+
+            if(quizQuestionDto.getQuizCategoryId() == 1 || quizQuestionDto.getQuizCategoryId() == 2) {
+                // 퀴즈 보기 가져오기
+                String quizAnswer = quizQuestionDto.getQuizAnswer();
+                List<String> quizAnswerList = quizQueryRepository.getWordQuizAnswerList(quizAnswer);
+                quizAnswerList.add(quizAnswer);
+                Collections.shuffle(quizAnswerList);
+                quizQuestionDto.setQuizAnswerList(quizAnswerList);
+
+                quizQuestionDtoList.set(i, quizQuestionDto);
+            }
+        }
+    }
+
+    // 문장 퀴즈 보기 생성
+    private void createSentenceOptions(List<QuizQuestionDto> quizQuestionDtoList) {
+        for(int i = 0; i<quizQuestionDtoList.size(); i++) {
+            QuizQuestionDto quizQuestionDto = quizQuestionDtoList.get(i);
+            if(quizQuestionDto.getQuizCategoryId() == 3 || quizQuestionDto.getQuizCategoryId() == 4) {
+                String quizAnswer = quizQuestionDto.getQuizAnswer();
+
+                StringTokenizer stringTokenizer = new StringTokenizer(quizAnswer);
+
+                List<String> quizAnswerList = new ArrayList<>();
+                int cnt = 0;
+                while(stringTokenizer.hasMoreTokens()) {
+                    String token = stringTokenizer.nextToken();
+                    quizAnswerList.add(token);
+                    cnt++;
+                }
+
+                // 3. 단어 퀴즈 answer 값 랜덤으로 9개 가져와서 남은 개수만큼 넣어주기
+                List<String> quizAnswerCandidateList = quizQueryRepository.getQuizAnswerCandidates();
+
+                int remainWordCnt = 9 - cnt;
+                for(int r = 0; r < remainWordCnt; r++) {
+                    quizAnswerList.add(quizAnswerCandidateList.get(r));
+                }
+
+                Collections.shuffle(quizAnswerList);
+                quizQuestionDto.setQuizAnswerList(quizAnswerList);
+                quizQuestionDtoList.set(i, quizQuestionDto);
+            }
+        }
+
     }
 
     public void updateMemberLevel(Member member) {

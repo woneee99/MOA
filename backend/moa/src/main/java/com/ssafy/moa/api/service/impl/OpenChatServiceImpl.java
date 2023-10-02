@@ -2,10 +2,12 @@ package com.ssafy.moa.api.service.impl;
 
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import com.ssafy.moa.api.dto.ChatRoom;
 import com.ssafy.moa.api.dto.OpenChatDto.*;
 import com.ssafy.moa.api.entity.Member;
 import com.ssafy.moa.api.entity.OpenChat;
 import com.ssafy.moa.api.entity.OpenChatMember;
+import com.ssafy.moa.api.repository.ChatRoomRepository;
 import com.ssafy.moa.api.repository.MemberRepository;
 import com.ssafy.moa.api.repository.OpenChatMemberRepository;
 import com.ssafy.moa.api.repository.OpenChatRepository;
@@ -13,6 +15,7 @@ import com.ssafy.moa.api.service.MemberService;
 import com.ssafy.moa.api.service.OpenChatService;
 import com.ssafy.moa.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,21 +24,19 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OpenChatServiceImpl implements OpenChatService {
     private final OpenChatRepository openChatRepository;
     private final OpenChatMemberRepository openChatMemberRepository;
-    private final MemberService memberService;
+    private final ChatRoomRepository chatRoomRepository;
     private final String bucketName = "diary_storage";
     private final Storage storage;
-    private final String url = "https://storage.googleapis.com/";
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long saveOpenChat(MultipartFile multipartFile, SaveOpenChatRequest saveOpenChatRequest) throws IOException {
-        Member member = memberService.findMember(saveOpenChatRequest.getMemberId());
-
+    public Long saveOpenChat(Member member, MultipartFile multipartFile, SaveOpenChatRequest saveOpenChatRequest) throws IOException {
         String uuid = UUID.randomUUID().toString();
         String ext = multipartFile.getContentType();
 
@@ -50,13 +51,15 @@ public class OpenChatServiceImpl implements OpenChatService {
                 .openChatImgUrl(uuid)
                 .member(member)
                 .build();
-        openChatRepository.save(openChat);
 
+        Long openChatId = openChatRepository.save(openChat).getOpenChatId();
+        chatRoomRepository.createChatRoom(openChatId+"", saveOpenChatRequest.getOpenChatTitle());
         OpenChatMember openChatMember = OpenChatMember.builder()
                 .member(member)
                 .openChat(openChat)
                 .build();
-
+//        List<ChatRoom> allRoom = chatRoomRepository.findAllRoom(1);
+//        ChatRoom roomById = chatRoomRepository.findRoomById(1, 14 + "");
         openChatMemberRepository.save(openChatMember);
 
         return openChat.getOpenChatId();
@@ -64,9 +67,7 @@ public class OpenChatServiceImpl implements OpenChatService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long saveOpenChatMember(Long openChatId, SaveOpenChatMemberRequest saveOpenChatMemberRequest) {
-        Member member = memberService.findMember(saveOpenChatMemberRequest.getMemberId());
-
+    public Long saveOpenChatMember(Member member, Long openChatId) {
         OpenChatMember openChatMember = OpenChatMember.builder()
                 .member(member)
                 .openChat(findOpenChat(openChatId))
@@ -100,8 +101,7 @@ public class OpenChatServiceImpl implements OpenChatService {
 
     @Override
     @Transactional
-    public Long deleteOpenChatMember(Long openChatId, Long memberId) {
-        Member member = memberService.findMember(memberId);
+    public Long deleteOpenChatMember(Member member, Long openChatId) {
         OpenChat openChat = findOpenChat(openChatId);
         openChatMemberRepository.deleteByMember(member);
         return openChat.getOpenChatId();

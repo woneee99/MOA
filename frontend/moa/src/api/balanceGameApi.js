@@ -1,24 +1,25 @@
-import { axios } from './https';
+import { authAxios } from './authAxios';
+import { nonAuthAxios } from './nonAuthAxios';
 
 export const balanceGameApi = {
   // 밸런스게임 전체 조회
-  getBalanceGameList : () => axios.get('balance'),
+  getBalanceGameList : () => nonAuthAxios.get('balance'),
 
   // 밸런스게임 상세 조회
-  getBalanceGameDetail : (balanceGameId) => axios.get(`balance/${balanceGameId}`),
+  getBalanceGameDetail : (balanceGameId) => nonAuthAxios.get(`balance/${balanceGameId}`),
 
   // 인기 밸런스게임 조회
-  getBestBalanceGameList : () => axios.get('balance/best'),
+  getBestBalanceGameList : () => nonAuthAxios.get('balance/best'),
 
   // 밸런스게임 생성
-  createBalanceGame : (data) => axios.post('balance', data),
+  createBalanceGame : (data) => authAxios.post('balance', data),
 
   // 밸런스게임 수정
-  updateBalanceGame : (balanceGameId, data) => axios.put(`balance/${balanceGameId}`, data),
+  updateBalanceGame : (balanceGameId, data) => nonAuthAxios.put(`balance/${balanceGameId}`, data),
 
   // 밸런스게임 삭제
-  deleteBalanceGame : (balanceGameId) => axios.delete(`balance/${balanceGameId}`),
+  deleteBalanceGame : (balanceGameId) => nonAuthAxios.delete(`balance/${balanceGameId}`),
 
   // 밸런스게임 반응 등록
-  reaction : (data) => axios.post('balance/reaction', data),
+  reaction : (data) => nonAuthAxios.post('balance/reaction', data),
 }

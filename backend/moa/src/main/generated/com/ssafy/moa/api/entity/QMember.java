@@ -36,6 +36,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final ListPath<Interest, QInterest> interest = this.<Interest, QInterest>createList("interest", Interest.class, QInterest.class, PathInits.DIRECT2);
 
+    public final ListPath<Keyword, QKeyword> keyword = this.<Keyword, QKeyword>createList("keyword", Keyword.class, QKeyword.class, PathInits.DIRECT2);
+
     public final QKorean korean;
 
     public final StringPath memberEmail = createString("memberEmail");
@@ -61,6 +63,8 @@ public class QMember extends EntityPathBase<Member> {
     public final ListPath<OpenChat, QOpenChat> openChat = this.<OpenChat, QOpenChat>createList("openChat", OpenChat.class, QOpenChat.class, PathInits.DIRECT2);
 
     public final ListPath<OpenChatMember, QOpenChatMember> openChatMember = this.<OpenChatMember, QOpenChatMember>createList("openChatMember", OpenChatMember.class, QOpenChatMember.class, PathInits.DIRECT2);
+
+    public final ListPath<QuizWrongAnswer, QQuizWrongAnswer> quizWrongAnswer = this.<QuizWrongAnswer, QQuizWrongAnswer>createList("quizWrongAnswer", QuizWrongAnswer.class, QQuizWrongAnswer.class, PathInits.DIRECT2);
 
     public final ListPath<Word, QWord> word = this.<Word, QWord>createList("word", Word.class, QWord.class, PathInits.DIRECT2);
 
