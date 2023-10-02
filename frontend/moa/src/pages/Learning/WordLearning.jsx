@@ -22,10 +22,10 @@ function WordLearning(props) {
         </div>
         <Usecase/>
         <div className={News.displayPlus}>
-          <div className={News.displayPlusFont}> Related News </div>
+          <div className={News.font}> Related News </div>
           <div className={News.displayPlusRightFont}>더보기</div>
         </div>
-        <RelatedNews />
+        <RelatedNews word={word} />
     </div>
   );
 }

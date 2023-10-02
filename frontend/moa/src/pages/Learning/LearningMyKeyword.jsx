@@ -1,13 +1,14 @@
 import React from 'react';
-import Logo from '../../components/Logo';
+import AppBar from '../../components/AppBar';
 import KeywordAdd from '../../components/Learning/KeywordAdd';
 import News from '../../styles/Learning/LearningMyKeyword.module.css';
 import { Link } from 'react-router-dom';
+import { keywordApi } from '../../api/keywordApi';
 
 function LearningKeyword(props) {
   return (
     <div >
-      <Logo />
+      <AppBar />
       <div className={News.display}>
         <div className={News.font}> 관심 키워드 </div>
       </div>
