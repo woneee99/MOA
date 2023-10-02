@@ -19,6 +19,13 @@ function QuestionArea(props) {
   const [isCorrect, setIsCorrect] = useState(null);
   const [correctAnswers, setCorrectAnswers] = useState(0);
 
+  const [isButtonSelected, setIsButtonSelected] = useState(null);
+
+  const handleButtonClick = (answer,index) => {
+    checkAnswer(answer,index)
+    setIsButtonSelected(index);
+  }
+
   useEffect(() => {
     // 퀴즈 데이터 가져오기
     const fetchQuizData = async () => {
@@ -105,6 +112,7 @@ function QuestionArea(props) {
       setCurrentQuizindex(currentQuizIndex + 1);
       setIsListening(false); 
       setIsCorrect(null); 
+      setIsButtonSelected(null);
     } else {
       setShowResultButton(true);
     }
@@ -176,11 +184,9 @@ function QuestionArea(props) {
             {currentQuiz.quizAnswerList.map((answer,answerIndex) =>(
               <button 
                 key = {answerIndex}
-                onClick={() => {
-                  checkAnswer(answer);
-                }}
-                disabled={isCorrect !== null}
-                className={styles.selectBtn}
+                onClick={() => handleButtonClick(answer,answerIndex)}
+                // disabled={isCorrect !== null}
+                className={`${styles.selectBtn} ${isButtonSelected === answerIndex ? styles.selected : ''}`}
               >
                 {answer}
               </button>

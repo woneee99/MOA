@@ -62,6 +62,22 @@ button img{
   background: var(--SELECT, radial-gradient(50% 50% at 50% 50%, #FFF 48.23%, #FAF8F8 100%), radial-gradient(50% 50% at 50% 50%, #FFF 0%, rgba(255, 255, 255, 0.00) 100%));
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.20));
 }
+.selectBtn.selected{
+  width: calc(50% - 15px); /* 50% 너비에서 5px 간격을 뺀 값 */
+  margin: 7.5px;
+  height: 98.81px;
+  padding: 25px 21px;
+  justify-content: center;
+  align-items: center;
+
+  font-family: "Ganpan";
+  font-size: 24px;
+
+  border-style: none;
+  border-radius: 18px;
+  background: var(--SELECTED, linear-gradient(180deg, #F8F8F8 0%, #DADADA 95.29%));
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.20));
+}
 
 
 /* 문장 */
