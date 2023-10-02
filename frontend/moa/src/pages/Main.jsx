@@ -12,19 +12,20 @@ const mainPageStyle = {
 };
 
 const appBarContainerStyle = {
-  position: 'absolute', // Position the AppBar absolutely
-  top: '0',
-  left: '0',
-  right: '0',
+  position: 'fixed',
   zIndex: '1',
+  width: '100vw',
+  flex: '0',
 };
 
 const userNameStyle = {
+  marginLeft: '50px',
+  flex: '0',
   fontSize: '22px',
   fontWeight: '700',
-  position: 'absolute',
-  top: '117px',
-  left: '45px',
+  textAlign: 'left',
+  position: 'fixed',
+  top: '115px',
   zIndex: '1',
 };
 

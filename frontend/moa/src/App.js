@@ -53,7 +53,14 @@ function App() {
             <>
               <Route path="/" element={<Main />} />
 
-              <Route path="/matching" element={<Matching />} />
+              {isMatching ? (
+                <Route
+                  path="/matching"
+                  element={<Navigate to="/" />}  // 매칭이 되어있다면 매칭페이지 접근 못하게함
+                />
+              ) : (
+                <Route path="/matching" element={<Matching />} />
+              )}
 
               <Route path="/chatting" element={<ChattingHome />} />
               <Route path="/chatting/buddy" element={<BuddyChattingModal />} />
