@@ -11,7 +11,25 @@ const mainPageStyle = {
   minHeight: '100vh',
 };
 
+const appBarContainerStyle = {
+  position: 'absolute', // Position the AppBar absolutely
+  top: '0',
+  left: '0',
+  right: '0',
+  zIndex: '1',
+};
+
+const userNameStyle = {
+  fontSize: '22px',
+  fontWeight: '700',
+  position: 'absolute',
+  top: '117px',
+  left: '45px',
+  zIndex: '1',
+};
+
 const mainAreaContainerStyle = {
+  flex: '1',
   // marginBottom: '64px',
 };
 
@@ -35,8 +53,10 @@ function Main(props) {
 
   return (
     <div style={mainPageStyle}>
-      <AppBar />
-      <div>
+      <div style={appBarContainerStyle}>
+        <AppBar />
+      </div>
+      <div style={userNameStyle}>
         <p>안녕, User!</p>
       </div>
       <div style={mainAreaContainerStyle}>
