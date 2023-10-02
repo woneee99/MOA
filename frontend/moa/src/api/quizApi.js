@@ -20,5 +20,9 @@ export const quizApi = {
   // 퀴즈 완료(정답 수)
   finishQuiz : (correctQuizAnswerCnt) => {
     return authAxios.put('/quiz/finish', correctQuizAnswerCnt);
-  }
+  },
+
+  getWrongAnswerCount: () => {
+    return authAxios.get('/quiz/wrong-answer');
+  },
 };

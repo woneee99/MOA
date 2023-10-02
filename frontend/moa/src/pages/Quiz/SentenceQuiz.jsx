@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import MenuHeader from "../../components/MenuHeader";
 import styles from '../../styles/Quiz/WordQuiz.module.css';
 import Modal from 'react-bootstrap/Modal';
+import TimeBar from "../../components/Quiz/TimeBar";
 
 function SentenceQuiz(props) {
   const [sentenceData, setSentenceData] = useState([]);
@@ -20,8 +21,14 @@ function SentenceQuiz(props) {
   const [showAnswerModal, setShowAnswerModal] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
   const [correctAnswers,setCorrectAnswers] = useState(0);
+
+  const [timeBarTotalTime, setTimeBarTotalTime] = useState(20);
   
   const currentSentence = sentenceData[sentenceIndex];
+
+  // const handleTimeup = () => {
+  //   checkAnswer();
+  // }
 
   const handleButtonClick = (answer) => {
     setSentence([...sentence, answer])
@@ -116,6 +123,7 @@ function SentenceQuiz(props) {
       setSentenceIndex(sentenceIndex + 1 );
       setIsListening(false);
       setIsCorrect(null);
+      setTimeBarTotalTime(5);
     } else {
       setShowResultButton(true);
       handleShowResult();
@@ -145,12 +153,13 @@ function SentenceQuiz(props) {
       <MenuHeader title="문장퀴즈" />
       {currentSentence ? (
         <div>
-          <p>
+          {/* <p>
             문제 {sentenceIndex + 1} / 15
-          </p>
+          </p> */}
+          <TimeBar totalTime={timeBarTotalTime}/>
           {currentSentence.quizCategoryId === 4 ? (
             <div>
-              <p className={styles.quizTitle}>다음을 듣고 문장을 완성해보세요</p>
+              <p className={styles.quizTitle}>{sentenceIndex + 1}.다음을 듣고 문장을 완성해보세요</p>
               <div className={styles.questionContainer}>
                 <div onClick={toggleListening}
                   className={styles.sentenceArea}>
@@ -161,7 +170,7 @@ function SentenceQuiz(props) {
               </div>
           ) : (
             <div>
-              <p className={styles.quizTitle}>다음 문장을 해석하고 완성해보세요</p>
+              <p className={styles.quizTitle}>{sentenceIndex + 1}. 다음 문장을 해석하고 완성해보세요</p>
               <div className={styles.questionContainer}>
                 <div className={styles.sentenceArea}>
                   <p>{currentSentence.quizQuestion}</p>
