@@ -54,10 +54,10 @@ function ExchangeDiaryContent() {
     function handleDotClick(event) {
         if (window.confirm(event.target.getAttribute("data-exchange-diary-date") +
             " 날짜의 \n다이어리 글로 이동하시겠습니까?")) {
-            const exchangeDiaryId = event.target.getAttribute("data-exchange-diary-id");
-            if (exchangeDiaryId) {
-                navigate(`/buddy/exchangediary/${exchangeDiaryId}`, {
-                    state: { exchangeDiaryId },
+            const exchangeDiaryDate = event.target.getAttribute("data-exchange-diary-date");
+            if (exchangeDiaryDate) {
+                navigate(`/buddy/exchangediary/${exchangeDiaryDate}`, {
+                    state: { exchangeDiaryDate },
                 });
             }
         }
@@ -66,7 +66,7 @@ function ExchangeDiaryContent() {
     return (
         <div>
             <div className={styles.container}>
-                <MenuHeader title="나의 일기"></MenuHeader>
+                <MenuHeader title="교환일기"></MenuHeader>
                 <div className={styles.diaryInside + ' wow fadeInLeft'} >
                     <img
                         className={styles.diaryInsideImg}
@@ -92,13 +92,13 @@ function ExchangeDiaryContent() {
                                         const isMemberForeigner = diary.member.memberIsForeigner;
                                         if (diaryDate === formattedDate && !isMemberForeigner) {
                                             html.push(<div className="dot"
-                                                data-exchange-diary-id={diaryId}
                                                 data-exchange-diary-date={formattedDate}
                                                 onClick={handleDotClick}></div>);
                                         }
                                         else if (diaryDate === formattedDate && isMemberForeigner) {
                                             html.push(<div className='foreignerDot'
-                                                data-exchange-diary-id={diaryId}></div>)
+                                                data-exchange-diary-date={formattedDate}
+                                                onClick={handleDotClick}></div>)
                                         }
                                     })
                                     // 다른 조건을 주어서 html.push 에 추가적인 html 태그를 적용할 수 있음.

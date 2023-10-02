@@ -18,6 +18,7 @@ import KoreanLearning from './pages/Learning/KoreanLearning';
 import LearningKeyword from './pages/Learning/LearningMyKeyword';
 import WordLearning from './pages/Learning/WordLearning';
 import KoreanLearningDefault from './pages/Learning/KoreanLearningDefault';
+import NewsPlus from './pages/Learning/NewsPlus';
 // import QnABoard from './pages/QnA/QnABoard';
 import QuizHome from './components/QuizHome';
 import Quiz from './pages/Quiz/Quiz';
@@ -63,6 +64,7 @@ function App() {
 
               <Route path="/koreanlearning" element={<KoreanLearning />} />
               <Route path="/koreanlearning/word" element={<WordLearning />} />
+              <Route path='/koreanlearning/word/news' element={<NewsPlus />} />
               <Route path='/koreanlearning/article' element={<NewsArticle />} />
               <Route path='/koreanlearning/keyword' element={<LearningKeyword />} />
               <Route path='/koreanlearning/default' element={<KoreanLearningDefault />} />
@@ -74,7 +76,7 @@ function App() {
               <Route path="/quiz/quiz-result" element={<QuizResult />} />
 
               <Route path="/buddy/exchangediary" element={<ExchangeDiary />} />
-              <Route path="/buddy/exchangediary/:id" element={<ExchangeDiaryDetail />} />
+              <Route path="/buddy/exchangediary/:exchangeDiaryDate" element={<ExchangeDiaryDetail />} />
               <Route path="/buddy/exchangediary/content" element={<ExchangeDiaryContent />} />
               <Route path="/buddy/exchangediary/create" element={<CreateExchangeDiary />} />
               <Route path="/buddy/exchangediary/:id/update" element={<UpdateExchangeDiary />} />
