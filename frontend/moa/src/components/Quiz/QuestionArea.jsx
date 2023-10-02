@@ -115,6 +115,8 @@ function QuestionArea(props) {
       setIsButtonSelected(null);
     } else {
       setShowResultButton(true);
+      setIsButtonSelected(null);
+      handleShowResult();
     }
   }; 
 
@@ -140,8 +142,10 @@ function QuestionArea(props) {
         correctQuizAnswerCnt : correctAnswers,
       });
       console.log('퀴즈 완료 응답', response.data);
+
+      const quizMessage = response.data.response.quizMessage;
       
-      navigate('/quiz/quiz-result',{ state : correctAnswers });
+      navigate('/quiz/quiz-result',{ state : {correctAnswers, quizMessage} });
     } catch (error) {
       console.error('퀴즈 완료 API 호출 중 에러:', error);
     }
@@ -154,9 +158,9 @@ function QuestionArea(props) {
       <MenuHeader title="단어퀴즈"/>
       {currentQuiz ? (
         <div>
-          <h1>
-            문제 {currentQuizIndex + 1} 번 
-          </h1>
+          <p>
+            문제 {currentQuizIndex + 1} / 15
+          </p>
           {currentQuiz.quizCategoryId === 2 ? (
             <div>
               <p className={styles.quizTitle}>다음 단어를 듣고 맞혀보세요</p>
@@ -192,11 +196,11 @@ function QuestionArea(props) {
               </button>
             ))}
           </ul>
-          {showResultButton ? (
+          {/* {showResultButton ? (
             <button onClick={handleShowResult}>결과보기</button>
           ) : (
             <div></div>
-          )}
+          )} */}
         </div>
       ) : (
         <p>로딩중...</p>

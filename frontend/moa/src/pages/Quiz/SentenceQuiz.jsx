@@ -118,6 +118,7 @@ function SentenceQuiz(props) {
       setIsCorrect(null);
     } else {
       setShowResultButton(true);
+      handleShowResult();
     }
   };
 
@@ -129,8 +130,9 @@ function SentenceQuiz(props) {
         correctQuizAnswerCnt : correctAnswers,
       });
       console.log('퀴즈 완료 응답', response.data);
+      const quizMessage = response.data.response.quizMessage;
       
-      navigate('/quiz/quiz-result',{ state : correctAnswers });
+      navigate('/quiz/quiz-result',{ state : {correctAnswers, quizMessage} });
     } catch (error) {
       console.error('퀴즈 완료 API 호출 중 에러:', error);
     }
