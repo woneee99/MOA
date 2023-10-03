@@ -44,13 +44,10 @@ function App() {
   const accessToken = state.accessToken;
   const isMatching = state.isMatching;
   const refreshToken = Cookies.get('refreshToken');
-  const userInfo = state.userInfo;
 
   console.log(accessToken);
 
   console.log(isMatching);
-
-  console.log(JSON.parse(userInfo).memberName);
 
 
   return (
