@@ -62,7 +62,7 @@ public class ChatRoomRepository {
     }
 
     public void enterOpenChatRoom(String roomId) {
-        String key = "open_chat: " + roomId;
+        String key = "open: " + roomId;
         ChannelTopic topic = openChatTopics.get(key);
         if (topic == null) {
             topic = new ChannelTopic(key);
@@ -71,7 +71,8 @@ public class ChatRoomRepository {
         }
     }
     public ChannelTopic getOpenChatTopic(String roomId) {
-        return openChatTopics.get(roomId);
+        String key = "open: " + roomId;
+        return openChatTopics.get(key);
     }
 
 
