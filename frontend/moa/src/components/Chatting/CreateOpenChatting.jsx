@@ -81,11 +81,6 @@ function CreateOpenChatting(props) {
   const [openChatContent, setOpenChatContent] = useState('');
   const [imageFile, setImageFile] = useState(null); // 이미지 파일 상태 변경
 
-  // const state = store.getState();
-  // const accessToken = state.accessToken;
-
-  // console.log(accessToken);
-
   const navigate = useNavigate();
 
   const handleTitleChange = (e) => {
