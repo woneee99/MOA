@@ -58,7 +58,7 @@ function ChattingArea({ openChatId }) {
   useEffect(() => {
     if (stompClient) {
       stompClient.connect({}, () => {
-        stompClient.subscribe(`/sub/chat/message`, (message) => {
+        stompClient.subscribe(`/sub/chat/open/${openChatId}`, (message) => {
           try {
             const newMessage = JSON.parse(message.body);
             console.log(newMessage);
@@ -70,7 +70,7 @@ function ChattingArea({ openChatId }) {
 
         console.log(stompClient.subscriptions);
 
-        stompClient.send(`/pub/chat/message`, {},
+        stompClient.send(`/pub/chat/open/${openChatId}`, {},
         JSON.stringify({
           messageType: 'OPEN_ENTER',
           roomType: 1,
