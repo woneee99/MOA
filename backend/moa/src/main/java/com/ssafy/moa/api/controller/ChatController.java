@@ -40,7 +40,7 @@ public class ChatController {
             if(openChatService.findOpenChatMember(message.getSender(), message.getRoomId())) {
                 return;
             }
-
+            openChatService.saveOpenChatMember(message.getSender(), message.getRoomId());
         } else if (ChatMessage.MessageType.BUDDY_ENTER.equals(message.getMessageType())) {
             chatRoomRepository.enterBuddyChatRoom(message.getRoomId());
             message.setMessage(message.getSender() + "이 들어왔습니다.");
