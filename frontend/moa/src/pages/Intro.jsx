@@ -4,55 +4,87 @@ import { useNavigate } from 'react-router-dom';
 import { userApi } from '../api/userApi';
 import Cookies from 'js-cookie';
 
+import { useAppDispatch } from '../store'; // useDispatch를 사용하는 부분을 변경
+import { setAccessToken } from '../store';
+
+const introStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  minHeight: '100vh',
+  padding: '0 30px',
+};
+
+const introCommentStyle = {
+  display: 'flex',
+  textAlign: 'left',
+  fontSize: '24px',
+  fontWeight: '700',
+  margin: '20px 0',
+};
+
+const logoContainerStyle = {
+  display: 'flex',
+  marginBottom: '250px',
+};
+
+const logoStyle = {
+  margin: '5px',
+  width: '70px',
+  height: '70px',
+};
+
+const buttonContainerStyle = {
+  margin: '20px 0'
+};
+
+const buttonStyle = {
+  margin: '10px auto',
+  padding: '12px',
+  background: 'white',
+  border: 'none',
+  borderRadius: '10px',
+  boxShadow: '0px 10px 10px rgba(196, 221, 124, 0.25)',
+  color: '#92BB69',
+  fontSize: '20px',
+  fontWeight: '700',
+  width: '100%',
+
+};
+
 function Intro(props) {
   const navigate = useNavigate();
-
-  // 로그아웃 핸들러 함수
-  const handleLogout = async () => {
-    try{
-      const response = await userApi.logout();
-
-      if (response.data.success){
-        console.log('로그아웃 성공');
-        Cookies.remove('refreshToken');
-
-        navigate('/login');
-      } else {
-        console.error('로그아웃 오류:', response.data.error.message);
-      }
-    } catch(error) {
-      console.error('API Request Error:', error);
-    }
-  }
+  const dispatch = useAppDispatch();
 
 
   return (
-    <div>
-      <p>
-        Intro Page
-      </p>
-
-      <div>
-        {Cookies.get('refreshToken') ? (
-          <button onClick={handleLogout}>로그아웃</button>
-        ) : (
-          <>
-          <Link to="/login">
-            <button>로그인</button>
-          </Link>
-          <Link to="/signup">
-            <button>회원가입</button>
-          </Link>
-          </>
-        )}
+    <div style={introStyle}>
+      <div style={introCommentStyle}>
+        <span>
+          모아보는 한글,
+          <br />
+          More Friendly 한국
+        </span>
       </div>
 
-      <hr />
-      
-      {/* 메인페이지 이동을 위해 임시로 만든 버튼 */}
-      <div>
-        <Link to="/">
-          <button>메인페이지로 이동</button>
+      <div style={logoContainerStyle}>
+        <div>
+          <img style={logoStyle} src={process.env.PUBLIC_URL + '/assets/Logo/Logo_M.png'} alt="M" />
+        </div>
+        <div>
+          <img style={logoStyle} src={process.env.PUBLIC_URL + '/assets/Logo/Logo_O.png'} alt="O" />
+        </div>
+        <div>
+          <img style={logoStyle} src={process.env.PUBLIC_URL + '/assets/Logo/Logo_A.png'} alt="A" />
+        </div>
+      </div>
+
+      <div style={buttonContainerStyle}>
+        <Link to="/login">
+          <button style={buttonStyle}>로그인</button>
+        </Link>
+        <Link to="/signup">
+          <button style={buttonStyle}>회원가입</button>
         </Link>
       </div>
     </div>

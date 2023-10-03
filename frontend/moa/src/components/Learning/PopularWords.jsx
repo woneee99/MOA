@@ -1,29 +1,33 @@
 import React, { useState, useEffect } from 'react';
-
-import PopularWordsItem from './PopularWordsItem';
+import { useNavigate  } from 'react-router-dom';
+import Word from '../../styles/Learning/PopularWords.module.css';
 
 function PopularWords(props) {
-  const [ popularWords, setPopularWords ] = useState([
-    { word: '단어1', percentage: 22.2 },
-    { word: '단어2', percentage: 11.1 },
-    { word: '단어3', percentage: 5.5 },
-  ]);
+  const { popularWords } = props;
+  const navigate = useNavigate();
+  const handleButtonClick = ({ text }) => {
+    navigate('/koreanlearning/word', {
+      state: {
+        word: text
+      }
+    })
+  };
 
   return (
     <div>
-      <h3>Most Popular Words</h3>
-      {popularWords.map((popularWord, index) => {
-        const { word, percentage } = popularWord;
-
-        return (
-          <div key={index}>
-            <PopularWordsItem 
-              word={word}
-              percentage={percentage}
-            />
-          </div>
-        );
-      })}
+        {popularWords.map((word, index) => {
+              const { text, value } = word;
+              return (
+                <div key={index}>
+                  <button className={Word.wordBtn} onClick={() => handleButtonClick({text})}>
+                    <div className={Word.wordWrap}>
+                      <div className={Word.wordBold}> {text} </div> 
+                      <div className={Word.wordRight}> {value}회 </div>
+                    </div>
+                  </button>
+                </div>
+              );
+            })} 
     </div>
   );
 }

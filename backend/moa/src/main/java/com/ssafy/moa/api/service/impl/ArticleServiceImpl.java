@@ -30,6 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(() -> new NotFoundException("Not Found Member"));
 
         Article article = Article.builder()
+                .articleOriginId(articleReqDto.getArticleOriginId())
                 .articleTitle(articleReqDto.getArticleTitle())
                 .articleContent(articleReqDto.getArticleContent())
                 .articleLink(articleReqDto.getArticleLink())
@@ -57,7 +58,23 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public Long deleteArticle(Long articleId) {
-        return articleRepository.deleteByArticleId(articleId);
+    public Long deleteArticle(String type, Long memberId, Long articleId) {
+        if (type.equals("news")){
+            return articleRepository.deleteByMember_MemberIdAndArticleOriginId(memberId, articleId);
+        }
+        else{ // scrap
+            return articleRepository.deleteByArticleId(articleId);
+        }
+    }
+
+    @Override
+    public Long checkArticle(Long memberId, Long articleOriginId) {
+        List<Article> articleList = articleRepository.findByMember_MemberIdAndAndArticleOriginId(memberId, articleOriginId);
+        log.info(String.valueOf(articleList.size()));
+        Long result = 0L;
+        if (articleList.size()!=0){
+            result = 1L;
+        }
+        return result;
     }
 }
