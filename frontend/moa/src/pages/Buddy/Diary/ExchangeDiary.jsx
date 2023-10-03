@@ -10,10 +10,15 @@ import { Link } from 'react-router-dom';
 import styles from './ExchangeDiary.module.css'
 import AppBar from '../../../components/ETC/AppBar';
 
+import { matchingApi } from '../../../api/matchingApi'
+
 import { WOW } from 'wowjs';
+import ConfirmButton from '../../../components/Buttons/ConfirmButton';
 
 
 function ExchangeDiary(props) {
+
+  const [isBuddyHave, setIsBuddyHave] = useState(null);
 
   useEffect(() => {
     // wowjs 초기화
@@ -21,42 +26,66 @@ function ExchangeDiary(props) {
     wow.init();
   }, []);
 
+  useEffect(() => {
+    matchingApi.isMatching()
+      .then((response) => {
+        console.log(response);
+        setIsBuddyHave(response.data.response);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+
+  }, [])
 
   const navigate = useNavigate();
-
-  // const handleDiaryClick = (exchangeDiaryId) => {
-  //   navigate(`/buddy/exchangediary/${exchangeDiaryId}`, {
-  //     state: { exchangeDiaryId }, // 다이어리 데이터를 state에 전달
-  //   });
-  // };
 
   return (
     <div className={styles.container}>
       <AppBar></AppBar>
 
 
-      <div className={styles.diary + ' wow fadeInUp'}>
-        <img
-          src='../../../assets/ExchangeDiary/diary_img.png'></img>
+      {isBuddyHave && (
+        <>
+          <div className={styles.diary + ' wow fadeInUp'}>
+            <img
+              src='../../../assets/ExchangeDiary/diary_img.png'></img>
 
-        <div className={styles.diaryTitle}>
-          <p className={styles.diaryTitleText}>교환일기</p></div>
+            <div className={styles.diaryTitle}>
+              <p className={styles.diaryTitleText}>교환일기</p></div>
 
-        <img className={styles.diaryCharacterImg}
-          src='../../../assets/ExchangeDiary/diary_character.png'></img>
+            <img className={styles.diaryCharacterImg}
+              src='../../../assets/ExchangeDiary/diary_character.png'></img>
 
-        <div>
-          <Link to="/buddy/exchangediary/content" className={`${styles.button} ${styles.button_view}`}>
-            일기 보기
-          </Link>
-        </div>
+            <div>
+              <Link to="/buddy/exchangediary/content" className={`${styles.button} ${styles.button_view}`}>
+                일기 보기
+              </Link>
+            </div>
 
-        <div>
-          <Link to="/buddy/exchangediary/create" className={`${styles.button} ${styles.button_write}`}>
-            일기 쓰기
-          </Link>
-        </div>
-      </div>
+            <div>
+              <Link to="/buddy/exchangediary/create" className={`${styles.button} ${styles.button_write}`}>
+                일기 쓰기
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
+
+      {!isBuddyHave && (
+        <>
+          <div className={styles.modalContainer}>
+            <img
+              className={styles.modalImg}
+              src={process.env.PUBLIC_URL + '/assets/Quiz/fail.png'}></img>
+            <div className={styles.modalText}>
+              버디가 없습니다. <br />
+              매칭이 필요해요!
+            </div>
+          </div>
+        </>
+      )}
+
 
 
 
