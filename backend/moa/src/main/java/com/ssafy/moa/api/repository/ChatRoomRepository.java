@@ -66,8 +66,8 @@ public class ChatRoomRepository {
         ChannelTopic topic = openChatTopics.get(key);
         if (topic == null) {
             topic = new ChannelTopic(key);
-            redisMessageListener.addMessageListener(redisSubscriber, topic);
             openChatTopics.put(key, topic);
+            redisMessageListener.addMessageListener(redisSubscriber, topic);
         }
     }
     public ChannelTopic getOpenChatTopic(String roomId) {
