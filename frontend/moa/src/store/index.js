@@ -1,11 +1,13 @@
 import { createStore, combineReducers } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { userInfoReducer } from './userInfo';
+
 // 초기 상태
 const initialState = {
   accessToken: localStorage.getItem('accessToken') || null,
   isMatching: localStorage.getItem('isMatching') || null,
-  isForeigner: null,
+  isForeigner: localStorage.getItem('isForeigner') || null,
 };
 
 // Actions
@@ -43,6 +45,7 @@ const isMatchingReducer = (state = initialState.isMatching, action) => {
 const isForeignerReducer = (state = initialState.isForeigner, action) => {
   switch (action.type) {
     case SET_IS_FOREIGNER:
+      localStorage.setItem('isForeigner', action.isForeigner);
       return action.isForeigner;
     default:
       return state;
@@ -54,6 +57,7 @@ const rootReducer = combineReducers({
   accessToken: accessTokenReducer, // 추가: AccessToken 리듀서를 루트 리듀서에 포함
   isMatching: isMatchingReducer,
   isForeigner: isForeignerReducer,
+  userInfo: userInfoReducer,
 });
 
 // Redux 스토어 생성

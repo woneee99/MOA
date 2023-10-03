@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import store from '../store';
+
 import AppBar from '../components/AppBar';
 import MainArea from '../components/Main/MainArea';
 import BottomBar from '../components/BottomBar';
@@ -48,6 +50,10 @@ function Main(props) {
   const isLoggedIn = props.inLoggedIn;
   const [isBottomBarVisible, setBottomBarVisible] = useState(false);
 
+  const state = store.getState();
+  const userInfo = state.userInfo;
+  const memberName = JSON.parse(userInfo).memberName;
+
 
   const toggleBottomBar = () => {
     setBottomBarVisible(!isBottomBarVisible);
@@ -59,7 +65,7 @@ function Main(props) {
         <AppBar />
       </div>
       <div style={userNameStyle}>
-        <p>안녕, User!</p>
+        <p>안녕, { memberName }!</p>
       </div>
       <div style={mainAreaContainerStyle}>
         <MainArea />

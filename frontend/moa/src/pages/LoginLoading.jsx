@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import store from '../store';
 import { useAppDispatch, useAppSelector } from '../store';
 import { setIsForeigner, setIsMatching } from '../store';
+import { setUserInfo } from '../store/userInfo';
 
 import { userApi } from '../api/userApi';
 import { matchingApi } from '../api/matchingApi';
@@ -42,6 +43,8 @@ function LoginLoading(props) {
     .then((response) => {
       const res = response.data.response;
       console.log(res);
+      dispatch(setUserInfo(res));
+      dispatch(setIsForeigner(res.memberIsForeigner));
     })
     .catch((error) => {
       console.log(`유저 정보 조회 오류 : ${error}`);
