@@ -20,12 +20,10 @@ import WordLearning from './pages/Learning/WordLearning';
 import KoreanLearningDefault from './pages/Learning/KoreanLearningDefault';
 import NewsPlus from './pages/Learning/NewsPlus';
 // import QnABoard from './pages/QnA/QnABoard';
-import QuizHome from './components/QuizHome';
 import Quiz from './pages/Quiz/Quiz';
 import QuestionPage from './pages/Quiz/QuestionPage';
 import SentenceQuiz from './pages/Quiz/SentenceQuiz';
 import IncorrectNote from './pages/Quiz/IncorrectNote';
-import BuddyHome from './components/BuddyHome';
 import QuizResult from './pages/Quiz/QuizResult';
 import ExchangeDiary from './pages/Buddy/Diary/ExchangeDiary';
 import ExchangeDiaryDetail from './pages/Buddy/Diary/ExchangeDiaryDetail';
@@ -47,6 +45,11 @@ function App() {
   const isMatching = state.isMatching;
   const refreshToken = Cookies.get('refreshToken');
 
+  console.log(accessToken);
+
+  console.log(isMatching);
+
+
   return (
     <BrowserRouter>
       <div className="App">
@@ -55,7 +58,7 @@ function App() {
             <>
               <Route path="/" element={<Main />} />
 
-              <Route path="/matching" element={<Matching />} />
+              {!isMatching && <Route path="/matching" element={<Matching />} />}
 
               <Route path="/chatting" element={<ChattingHome />} />
               <Route path="/chatting/buddy" element={<BuddyChattingModal />} />
@@ -71,7 +74,7 @@ function App() {
 
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/quiz/question-page" element={<QuestionPage />} />
-              <Route path="/quiz/sentence-quiz" elemenet={<SentenceQuiz />} />
+              <Route path="/quiz/sentence-quiz" element={<SentenceQuiz />} />
               <Route path="/quiz/incorrect-note" element={<IncorrectNote />} />
               <Route path="/quiz/quiz-result" element={<QuizResult />} />
 
