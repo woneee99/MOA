@@ -6,6 +6,7 @@ import com.ssafy.moa.api.dto.ChatMessage;
 import com.ssafy.moa.api.repository.ChatRoomRepository;
 import com.ssafy.moa.api.service.ChatGptService;
 import com.ssafy.moa.api.service.ChatService;
+import com.ssafy.moa.api.service.OpenChatService;
 import com.ssafy.moa.common.handler.RedisPublisher;
 import com.ssafy.moa.common.utils.ApiUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +29,7 @@ public class ChatController {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatGptService chatGptService;
     private final ChatService chatService;
+    private final OpenChatService openChatService;
 
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {
@@ -35,16 +37,18 @@ public class ChatController {
             chatRoomRepository.enterOpenChatRoom(message.getRoomId());
             message.setMessage(message.getSender() + "이 들어왔습니다.");
             redisPublisher.publish(chatRoomRepository.getOpenChatTopic(message.getRoomId()), message);
-        }
-        else if(ChatMessage.MessageType.BUDDY_ENTER.equals(message.getMessageType())){
+            if(openChatService.findOpenChatMember(message.getSender(), message.getRoomId())) {
+                return;
+            }
+
+        } else if (ChatMessage.MessageType.BUDDY_ENTER.equals(message.getMessageType())) {
             chatRoomRepository.enterBuddyChatRoom(message.getRoomId());
             message.setMessage(message.getSender() + "이 들어왔습니다.");
             redisPublisher.publish(chatRoomRepository.getBuddyChatTopic(message.getRoomId()), message);
-        }
-        else if(ChatMessage.MessageType.OPEN_TALK.equals(message.getMessageType())){
+            return;
+        } else if (ChatMessage.MessageType.OPEN_TALK.equals(message.getMessageType())) {
             redisPublisher.publish(chatRoomRepository.getOpenChatTopic(message.getRoomId()), message);
-        }
-        else if(ChatMessage.MessageType.BUDDY_TALK.equals(message.getMessageType())) {
+        } else if (ChatMessage.MessageType.BUDDY_TALK.equals(message.getMessageType())) {
             redisPublisher.publish(chatRoomRepository.getBuddyChatTopic(message.getRoomId()), message);
         }
         chatService.chatSave(message);

@@ -29,7 +29,7 @@ function ChattingArea({ openChatId }) {
   const [stompClient, setStompClient] = useState(null);
 
   // 이름 등의 사용자 정보는 store에 저장해서 꺼내 쓰는 식으로 해야할 듯
-  const [sender, setSender] = useState('test');
+  const [sender, setSender] = useState('18');
 
   // useEffect(() => {
   //   // 비동기 함수를 정의
@@ -68,7 +68,7 @@ function ChattingArea({ openChatId }) {
           }
         }, {});
 
-        console.log("뭐징 " + stompClient.subscriptions);
+        console.log(stompClient.subscriptions);
 
         stompClient.send(`/pub/chat/message`, {},
         JSON.stringify({
@@ -122,7 +122,7 @@ function ChattingArea({ openChatId }) {
 
 
       if (stompClient && stompClient.connected) {
-        stompClient.send(`/pub/chat/open/${openChatId}`, {}, JSON.stringify({
+        stompClient.send(`/pub/chat/message`, {}, JSON.stringify({
           messageType: 'OPEN_TALK',
           roomType: 1,
           roomId: openChatId,

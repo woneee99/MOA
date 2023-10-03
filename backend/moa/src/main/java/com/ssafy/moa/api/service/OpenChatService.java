@@ -11,6 +11,7 @@ import java.util.List;
 public interface OpenChatService {
     Long saveOpenChat(Member member, MultipartFile multipartFile, SaveOpenChatRequest saveOpenChatRequest) throws IOException;
     Long saveOpenChatMember(Member member, Long openChatId);
+    Boolean findOpenChatMember(String sender, String openChatId);
     OpenChatResponse findOpenChatOne(Long openChatId);
     List<OpenChatResponse> findOpenChat();
     OpenChat findOpenChat(Long openChatId);
