@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 
-import AppBar from '../components/AppBar';
-import MainArea from '../components/MainArea';
-import BottomBar from '../components/BottomBar';
+import store from '../store';
+
+import AppBar from '../components/ETC/AppBar';
+import MainArea from '../components/Main/MainArea';
+import BottomBar from '../components/ETC/BottomBar';
 
 const mainPageStyle = {
   display: 'flex',
@@ -11,8 +12,26 @@ const mainPageStyle = {
   minHeight: '100vh',
 };
 
+const appBarContainerStyle = {
+  position: 'fixed',
+  zIndex: '2',
+  width: '100vw',
+  flex: '0',
+};
+
+const userNameStyle = {
+  marginLeft: '50px',
+  flex: '0',
+  fontSize: '22px',
+  fontWeight: '700',
+  textAlign: 'left',
+  position: 'fixed',
+  top: '115px',
+  zIndex: '1',
+};
+
 const mainAreaContainerStyle = {
-  // marginBottom: '64px',
+  flex: '1',
 };
 
 const bottomBarContainerStyle = {
@@ -26,8 +45,12 @@ const bottomBarContainerStyle = {
 };
 
 function Main(props) {
-  const isLoggedIn = props.inLoggedIn;
   const [isBottomBarVisible, setBottomBarVisible] = useState(false);
+
+  const state = store.getState();
+  const userInfo = state.userInfo;
+  const memberName = JSON.parse(userInfo).memberName;
+
 
   const toggleBottomBar = () => {
     setBottomBarVisible(!isBottomBarVisible);
@@ -35,9 +58,11 @@ function Main(props) {
 
   return (
     <div style={mainPageStyle}>
-      <AppBar />
-      <div>
-        <p>안녕, User!</p>
+      <div style={appBarContainerStyle}>
+        <AppBar />
+      </div>
+      <div style={userNameStyle}>
+        <p>안녕, { memberName }!</p>
       </div>
       <div style={mainAreaContainerStyle}>
         <MainArea />
