@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../../styles/Quiz/TimeBar.module.css";
 
-function TimeBar({totalTime}){
+function TimeBar({totalTime, handleTimeOut, handleNextQuiz}){
   const [currentTime, setCurrentTime] = useState(0);
   
-
   useEffect(()=> {
     if (currentTime < totalTime){
       const timer = setTimeout(() => {
@@ -12,9 +11,14 @@ function TimeBar({totalTime}){
       }, 1000);
 
       return() => clearTimeout(timer);
+    } else {
+      handleTimeOut();
     } 
-  }, [currentTime, totalTime]);
+  }, [currentTime, totalTime, handleTimeOut]);
 
+  useEffect(() => {
+    setCurrentTime(0);
+  }, [handleNextQuiz])
   const scale = currentTime / totalTime; // 스케일 계산
 
   const timeBarStyle = {

@@ -19,6 +19,8 @@ function QuestionArea(props) {
   const [isCorrect, setIsCorrect] = useState(null);
   const [correctAnswers, setCorrectAnswers] = useState(0);
 
+  const [currentTime, setCurrentTime] = useState(15)
+  const [isTimeOut, setIsTimeOut] = useState(false);
 
   const [isButtonSelected, setIsButtonSelected] = useState(null);
 
@@ -107,6 +109,15 @@ function QuestionArea(props) {
     }
   }
 
+  // 시간 초과 함수
+  const handleTimeOut = () => {
+    setIsTimeOut(true);
+    setTimeout(() => {
+      setIsTimeOut(false);
+      handleNextQuiz();
+    }, 1000);
+  };
+
   // 한 문제씩 가져오는 함수
   const handleNextQuiz = () => {
     if (currentQuizIndex < quizData.length - 1) {
@@ -159,7 +170,7 @@ function QuestionArea(props) {
       <MenuHeader title="단어퀴즈"/>
       {currentQuiz ? (
         <div>
-          <TimeBar totalTime={15} />
+          <TimeBar totalTime={currentTime} handleTimeOut={handleTimeOut} handleNextQuiz={handleNextQuiz}/>
           {currentQuiz.quizCategoryId === 2 ? (
             <div>
               <p className={styles.quizTitle}>{currentQuizIndex + 1}. 다음 단어를 듣고 맞혀보세요</p>
@@ -219,6 +230,14 @@ function QuestionArea(props) {
               </div>
             )}
           </Modal.Body>
+      </Modal>
+      <Modal show={isTimeOut} className={styles.resultModal}>
+        <Modal.Body className={styles.resultModalContent}>
+          <div className={styles.incorrectMessage}>
+            <img src={process.env.PUBLIC_URL + '/assets/Quiz/fail.png'} alt="시간 초과" />
+            <p>시간 초과</p>
+          </div>
+        </Modal.Body>
       </Modal>
     </div>
   );
