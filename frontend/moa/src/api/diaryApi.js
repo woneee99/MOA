@@ -2,10 +2,10 @@ import { authAxios } from "./authAxios"
 
 export const diaryApi = {
   // 교환일기 전체 조회
-  getDiaryList: (month) => authAxios.get(`buddy/diary/month/${month}`),
+  getDiaryList: (year, month) => authAxios.get(`buddy/diary/${year}/${month}`),
 
   // 교환일기 상세 조회
-  getDiaryDetail: (exchangeDiaryId) => authAxios.get(`buddy/diary/${exchangeDiaryId}`),
+  getDiaryDetail: (exchangeDiaryDate) => authAxios.get(`buddy/diary/day/${exchangeDiaryDate}`),
 
   // 교환일기 생성
   createDiary: (data) => authAxios.post('buddy/diary', data),

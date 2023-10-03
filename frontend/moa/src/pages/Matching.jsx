@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 import store from '../store';
 
 import ProgressBar from "../components/Matching/ProgressBar";
-import ConfirmButton from "../components/ConfirmButton";
+import ConfirmButton from "../components/Buttons/ConfirmButton";
 
 import MatchingIntro from "../components/Matching/MatchingIntro";
 import BuddyInterest from "../components/Matching/BuddyInterest";
@@ -18,7 +18,8 @@ const matchingStyle = {
   display: 'flex',
   flexDirection: 'column',
   overflow: 'hidden',
-  minHeight: '100vh',
+  height: '100vh',
+  background: 'radial-gradient(circle, rgba(255, 255, 255, 0) 0%, rgba(238, 249, 215, 1) 48%, rgba(255, 255, 255, 0) 100%)',
 };
 
 const buttonContainerStyle = {
@@ -81,15 +82,17 @@ function Matching() {
   
   const stepsStyle = {
     display: "flex",
+    alignItems: 'center',
     flex: '1',
     transition: "transform 0.3s ease-in-out",
     transform: `translateX(${translateValue}%)`,
   }
 
   const stepStyle = {
-    flex: "0 0 100%",
+    flex: '0 0 100%',
     width: "100%",
     flexShrink: '0',
+    // alignItems: 'center',
   }
 
 

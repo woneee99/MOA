@@ -4,6 +4,7 @@ import BackButton from '../../components/BackButton';
 import MenuHeader from '../../components/MenuHeader';
 // import IncorrectNoteList from '../../components/Quiz/IncorrectNoteList';
 
+
 function IncorrectNote(props) {
   const [wrongAnswerCount, setWrongAnswerCount] = useState(0);
   const [myQuizCnt, setMyQuizCnt] = useState(1);
