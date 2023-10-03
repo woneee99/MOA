@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userApi } from '../api/userApi';
 
-import AppBar from '../components/AppBar';
+import AppBar from '../components/ETC/AppBar';
 
 const signupStyle = {
   minHeight: '100vh',

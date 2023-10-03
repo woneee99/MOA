@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import store from '../store';
 
-import AppBar from '../components/AppBar';
+import AppBar from '../components/ETC/AppBar';
 import MainArea from '../components/Main/MainArea';
-import BottomBar from '../components/BottomBar';
+import BottomBar from '../components/ETC/BottomBar';
 
 const mainPageStyle = {
   display: 'flex',

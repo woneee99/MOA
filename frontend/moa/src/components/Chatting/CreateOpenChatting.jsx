@@ -5,7 +5,7 @@ import store from '../../store';
 
 import { useNavigate } from 'react-router-dom';
 
-import CloseButton from '../CloseButton';
+import CloseButton from '../Buttons/CloseButton';
 
 const createOpenChatStyle = {
   background: 'linear-gradient(to bottom, #ffffff, silver)',
