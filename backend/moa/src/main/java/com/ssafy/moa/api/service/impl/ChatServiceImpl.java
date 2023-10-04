@@ -9,6 +9,7 @@ import com.ssafy.moa.api.repository.BuddyMessageRepository;
 import com.ssafy.moa.api.repository.ChatRoomRepository;
 import com.ssafy.moa.api.repository.OpenChatMessageRepository;
 import com.ssafy.moa.api.service.ChatService;
+import com.ssafy.moa.api.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.List;
 public class ChatServiceImpl implements ChatService {
 
     private final ObjectMapper objectMapper;
+    private final MemberService memberService;
     private final OpenChatMessageRepository chatRoomRepository;
     private final BuddyMessageRepository buddyMessageRepository;
 
@@ -65,6 +67,7 @@ public class ChatServiceImpl implements ChatService {
             List<OpenChatMessage> roomList = chatRoomRepository.findByRoomIdOrderByTimeDesc(roomId);
             ChatDto.ChatMessageListResponse response = ChatDto.ChatMessageListResponse.builder()
                     .chatMessageList(roomList)
+                    .memberService(memberService)
                     .build();
             return response.getChatMessageResponseList();
         }
