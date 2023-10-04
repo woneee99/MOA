@@ -25,27 +25,27 @@ const commentStyle = {
 }
 
 function Loading(props) {
-    // 애니메이션 관련
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  // 애니메이션 관련
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-    const imageUrls = [
-      process.env.PUBLIC_URL + '/assets/Logo/Logo_M.png',
-      process.env.PUBLIC_URL + '/assets/Logo/Logo_O.png',
-      process.env.PUBLIC_URL + '/assets/Logo/Logo_A.png',
-    ];
-  
-    const changeImage = () => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
-    };
-  
-    useEffect(() => {
-      const interval = setInterval(changeImage, 500); // 0.5초마다 이미지 변경
-    
-      return () => clearInterval(interval); // 컴포넌트 언마운트 시 clearInterval
-    }, []);
-  
-    const currentImageUrl = imageUrls[currentImageIndex];
-  
+  const imageUrls = [
+    process.env.PUBLIC_URL + '/assets/Logo/Logo_M.png',
+    process.env.PUBLIC_URL + '/assets/Logo/Logo_O.png',
+    process.env.PUBLIC_URL + '/assets/Logo/Logo_A.png',
+  ];
+
+  const changeImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(changeImage, 500); // 0.5초마다 이미지 변경
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 clearInterval
+  }, []);
+
+  const currentImageUrl = imageUrls[currentImageIndex];
+
   return (
     <div style={loadingStyle}>
       <div style={imageContainerStyle}>
