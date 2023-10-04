@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
+import store from '../store';
+
+import { useAppDispatch } from '../store';
+import { setIsLoading } from '../store/isLoading';
+
 const loadingStyle = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
   minHeight: '100vh',
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  zIndex: '4',
 };
 
 const imageContainerStyle = {
@@ -25,6 +31,9 @@ const commentStyle = {
 }
 
 function Loading(props) {
+  const state = store.getState();
+  const isLoading = state.isLoading;
+  const dispatch = useAppDispatch();
   // 애니메이션 관련
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -45,6 +54,9 @@ function Loading(props) {
   }, []);
 
   const currentImageUrl = imageUrls[currentImageIndex];
+
+  useEffect(() => {
+  }, [isLoading]);
 
   return (
     <div style={loadingStyle}>
