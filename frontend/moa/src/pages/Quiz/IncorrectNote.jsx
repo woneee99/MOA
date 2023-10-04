@@ -1,7 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import { quizApi } from '../../api/quizApi';
-import BackButton from '../../components/BackButton';
-import MenuHeader from '../../components/MenuHeader';
+import styles from '../../styles/Quiz/IncorrectNote.module.css';
 // import IncorrectNoteList from '../../components/Quiz/IncorrectNoteList';
 
 
@@ -40,16 +39,20 @@ function IncorrectNote(props) {
 
   return (
     <div>
-      <p>내가 틀린 문제는</p>
-      <p>{wrongAnswerCount}문제</p>
-      <p>오늘 풀 문제는</p>
-      <input
-        type="number"
-        value={myQuizCnt}
-        onChange={handleMyQuiz} 
-      />
-      <button onClick={updateMyQuiz}>풀기</button>
-      {/* <IncorrectNoteList /> */}
+      <img src={process.env.PUBLIC_URL + '/assets/Quiz/resultBg.png'} 
+        alt="다시풀기배경" className={styles.retryBg}/> 
+      <div className={styles.retryContainer}>
+        <p>내가 틀린 문제는</p>
+        <p>{wrongAnswerCount}문제</p>
+        <p>오늘 풀 문제는</p>
+        <input
+          type="number"
+          value={myQuizCnt}
+          onChange={handleMyQuiz} 
+        />
+        <button onClick={updateMyQuiz}>풀기</button>
+        {/* <IncorrectNoteList /> */}
+      </div>
     </div>
   );
 }

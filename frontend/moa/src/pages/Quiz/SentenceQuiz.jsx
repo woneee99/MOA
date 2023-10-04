@@ -90,17 +90,23 @@ function SentenceQuiz(props) {
     }
   };
 
-  // 정답 확인
-  const checkAnswer = async () =>{
-    const selecetedSentece = sentence.join(' ');
-    
-    if (selecetedSentece === currentSentence.quizAnswer) {
+// 정답 확인
+const checkAnswer = async () =>{
+  const selectedSentence = sentence.join(' ');
+
+  try {
+    const response = await quizApi.submitAnswer({
+      quizId: currentSentence.quizId,
+      quizSubmitAnswer: selectedSentence, // 사용자가 제출한 정답
+    });
+
+    if (response.data.response.isQuizCorrect) {
       setCorrectAnswers(correctAnswers + 1);
       setAnswerMessage('맞았어요!');
     } else {
       setAnswerMessage('틀렸어요!')
     }
-    
+
     setShowAnswerModal(true);
 
     setTimeout(() => {
@@ -108,7 +114,10 @@ function SentenceQuiz(props) {
       handleNextQuiz();
     }, 1000);
     setSentence([]);
+  } catch (error) {
+    console.error('정답 확인 중 에러 발생:', error);
   }
+}
 
   // 한 문제씩 가져오기
   const handleNextQuiz = () => {
