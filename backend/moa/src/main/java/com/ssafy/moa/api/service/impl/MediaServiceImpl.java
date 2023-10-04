@@ -1,6 +1,7 @@
 package com.ssafy.moa.api.service.impl;
 
 import com.ssafy.moa.api.entity.elastic.MediaAutoComplete;
+import com.ssafy.moa.api.entity.elastic.MediaAutoComplete2;
 import com.ssafy.moa.api.entity.elastic.MediaInfoDocument;
 import com.ssafy.moa.api.repository.elastic.MediaAutoCompleteRepository;
 import com.ssafy.moa.api.repository.elastic.MediaInfoRepository;
@@ -40,9 +41,9 @@ public class MediaServiceImpl implements MediaService {
     private final RestHighLevelClient restHighLevelClient;
     private final MediaInfoRepository mediaInfoRepository;
     private final MediaAutoCompleteRepository mediaAutoCompleteRepository;
-    @Autowired
-    private ElasticsearchTemplate elasticsearchTemplate;
-    private final ElasticsearchOperations elasticsearchOperations;
+//    @Autowired
+//    private ElasticsearchTemplate elasticsearchTemplate;
+//    private final ElasticsearchOperations elasticsearchOperations;
 
     @Override
     public List<MediaInfoDocument> searchMedia(String type, String mediaName) {
@@ -82,8 +83,13 @@ public class MediaServiceImpl implements MediaService {
         return mediaTitleList;
     }
 
+//    @Override
+//    public List<MediaInfoDocument> autoComplete(String mediaName) {
+//        return mediaInfoRepository.findByTitleNm(mediaName);
+//    }
+
     @Override
-    public List<MediaAutoComplete> autoComplete(String mediaName) {
+    public List<MediaAutoComplete2> autoComplete(String mediaName) {
         return mediaAutoCompleteRepository.findByTitleNm(mediaName);
 //        Query searchQuery = new NativeSearchQueryBuilder()
 //                .withQuery(matchQuery("titleNm", query).analyzer("my_ngram_analyzer"))
