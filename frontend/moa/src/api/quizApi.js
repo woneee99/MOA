@@ -31,4 +31,9 @@ export const quizApi = {
   getRandomWrongAnswer: (quizWrongCount) => {
     return authAxios.post('/quiz/wrong-answer', quizWrongCount);
   },
+
+  // 다시풀기 문제 삭제
+  deleteWrongAnswer: (quizId) => {
+    return authAxios.delete(`/quiz/wrong-answer/${quizId}`);
+  },
 };

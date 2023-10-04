@@ -27,17 +27,29 @@ function IncorrectNoteList() {
 
   const [isButtonSelected, setIsButtonSelected] = useState(null);
 
+  // 단어퀴즈 버튼
   const handleButtonClick = (answer,index) => {
     checkAnswer(answer,index)
     setIsButtonSelected(index)
   };
-
+  // 문장퀴즈 버튼
   const handleCheckClick = (answer) => {
     setSentence([...sentence, answer])
   };
-
+  // 문장퀴즈 초기화
   const handleResetButton = () => {
     setSentence([]);
+  }
+
+  // 문제 삭제
+  const handleExcludeButtonClick = async () => {
+    try {
+      const response = await quizApi.deleteWrongAnswer(currentQuiz.quizId);
+      console.log('퀴즈 삭제 응답', response.data);
+      // 이후에 필요한 로직을 추가하세요.
+    } catch (error) {
+      console.error('퀴즈 삭제 API 호출 중 에러:', error);
+    }
   }
 
 
@@ -279,7 +291,7 @@ function IncorrectNoteList() {
             <div className={styles.correctMessage}>
               <img src={process.env.PUBLIC_URL + '/assets/Quiz/success.png'} alt="듣기" /> 
               <p>맞았어요!</p>
-              <button>다시풀기에서 제외</button>
+              <button onClick={handleExcludeButtonClick}>다시풀기에서 제외</button>
             </div>
           ):(
             <div className={styles.incorrectMessage}>
