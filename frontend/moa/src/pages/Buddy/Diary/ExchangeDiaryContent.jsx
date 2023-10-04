@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { diaryApi } from '../../../api/diaryApi';
 import { useNavigate } from 'react-router-dom';
-import MenuHeader from '../../../components/MenuHeader';
+import MenuHeader from '../../../components/ETC/MenuHeader';
 import styles from '../Diary/ExchangeDiaryContent.module.css'
 import Calendar from 'react-calendar';
 import '../Diary/DiaryCalender.css';
-// import 'react-calendar/dist/Calendar.css'; // css import
+
 import moment from 'moment/moment';
+import Swal from "sweetalert2";
 
 import { WOW } from 'wowjs';
 
@@ -52,15 +53,28 @@ function ExchangeDiaryContent() {
     }
 
     function handleDotClick(event) {
-        if (window.confirm(event.target.getAttribute("data-exchange-diary-date") +
-            " 날짜의 \n다이어리 글로 이동하시겠습니까?")) {
-            const exchangeDiaryId = event.target.getAttribute("data-exchange-diary-id");
-            if (exchangeDiaryId) {
-                navigate(`/buddy/exchangediary/${exchangeDiaryId}`, {
-                    state: { exchangeDiaryId },
-                });
-            }
-        }
+        Swal.fire({
+            html:
+                "<div classname={styles.swalDiv}>" +
+                "<b>" + event.target.getAttribute("data-exchange-diary-date") + "</b>" +
+                " 날짜의 <br>다이어리 글로 이동하시겠습니까?"
+                + "</div>",
+            width: 330,
+            showCancelButton: true,
+            cancelButtonText: '취소',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#FD9418',
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    const exchangeDiaryDate = event.target.getAttribute("data-exchange-diary-date");
+                    if (exchangeDiaryDate) {
+                        navigate(`/buddy/exchangediary/${exchangeDiaryDate}`, {
+                            state: { exchangeDiaryDate },
+                        });
+                    }
+                }
+            })
     }
 
     return (
@@ -92,13 +106,13 @@ function ExchangeDiaryContent() {
                                         const isMemberForeigner = diary.member.memberIsForeigner;
                                         if (diaryDate === formattedDate && !isMemberForeigner) {
                                             html.push(<div className="dot"
-                                                data-exchange-diary-id={diaryId}
                                                 data-exchange-diary-date={formattedDate}
                                                 onClick={handleDotClick}></div>);
                                         }
                                         else if (diaryDate === formattedDate && isMemberForeigner) {
                                             html.push(<div className='foreignerDot'
-                                                data-exchange-diary-id={diaryId}></div>)
+                                                data-exchange-diary-date={formattedDate}
+                                                onClick={handleDotClick}></div>)
                                         }
                                     })
                                     // 다른 조건을 주어서 html.push 에 추가적인 html 태그를 적용할 수 있음.
