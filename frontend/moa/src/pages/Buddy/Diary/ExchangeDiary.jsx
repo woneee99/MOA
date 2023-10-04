@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { useSelector } from 'react-redux';
-
 import { diaryApi } from '../../../api/diaryApi';
+import { userApi } from '../../../api/userApi';
 
-import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import styles from './ExchangeDiary.module.css'
@@ -13,12 +11,20 @@ import AppBar from '../../../components/ETC/AppBar';
 import { matchingApi } from '../../../api/matchingApi'
 
 import { WOW } from 'wowjs';
-import ConfirmButton from '../../../components/Buttons/ConfirmButton';
+import moment from 'moment/moment';
 
 
 function ExchangeDiary(props) {
 
   const [isBuddyHave, setIsBuddyHave] = useState(null);
+  const [todayDate, setTodayDate] = useState();
+  const [isWriteDiary, setIsWriteDiary] = useState();
+  const [memberName, setMemberName] = useState();
+
+  useEffect(() => {
+    const today = new Date();
+    setTodayDate(moment(today).format("YYYY-MM-DD"));
+  }, []);
 
   useEffect(() => {
     // wowjs 초기화
@@ -38,7 +44,43 @@ function ExchangeDiary(props) {
 
   }, [])
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    userApi.getMemberInfo()
+      .then((response) => {
+        const memberData = response.data.response;
+        setMemberName(memberData.memberName);
+      })
+      .catch((error) => {
+        console.error("다이어리 멤버 조회 오류", error);
+      })
+  }, [])
+
+  useEffect(() => {
+    if (todayDate !== undefined) {
+      diaryApi.getDiaryDetail(todayDate)
+        .then((response) => {
+          const diaryData = response.data.response;
+          if (diaryData.length === 0) {
+            setIsWriteDiary(false);
+          }
+          else if (diaryData.length === 2) {
+            setIsWriteDiary(true);
+          }
+          else if (diaryData.length === 1) {
+            if (diaryData[0].member.memberName === memberName) {
+              setIsWriteDiary(true);
+            }
+            else {
+              setIsWriteDiary(false);
+            }
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+    }
+
+  }, [todayDate]);
 
   return (
     <div className={styles.container}>
@@ -63,11 +105,15 @@ function ExchangeDiary(props) {
               </Link>
             </div>
 
-            <div>
-              <Link to="/buddy/exchangediary/create" className={`${styles.button} ${styles.button_write}`}>
-                일기 쓰기
-              </Link>
-            </div>
+            {!isWriteDiary && (
+              <div>
+                <Link to="/buddy/exchangediary/create" className={`${styles.button} ${styles.button_write}`}>
+                  일기 쓰기
+                </Link>
+              </div>
+            )}
+
+
           </div>
         </>
       )}
