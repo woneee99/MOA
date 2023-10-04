@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import AppBar from '../../components/ETC/AppBar';
+// import AppBar from '../../components/ETC/AppBar';
+import MenuHeader from '../../components/ETC/MenuHeader'
 import KeywordAdd from '../../components/Learning/KeywordAdd';
 import News from '../../styles/Learning/LearningMyKeyword.module.css';
 import Swal from "sweetalert2";
@@ -11,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 function LearningKeyword(props) {
 
   const [words, setWords] = useState([]);
+  const [keywords, setKeyords] = useState([]);
   const [addKeyword, setAddKeyword] = useState('');
 
   useEffect(() => {
@@ -20,6 +22,18 @@ function LearningKeyword(props) {
         setWords(res);
       })
   }, []);
+
+  useEffect(() => {
+    keywordApi.getKeywords()
+      .then((response) => {
+        const res = response.data.response;
+        setKeyords(res);
+        console.log(res);
+      })
+      .catch((error) => {
+        console.error("키워드 조회 오류 발생 " + error);
+      })
+  }, [])
 
   const navigate = useNavigate();
   const handleButtonClick = (keywordName) => {
@@ -48,6 +62,7 @@ function LearningKeyword(props) {
           text: '키워드가 등록되었어요!',
           confirmButtonColor: '#CBDCFD',
         })
+        window.location.reload();
       })
       .catch((error) => {
         console.error("키워드 등록 오류 발생 : " + error);
@@ -56,13 +71,16 @@ function LearningKeyword(props) {
 
   return (
     <div >
-      <AppBar />
+      <MenuHeader title="키워드 등록" />
       <div className={News.display}>
         <div className={News.font}> 관심 키워드 </div>
       </div>
       <div className={News.middleFont}> 관심 있는 키워드를 등록하고 관련 이슈를 확인하세요! </div>
 
-      <KeywordAdd />
+      {keywords.map((keyword, index) => (
+        <KeywordAdd key={index} keyword={keyword} />
+      ))}
+
       <div>
         <label htmlFor='keywordInput'></label>
         <input
