@@ -17,6 +17,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Slf4j
@@ -43,7 +44,7 @@ public class ChatServiceImpl implements ChatService {
                     .roomId(Long.valueOf(message.getRoomId()))
                     .sender(message.getSender())
                     .message(message.getMessage())
-                    .time(LocalDateTime.now())
+                    .time(LocalDateTime.now((ZoneId.of("Asia/Seoul"))))
                     .build();
             chatRoomRepository.save(openChatMessage);
         }
@@ -52,7 +53,7 @@ public class ChatServiceImpl implements ChatService {
                     .roomId(Long.valueOf(message.getRoomId()))
                     .sender(message.getSender())
                     .message(message.getMessage())
-                    .time(LocalDateTime.now())
+                    .time(LocalDateTime.now((ZoneId.of("Asia/Seoul"))))
                     .build();
             buddyMessageRepository.save(buddyMessage);
         }
