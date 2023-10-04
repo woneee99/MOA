@@ -12,6 +12,10 @@ const chatContainerStyle = {
   borderRadius: '5px',
 };
 
+const chatAreaStyle = {
+  height: '70vh',
+};
+
 const inputStyle = {
   margin: '10px',
   padding: '10px',
@@ -29,7 +33,7 @@ function ChattingArea({ openChatId }) {
   const [stompClient, setStompClient] = useState(null);
 
   // 이름 등의 사용자 정보는 store에 저장해서 꺼내 쓰는 식으로 해야할 듯
-  const [sender, setSender] = useState('test');
+  const [sender, setSender] = useState('18');
 
   // useEffect(() => {
   //   // 비동기 함수를 정의
@@ -58,7 +62,7 @@ function ChattingArea({ openChatId }) {
   useEffect(() => {
     if (stompClient) {
       stompClient.connect({}, () => {
-        stompClient.subscribe(`/sub/chat/open/${openChatId}`, (message) => {
+        stompClient.subscribe(`/sub/chat/message`, (message) => {
           try {
             const newMessage = JSON.parse(message.body);
             console.log(newMessage);
@@ -70,7 +74,7 @@ function ChattingArea({ openChatId }) {
 
         console.log(stompClient.subscriptions);
 
-        stompClient.send(`/pub/chat/open/${openChatId}`, {},
+        stompClient.send(`/pub/chat/message`, {},
         JSON.stringify({
           messageType: 'OPEN_ENTER',
           roomType: 1,
@@ -122,7 +126,7 @@ function ChattingArea({ openChatId }) {
 
 
       if (stompClient && stompClient.connected) {
-        stompClient.send(`/pub/chat/open/${openChatId}`, {}, JSON.stringify({
+        stompClient.send(`/pub/chat/message`, {}, JSON.stringify({
           messageType: 'OPEN_TALK',
           roomType: 1,
           roomId: openChatId,
@@ -135,7 +139,7 @@ function ChattingArea({ openChatId }) {
 
   return (
     <div style={chatContainerStyle}>
-      <div>
+      <div style={chatAreaStyle}>
         {messages.map((message, index) =>
           message.sender === sender ? (
             <MyTalk key={index} talk={message.message} />
