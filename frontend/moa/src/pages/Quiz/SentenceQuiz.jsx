@@ -100,7 +100,9 @@ const checkAnswer = async () =>{
       quizSubmitAnswer: selectedSentence, // 사용자가 제출한 정답
     });
 
-    if (response.data.response.isQuizCorrect) {
+    const isAnswerCorrect = response.data.response.isQuizCorrect;
+
+    if (isAnswerCorrect) {
       setCorrectAnswers(correctAnswers + 1);
       setAnswerMessage('맞았어요!');
     } else {
@@ -154,23 +156,20 @@ const checkAnswer = async () =>{
       <MenuHeader title="문장퀴즈" />
       {currentSentence ? (
         <div>
-          <p>
-            문제 {sentenceIndex + 1} / 15
-          </p>
           {currentSentence.quizCategoryId === 4 ? (
             <div>
-              <p className={styles.quizTitle}>다음을 듣고 문장을 완성해보세요</p>
+              <p className={styles.quizTitle}>{sentenceIndex + 1}. 다음을 듣고 문장을 완성해보세요</p>
               <div className={styles.questionContainer}>
                 <div onClick={toggleListening}
                   className={styles.sentenceArea}>
                   <img src={process.env.PUBLIC_URL + '/assets/Quiz/quizSound.png'} 
                   alt="듣기" /> 
                 </div>
-                </div>
               </div>
+            </div>
           ) : (
             <div>
-              <p className={styles.quizTitle}>다음 문장을 해석하고 완성해보세요</p>
+              <p className={styles.quizTitle}>{sentenceIndex + 1}. 다음 문장을 해석하고 완성해보세요</p>
               <div className={styles.questionContainer}>
                 <div className={styles.sentenceArea}>
                   <p>{currentSentence.quizQuestion}</p>

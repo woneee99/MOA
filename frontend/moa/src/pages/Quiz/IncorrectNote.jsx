@@ -51,8 +51,9 @@ function IncorrectNote(props) {
           value={myQuizCnt}
           onChange={handleMyQuiz} 
         />
-         <Link to={{ pathname:"/incorrect-note-list", state:{myQuizCnt}}}>풀기</Link>
-        {/* <button onClick={updateMyQuiz}>풀기</button> */}
+         <Link to="/incorrect-note-list">풀기</Link>
+         {/* <Link to={{ pathname:"/incorrect-note-list", state:{myQuizCnt}}}>풀기</Link> 이걸로 해야함 */}
+
         {/* <IncorrectNoteList /> */}
       </div>
     </div>
