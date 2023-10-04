@@ -250,14 +250,20 @@ function SignUp(props) {
           </label>
           <div style={radioContainerStyle}>
             <div style={radioStyle}>
-              <input style={radioButtonStyle} type="radio" id="foreigner" name="memberIsForeigner" value="true" />
+              <input style={radioButtonStyle} type="radio" id="foreigner" name="memberIsForeigner" value="true"
+                onChange={handleInputChange} />
               <label style={radioLabelStyle} htmlFor="foreigner">
                 <span style={radioLabelKorStyle}>외국인</span>
                 <span>Foreigner</span>
               </label>
             </div>
             <div style={radioStyle}>
-              <input style={radioButtonStyle} type="radio" id="korean" name="memberIsForeigner" value="false" />
+              <input style={radioButtonStyle}
+                type="radio"
+                id="korean"
+                name="memberIsForeigner"
+                value="false"
+                onChange={handleInputChange} />
               <label style={radioLabelStyle} htmlFor="korean">
                 <span style={radioLabelKorStyle}>한국인</span>
                 <span>Korean</span>
@@ -274,19 +280,22 @@ function SignUp(props) {
           <input style={inputStyle} type="text" id="memberName" name="memberName" onChange={handleInputChange} />
         </div>
 
-        <div style={inputContainerStyle} className="inputForm">
-          <label style={labelStyle} htmlFor="nationName" className="inputTitle">
-            <span style={labelKorStyle}>국적</span>
-            <span style={labelEngStyle}>Nationality</span>
-          </label>
-          <select style={inputStyle} name="nationName" onChange={handleInputChange}>
-            {nations.map((nation) => (
-              <option style={optionStyle} key={nation.nationCode} value={nation.nationName}>
-                {nation.nationName}
-              </option>
-            ))}
-          </select>
-        </div>
+        {formData.memberIsForeigner !== 'false' && (
+          <div style={inputContainerStyle} className="inputForm">
+            <label style={labelStyle} htmlFor="nationName" className="inputTitle">
+              <span style={labelKorStyle}>국적</span>
+              <span style={labelEngStyle}>Nationality</span>
+            </label>
+            <select style={inputStyle} name="nationName" onChange={handleInputChange}>
+              {nations.map((nation) => (
+                <option style={optionStyle} key={nation.nationCode} value={nation.nationName}>
+                  {nation.nationName}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
 
         <div style={inputContainerStyle} className="inputForm">
           <label style={labelStyle} htmlFor="memberGender" className="inputTitle">
