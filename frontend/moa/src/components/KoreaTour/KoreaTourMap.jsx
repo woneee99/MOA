@@ -2,14 +2,7 @@ import React from "react";
 import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
 import { useState, useEffect, useRef } from "react";
 import KoreaTourCarousel from "./KoreaTourCarousel";
-import cafe from "./cafe2.png";
-import playground from "./playground2.png";
-import restaurant from "./restaurant5.png";
-import stay from "./stay4.png";
-import station from "./station.png";
-import store from "./store.png";
-import SimpleSlider from "./SimpleSlider";
-import styles from '../styles/KoreaTour/KoreaTourMap.module.css';
+import styles from '../../styles/KoreaTour/KoreaTourMap.module.css';
 import { style } from "d3-selection";
 
 function KoreaTourMap({mediaName, mediaPlaceList }) {
@@ -20,47 +13,30 @@ function KoreaTourMap({mediaName, mediaPlaceList }) {
 
   const { kakao } = window;
 
-  // if (mediaPlaceList.length > 0) {
-  //   setSelectedPlace(mediaPlaceList[0]);
-  //   setIsOpen(true);
-  // }
-
   const handleMapClick = (e) => {
     setVisible(false);
     if (mapRef.current) {
-      console.log(mapRef.current.style);
+      mapRef.current.relayout();
     }
-    // mapRef.current.style.height = '100%';
   }
 
   const handleMarkerClick = (e, place) => {
     setVisible(true);
+    if (mapRef.current) {
+      mapRef.current.relayout();
+    }
     setSelectedPlace(place);
     setIsOpen(true);
   };
 
   const changeCenterByCarousel = (smIndex) => {
-    // let nextIndex = 0;
-    // if (smIndex === mediaPlaceList.length - 1) {
-    //   nextIndex = 0;
-    // } else {
-    //   nextIndex = smIndex + 1;
-    // }
     setSelectedPlace(mediaPlaceList[smIndex]);
-    // const newToggles = isMarkerClicked.map((toggle, i) => {
-    //   if (i === nextIndex) {
-    //     return true;
-    //   } else {
-    //     return isMarkerClicked[nextIndex] === false ? false : toggle;
-    //   }
-    // });
-    // setIsMarkerClicked(newToggles);
   };
 
   useEffect(() => {
     if (mediaPlaceList.length > 0) {
-      setSelectedPlace(mediaPlaceList[0]);
       setIsOpen(true);
+      setSelectedPlace(mediaPlaceList[0]);
     }
   }, [mediaPlaceList]);
 
@@ -77,7 +53,7 @@ function KoreaTourMap({mediaName, mediaPlaceList }) {
       <div className={(visible ? styles.mapActive : styles.map)}>
       <Map
         className={(visible ? styles.mapActive : styles.map)}
-        center={{ lat: 37.644825, lng: 127.681114 }}
+        center={mediaPlaceList.length>0? { lat: mediaPlaceList[0].latitude, lng: mediaPlaceList[0].longitude} : { lat: 37.644825, lng: 127.681114 }}
         level={3}
         ref={mapRef}
         draggable={true}
@@ -91,17 +67,17 @@ function KoreaTourMap({mediaName, mediaPlaceList }) {
               image={{
                 src:
                   place.placeTy === "cafe"
-                    ? cafe
+                    ? process.env.PUBLIC_URL+`/assets/KoreaTour/cafe.png`
                     : place.placeTy === "playground"
-                    ? playground
+                    ? process.env.PUBLIC_URL+"/assets/KoreaTour/playground.png"
                     : place.placeTy === "restaurant"
-                    ? restaurant
+                    ? process.env.PUBLIC_URL+"/assets/KoreaTour/restaurant.png"
                     : place.placeTy === "stay"
-                    ? stay
+                    ? process.env.PUBLIC_URL+"/assets/KoreaTour/stay.png"
                     : place.placeTy === "station"
-                    ? station
+                    ? process.env.PUBLIC_URL+"/assets/KoreaTour/station.png"
                     : place.placeTy === "store"
-                    ? store
+                    ? process.env.PUBLIC_URL+"/assets/KoreaTour/store.png"
                     : "https://user-images.githubusercontent.com/91959791/169664489-10a08071-905f-4a44-9a14-ae065704ced5.png",
                 size: { width: 35, height: 35 },
                 options: {
@@ -133,13 +109,6 @@ function KoreaTourMap({mediaName, mediaPlaceList }) {
                       borderBottomRightRadius: "50% 100px",
                     }}
                   >
-                    {/* <a
-                    href="https://map.kakao.com/link/map/11394059"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <span className="title">{place.placeNm}</span>
-                </a> */}
                     {place.placeNm}
                   </div>
                 </CustomOverlayMap>
@@ -153,10 +122,8 @@ function KoreaTourMap({mediaName, mediaPlaceList }) {
         mediaPlaceList={mediaPlaceList}
         selectedPlace={selectedPlace}
         changeCenterByCarousel={changeCenterByCarousel}
-        // handleModal={handleModal}
       />
       }
-      {/* <SimpleSlider></SimpleSlider> */}
     </div>
   );
 }

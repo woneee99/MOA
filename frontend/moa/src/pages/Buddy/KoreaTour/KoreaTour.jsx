@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import AppBar from '../../components/AppBar';
-import { koreaTourApi } from "../../api/KoreaTourApi";
-import styles from '../../styles/KoreaTour/KoreaTourSearch.module.css';
+import AppBar from '../../../components/AppBar';
+import { koreaTourApi } from "../../../api/KoreaTourApi";
+import styles from '../../../styles/KoreaTour/KoreaTourSearch.module.css';
 
 function KoreaTour(props) {
   const [mediaPlaceList, setMediaPlaceList] = useState([]);

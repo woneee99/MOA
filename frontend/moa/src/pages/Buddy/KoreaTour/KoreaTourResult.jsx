@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate  } from 'react-router-dom';
-import KoreaTourMap from "../../../components/KoreaTourMap";
+import KoreaTourMap from "../../../components/KoreaTour/KoreaTourMap";
 import styles from '../../../styles/KoreaTour/KoreaTourResult.module.css';
 
 function KoreaTourResult() {

@@ -3,7 +3,7 @@
     width: 100%;
     height: 915px;
     background: #FFFFFF;
-    background: linear-gradient(180deg, rgba(255, 229, 198, 0) 24.79%, rgba(255, 229, 198, 0) 36.77%, #FFB580 100%), url(../../components/KoreaTourBgr.png);
+    background: linear-gradient(180deg, rgba(255, 229, 198, 0) 24.79%, rgba(255, 229, 198, 0) 36.77%, #FFB580 100%), url(../../../public/assets/KoreaTour/KoreaTourBgr.png);
     object-fit: cover;
     overflow: hidden;
 }
@@ -15,7 +15,7 @@
     left: 1px;
     top: 0px;
 
-    background: linear-gradient(180deg, rgba(255, 229, 198, 0) 24.79%, rgba(255, 229, 198, 0) 36.77%, #FFB580 100%), url(../../components/KoreaTourBgr.png);
+    background: linear-gradient(180deg, rgba(255, 229, 198, 0) 24.79%, rgba(255, 229, 198, 0) 36.77%, #FFB580 100%), url(../../../public/assets/KoreaTour/KoreaTourBgr.png);
     box-shadow: 40px 40px 100px rgba(24, 48, 63, 0.2);
 }
 
@@ -84,7 +84,7 @@
     right: 12.5%;
     top: 30%;
     bottom: 12.5%;
-    background: url(../../components/search.png);
+    background: url(../../../public/assets/KoreaTour/search.png);
 }
 
 .input{
