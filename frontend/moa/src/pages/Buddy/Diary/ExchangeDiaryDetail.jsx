@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 import { diaryApi } from '../../../api/diaryApi';
 import { userApi } from '../../../api/userApi';
 
@@ -109,7 +109,7 @@ function ExchangeDiaryDetail() {
                   </div>
 
                   <div className={styles.diaryContent}>
-                    {myDiary.exchangeDiaryContent}
+                    {myDiary.exchangeDiaryContent.replace(/<br>/g, "\n")}
                   </div>
 
                   <div className={styles.moveToNextPage}
