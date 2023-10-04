@@ -4,7 +4,7 @@ import { learningApi } from '../../api/learningApi';
 import styles from './NewsArticle.module.css'
 import ArticleModal from '../../components/Learning/ArticleModal';
 import MenuHeader from '../../components/ETC/MenuHeader';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 
 function NewsArticle(props) {
 
@@ -306,6 +306,7 @@ function NewsArticle(props) {
                             word: clickWord,
                             onCloseModal: closeModal,
                             translatedWord: translatedWord,
+                            isChatGptAsk: false,
                         }}
                     ></ArticleModal>
                 }

@@ -19,11 +19,15 @@ import LearningKeyword from './pages/Learning/LearningMyKeyword';
 import WordLearning from './pages/Learning/WordLearning';
 import KoreanLearningDefault from './pages/Learning/KoreanLearningDefault';
 import NewsPlus from './pages/Learning/NewsPlus';
+import MyCollection from './pages/Learning/MyCollection';
+import MyWord from './pages/Learning/MyWord';
+import MyArticles from './pages/Learning/MyArticles';
 // import QnABoard from './pages/QnA/QnABoard';
 import Quiz from './pages/Quiz/Quiz';
 import QuestionPage from './pages/Quiz/QuestionPage';
 import SentenceQuiz from './pages/Quiz/SentenceQuiz';
 import IncorrectNote from './pages/Quiz/IncorrectNote';
+import IncorrectNoteList from './pages/Quiz/IncorrectNoteList';
 import QuizResult from './pages/Quiz/QuizResult';
 import ExchangeDiary from './pages/Buddy/Diary/ExchangeDiary';
 import ExchangeDiaryDetail from './pages/Buddy/Diary/ExchangeDiaryDetail';
@@ -40,20 +44,30 @@ import RelatedNews from './components/Learning/RelatedNews';
 import NewsArticle from './pages/Learning/NewsArticle';
 import ExchangeDiaryContent from './pages/Buddy/Diary/ExchangeDiaryContent';
 
+import Loading from './components/Loading';
+
 function App() {
   const state = store.getState();
   const accessToken = state.accessToken;
   const isMatching = state.isMatching;
   const refreshToken = Cookies.get('refreshToken');
 
-  console.log(accessToken);
+  const [isLoading, setIsLoading] = useState(false);
 
-  console.log(isMatching);
+  useEffect(() => {
+    const startLoading = () => {
+      setIsLoading(true);
+      // 3초 후에 isLoading 상태를 false로 설정
+      setTimeout(() => setIsLoading(false), 3000);
+    };
 
+    startLoading();
+  }, []);
 
   return (
-    <BrowserRouter>
-      <div className="App">
+    <div className="App">
+      {isLoading ? <Loading /> : (
+      <BrowserRouter>
         <Routes>
           {refreshToken ? ( // refreshToken이 있는 경우
             <>
@@ -72,11 +86,15 @@ function App() {
               <Route path='/koreanlearning/word/news/:articleId' element={<NewsArticle />} />
               <Route path='/koreanlearning/keyword' element={<LearningKeyword />} />
               <Route path='/koreanlearning/default' element={<KoreanLearningDefault />} />
+              <Route path='/koreanlearning/collection' element={<MyCollection />} />
+              <Route path='/koreanlearning/myWord' element={<MyWord />} />
+              <Route path='/koreanlearning/myArticles' element={<MyArticles />} />
 
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/quiz/question-page" element={<QuestionPage />} />
               <Route path="/quiz/sentence-quiz" element={<SentenceQuiz />} />
               <Route path="/quiz/incorrect-note" element={<IncorrectNote />} />
+              <Route path="/quiz/incorrect-note-list" element={<IncorrectNoteList />} />
               <Route path="/quiz/quiz-result" element={<QuizResult />} />
 
               <Route path="/buddy/exchangediary" element={<ExchangeDiary />} />
@@ -105,8 +123,9 @@ function App() {
             </>
           )}
         </Routes>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+      )}
+    </div>
   );
 }
 
