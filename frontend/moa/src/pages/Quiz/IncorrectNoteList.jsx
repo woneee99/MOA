@@ -83,7 +83,7 @@ function IncorrectNoteList() {
       setTimeout(() => {
         setShowAnswerModal(false);
         handleNextQuiz();
-      }, 15000);
+      }, 1500);
 
       if (currentQuiz.quizCategoryId === 3 || currentQuiz.quizCategoryId === 4) {
         setSentence([]);
