@@ -10,7 +10,7 @@ import Login from './pages/Login';
 import LoginLoading from './pages/LoginLoading';
 import SignUp from './pages/SignUp';
 import Matching from './pages/Matching';
-import ChattingHome from './components/ChattingHome';
+import ChattingHome from './pages/Chatting/ChattingHome';
 import BuddyChattingModal from './pages/Chatting/BuddyChattingModal';
 import OpenChattingModal from './pages/Chatting/OpenChattingModal';
 import OpenChattingDetail from './pages/Chatting/OpenChattingDetail';
@@ -33,7 +33,8 @@ import BalanceGame from './pages/Buddy/BalanceGame/BalanceGame';
 import BalanceGameDetail from './pages/Buddy/BalanceGame/BalanceGameDetail';
 import CreateBalanceGame from './pages/Buddy/BalanceGame/CreateBalanceGame';
 import UpdateBalanceGame from './pages/Buddy/BalanceGame/UpdateBalanceGame';
-import KoreaTour from './pages/Buddy/KoreaTour';
+import KoreaTour from './pages/Buddy/KoreaTour/KoreaTour';
+import KoreaTourResult from './pages/Buddy/KoreaTour/KoreaTourResult';
 import NotFound404 from './pages/NotFound404';
 import RelatedNews from './components/Learning/RelatedNews';
 import NewsArticle from './pages/Learning/NewsArticle';
@@ -54,7 +55,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          {refreshToken? ( // refreshToken이 있는 경우
+          {refreshToken ? ( // refreshToken이 있는 경우
             <>
               <Route path="/" element={<Main />} />
 
@@ -68,7 +69,7 @@ function App() {
               <Route path="/koreanlearning" element={<KoreanLearning />} />
               <Route path="/koreanlearning/word" element={<WordLearning />} />
               <Route path='/koreanlearning/word/news' element={<NewsPlus />} />
-              <Route path='/koreanlearning/article' element={<NewsArticle />} />
+              <Route path='/koreanlearning/word/news/:articleId' element={<NewsArticle />} />
               <Route path='/koreanlearning/keyword' element={<LearningKeyword />} />
               <Route path='/koreanlearning/default' element={<KoreanLearningDefault />} />
 
@@ -90,6 +91,7 @@ function App() {
               <Route path="/buddy/balancegame/:id/update" element={<UpdateBalanceGame />} />
 
               <Route path="/buddy/koreatour" element={<KoreaTour />} />
+              <Route path="/buddy/koreatour/:mediaPlace" element={<KoreaTourResult />} />
 
               <Route path="*" element={<Navigate to="/" />} />
             </>
