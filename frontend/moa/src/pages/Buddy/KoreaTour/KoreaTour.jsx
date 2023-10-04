@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import AppBar from '../../../components/AppBar';
+import AppBar from '../../../components/ETC/AppBar';
 import { koreaTourApi } from "../../../api/KoreaTourApi";
 import styles from '../../../styles/KoreaTour/KoreaTourSearch.module.css';
 
