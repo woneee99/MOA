@@ -105,6 +105,7 @@ const signupButtonStyle = {
   borderRadius: '18px',
   margin: '20px auto',
   padding: '12px 0',
+  boxShadow: '0px 10px 20px 0px rgba(200, 231, 78, 0.47)',
 };
 
 
@@ -245,21 +246,21 @@ function SignUp(props) {
         <div style={inputContainerStyle}>
           <label style={labelStyle} htmlFor="" className="inputTitle">
             <span style={labelKorStyle}>나는</span>
-            <span style={labelEngStyle}>I'm</span>
+            {/* <span style={labelEngStyle}>I'm</span> */}
           </label>
           <div style={radioContainerStyle}>
             <div style={radioStyle}>
               <input style={radioButtonStyle} type="radio" id="foreigner" name="memberIsForeigner" value="true"/>
               <label style={radioLabelStyle} htmlFor="foreigner">
                 <span style={radioLabelKorStyle}>외국인</span>
-                <span>Foreigner</span>
+                {/* <span>Foreigner</span> */}
               </label>
             </div>
             <div style={radioStyle}>
               <input style={radioButtonStyle} type="radio" id="korean" name="memberIsForeigner" value="false"/>
               <label style={radioLabelStyle} htmlFor="korean">
                 <span style={radioLabelKorStyle}>한국인</span>
-                <span>Korean</span>
+                {/* <span>Korean</span> */}
               </label>
             </div>
           </div>
@@ -268,7 +269,7 @@ function SignUp(props) {
         <div style={inputContainerStyle} className="inputForm">
           <label style={labelStyle} htmlFor="memberName" className="inputTitle">
             <span style={labelKorStyle}>이름</span>
-            <span style={labelEngStyle}>Name</span>
+            {/* <span style={labelEngStyle}>Name</span> */}
           </label>
           <input style={inputStyle} type="text" id="memberName" name="memberName" onChange={handleInputChange}/>
         </div>
@@ -276,7 +277,7 @@ function SignUp(props) {
         <div style={inputContainerStyle} className="inputForm">
           <label style={labelStyle} htmlFor="nationName" className="inputTitle">
             <span style={labelKorStyle}>국적</span>
-            <span style={labelEngStyle}>Nationality</span>
+            {/* <span style={labelEngStyle}>Nationality</span> */}
           </label>
           <select style={inputStyle} name="nationName" onChange={handleInputChange}>
             {nations.map((nation) => (
@@ -290,21 +291,21 @@ function SignUp(props) {
         <div style={inputContainerStyle} className="inputForm">
           <label style={labelStyle} htmlFor="memberGender" className="inputTitle">
             <span style={labelKorStyle}>성별</span>
-            <span style={labelEngStyle}>Gender</span>
+            {/* <span style={labelEngStyle}>Gender</span> */}
           </label>
           <div style={radioContainerStyle}>
             <div style={radioStyle}>
               <input style={radioButtonStyle} type="radio" id="man" name="memberGender" value="2" onChange={handleInputChange}/>
               <label style={radioLabelStyle} htmlFor="man">
                 <span style={radioLabelKorStyle}>남자</span>
-                <span>Man</span>
+                {/* <span>Man</span> */}
               </label>
             </div>
             <div style={radioStyle}>
               <input style={radioButtonStyle} type="radio" id="woman" name="memberGender" value="1" onChange={handleInputChange}/>
               <label style={radioLabelStyle} label htmlFor="woman">
                 <span style={radioLabelKorStyle}>여자</span>
-                <span>Woman</span>
+                {/* <span>Woman</span> */}
               </label>
             </div>
           </div>
@@ -313,7 +314,7 @@ function SignUp(props) {
         <div style={inputContainerStyle} className="inputForm">
           <label style={labelStyle} htmlFor="memberEmail" className="inputTitle">
             <span style={labelKorStyle}>이메일</span>
-            <span style={labelEngStyle}>Email</span>
+            {/* <span style={labelEngStyle}>Email</span> */}
           </label>
           <input style={inputStyle} type="text" id="memberEmail" name="memberEmail" onChange={handleInputChange}/>
         </div>
@@ -335,7 +336,7 @@ function SignUp(props) {
           <div style={inputContainerStyle} className='inputForm'>
             <label style={labelStyle} htmlFor="verificationCode" className='inputTitle'>
               <span style={labelKorStyle}>인증번호</span>
-              <span style={labelEngStyle}>Verification Code</span>
+              {/* <span style={labelEngStyle}>Verification Code</span> */}
             </label>
             <input style={inputStyle} type='text' id='verificationCode' name='verificationCode' onChange={handleInputChange} />
             <button style={verificationButtonStyle} onClick={handleVerificationCode}>인증확인</button>
@@ -346,7 +347,7 @@ function SignUp(props) {
         <div style={inputContainerStyle} className="inputForm">
           <label style={labelStyle} htmlFor="memberPassword" className="inputTitle">
             <span style={labelKorStyle}>비밀번호</span>
-            <span style={labelEngStyle}>Password</span>
+            {/* <span style={labelEngStyle}>Password</span> */}
           </label>
           <form>
             <input style={inputStyle} type="password" id="memberPassword" name="memberPassword" onChange={handleInputChange} autoComplete="off" />
