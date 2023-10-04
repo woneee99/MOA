@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { quizApi } from '../../api/quizApi';
-import BackButton from '../../components/BackButton';
-import MenuHeader from '../../components/MenuHeader';
+// import BackButton from '../../components/BackButton';
+// import MenuHeader from '../../components/MenuHeader';
 // import IncorrectNoteList from '../../components/Quiz/IncorrectNoteList';
 
 
