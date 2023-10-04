@@ -54,7 +54,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          {refreshToken? ( // refreshToken이 있는 경우
+          {refreshToken ? ( // refreshToken이 있는 경우
             <>
               <Route path="/" element={<Main />} />
 
@@ -68,7 +68,7 @@ function App() {
               <Route path="/koreanlearning" element={<KoreanLearning />} />
               <Route path="/koreanlearning/word" element={<WordLearning />} />
               <Route path='/koreanlearning/word/news' element={<NewsPlus />} />
-              <Route path='/koreanlearning/article' element={<NewsArticle />} />
+              <Route path='/koreanlearning/word/news/:articleId' element={<NewsArticle />} />
               <Route path='/koreanlearning/keyword' element={<LearningKeyword />} />
               <Route path='/koreanlearning/default' element={<KoreanLearningDefault />} />
 

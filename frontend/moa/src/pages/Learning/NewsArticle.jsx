@@ -3,13 +3,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { learningApi } from '../../api/learningApi';
 import styles from './NewsArticle.module.css'
 import ArticleModal from '../../components/Learning/ArticleModal';
-import MenuHeader from '../../components/MenuHeader';
+import MenuHeader from '../../components/ETC/MenuHeader';
+import { useParams } from 'react-router';
 
 function NewsArticle(props) {
 
-    // const articleWords = [
-    //     "법원", "출석", "단식"
-    // ]
+    const { articleId } = useParams();
 
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
     const [translatedSentence, setTranslatedSentence] = useState('');
@@ -18,7 +17,6 @@ function NewsArticle(props) {
     const [isModalOpen, setIsModalOpen] = useState(false); //모달 관련
     const [clickWord, setClickWord] = useState(null);
 
-    const [articleId, setArticleId] = useState(null);
     const [articleTitle, setArticleTitle] = useState('');
     const [articleContent, setArticleContent] = useState('');
     const [articleSentences, setArticleSentences] = useState([]);
@@ -27,10 +25,9 @@ function NewsArticle(props) {
     const [articleWords, setArticleWords] = useState([]);
 
     useEffect(() => {
-        learningApi.getNews(1)
+        learningApi.getNews(articleId)
             .then((response) => {
                 const newsData = response.data;
-                setArticleId(newsData.article_id);
                 setArticleTitle(newsData.title);
                 setArticleContent(newsData.content);
                 setArticleDate(newsData.date);
@@ -45,7 +42,7 @@ function NewsArticle(props) {
     }, []);
 
     useEffect(() => {
-        learningApi.getNewsWords(1)
+        learningApi.getNewsWords(articleId)
             .then((response) => {
                 console.log(response.data);
                 setArticleWords(response.data);
@@ -58,7 +55,7 @@ function NewsArticle(props) {
     // 스크랩 여부 확인
     useEffect(() => {
         if (articleContent !== '') {
-            learningApi.getIsNewsScrap(1) // 나중에 articleId 값 받아오면 넣어주기 
+            learningApi.getIsNewsScrap(articleId) // 나중에 articleId 값 받아오면 넣어주기 
                 .then((response) => {
                     console.log(response.data.response);
                     if (response.data.response) {
