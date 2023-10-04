@@ -23,7 +23,8 @@ function SentenceQuiz(props) {
   const [correctAnswers,setCorrectAnswers] = useState(0);
 
   const [timeBarTotalTime, setTimeBarTotalTime] = useState(20);
-  
+  const [isTimeOut, setIsTimeOut] = useState(false);
+
   const currentSentence = sentenceData[sentenceIndex];
 
   // const handleTimeup = () => {
@@ -117,13 +118,21 @@ function SentenceQuiz(props) {
     setSentence([]);
   }
 
+  // 시간 초과 함수
+  const handleTimeOut = () => {
+    setIsTimeOut(true);
+    setTimeout(() => {
+      setIsTimeOut(false);
+      handleNextQuiz();
+    }, 1000);
+  };
+
   // 한 문제씩 가져오기
   const handleNextQuiz = () => {
     if (sentenceIndex < sentenceData.length -1) {
       setSentenceIndex(sentenceIndex + 1 );
       setIsListening(false);
       setIsCorrect(null);
-      setTimeBarTotalTime(5);
     } else {
       setShowResultButton(true);
       handleShowResult();
@@ -156,7 +165,7 @@ function SentenceQuiz(props) {
           {/* <p>
             문제 {sentenceIndex + 1} / 15
           </p> */}
-          <TimeBar totalTime={timeBarTotalTime}/>
+          <TimeBar totalTime={timeBarTotalTime} handleTimeOut={handleTimeOut} handleNextQuiz={handleNextQuiz}/>
           {currentSentence.quizCategoryId === 4 ? (
             <div>
               <p className={styles.quizTitle}>{sentenceIndex + 1}.다음을 듣고 문장을 완성해보세요</p>
@@ -223,6 +232,14 @@ function SentenceQuiz(props) {
               </div>
             )}
           </Modal.Body>
+      </Modal>
+      <Modal show={isTimeOut} className={styles.resultModal}>
+        <Modal.Body className={styles.resultModalContent}>
+          <div className={styles.incorrectMessage}>
+            <img src={process.env.PUBLIC_URL + '/assets/Quiz/fail.png'} alt="시간 초과" />
+            <p>시간 초과</p>
+          </div>
+        </Modal.Body>
       </Modal>
     </div>
   );
