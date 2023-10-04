@@ -13,15 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 public class ChatDto {
-
-    private final MemberService memberService;
-
-    @Autowired
-    public ChatDto(MemberService memberService) {
-        this.memberService = memberService;
-    }
 
     @Getter
     @NoArgsConstructor
@@ -49,7 +41,6 @@ public class ChatDto {
 
             List<ChatMessageResponse> chatList = chatMessageList.stream()
                     .map(chatMessage -> {
-                        System.out.println("chatMessage.getSender() = " + chatMessage.getSender());
                         String memberName = memberService.findMember(Long.valueOf(chatMessage.getSender())).getMemberName();
                         return ChatMessageResponse.builder()
                                 .name(memberName)
