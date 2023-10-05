@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { openChatApi } from '../../api/chatApi';
+
+import store from '../../store';
 import MyTalk from '../MyTalk';
 import OpponentTalk from '../OpponentTalk';
 import SockJS from 'sockjs-client';
@@ -12,6 +14,11 @@ const chatContainerStyle = {
   borderRadius: '5px',
 };
 
+const chatAreaStyle = {
+  height: '70vh',
+  overflowY: 'auto',
+};
+
 const inputStyle = {
   margin: '10px',
   padding: '10px',
@@ -21,33 +28,56 @@ const inputStyle = {
   border: 'none',
 };
 
+const inputFormStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  background: '#F2F2F2',
+  borderRadius: '30px',
+};
+
+
+const buttonStyle = {
+  marginRight: '10px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  border: 'none',
+  padding: '5px',
+  background: 'transparent',
+};
+
+const iconStyle = {
+  width: '100%',
+  height: '100%',
+};
+
+
 function ChattingArea({ openChatId }) {
-  // 대화 메세지 저장용 리스트를 만들어서 이전 대화내역이 출력되는 등의 조치가 필요할 듯
-  // { type, sender, message } 형태로 저장해야할 듯?
   const [inputMyText, setInputMyText] = useState(''); // 나의 텍스트 입력 상태
   const [messages, setMessages] = useState([]); // 대화 메세지 저장용
   const [stompClient, setStompClient] = useState(null);
 
-  // 이름 등의 사용자 정보는 store에 저장해서 꺼내 쓰는 식으로 해야할 듯
-  const [sender, setSender] = useState('18');
+  const state = store.getState();
+  const userInfo = state.userInfo;
+  const sender = JSON.parse(userInfo).memberId.toString();
 
-  // useEffect(() => {
-  //   // 비동기 함수를 정의
-  //   const fetchChatLog = async () => {
-  //     try {
-  //       const response = await openChatApi.openChatLog(openChatId);
-  //       const res = response.data.response;
-  //       console.log(res);
-  //       setMessages(res);
-  //     } catch (error) {
-  //       console.log('오픈채팅 대화내역 조회 오류');
-  //       console.log(error);
-  //     }
-  //   };
-  
-  //   // fetchChatLog 함수를 호출
-  //   fetchChatLog();
-  // }, []);
+  const chatAreaRef = useRef();
+
+  useEffect(() => {
+    openChatApi.openChatLog(openChatId)
+    .then((response) => {
+      const res = response.data.response;
+      setMessages(res.reverse());
+      if (chatAreaRef.current) {
+        chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
+      };
+    })
+    .catch((error) => {
+      console.log('오픈 채팅기록 소환 에러 발생');
+      console.log(error);
+    })
+  }, [messages]);
 
   useEffect(() => {
     setStompClient(
@@ -61,14 +91,10 @@ function ChattingArea({ openChatId }) {
         stompClient.subscribe(`/sub/chat/message`, (message) => {
           try {
             const newMessage = JSON.parse(message.body);
-            console.log(newMessage);
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
           } catch (error) {
             console.log('subscribe 콜백 함수에서 에러 발생:', error);
           }
         }, {});
-
-        console.log(stompClient.subscriptions);
 
         stompClient.send(`/pub/chat/message`, {},
         JSON.stringify({
@@ -82,31 +108,6 @@ function ChattingArea({ openChatId }) {
       });
     }
 
-    // stompClient.current.connect({}, () => {
-    //   // 연결 성공 시 동작 설정
-    //   console.log('WebSocket 연결 상태:', stompClient.current.connected);
-    //   stompClient.subscribe(`/sub/chat/open/${openChatId}`, (message) => {
-    //     try {
-    //       const newMessage = JSON.parse(message.body);
-    //       setMessages((prevMessages) => [...prevMessages, newMessage]);
-    //     } catch (error) {
-    //       console.log('subscribe 콜백 함수에서 에러 발생:', error);
-    //     }
-    //   });
-    //   console.log(stompClient.subscriptions);
-
-    //   stompClient.current.send(`/pub/chat/open/${openChatId}`, {},
-    //     JSON.stringify({
-    //       messageType: 'OPEN_ENTER',
-    //       roomType: 2,
-    //       roomId: openChatId,
-    //       sender: sender,
-    //       message: null,
-    //     })
-    //   );
-
-    // });
-
     // 컴포넌트 언마운트 시 WebSocket 연결 해제
     return () => {
       if (stompClient) {
@@ -119,8 +120,6 @@ function ChattingArea({ openChatId }) {
     e.preventDefault(); // 폼 제출 기능 비활성화
 
     if (inputMyText.trim() !== '') {
-
-
       if (stompClient && stompClient.connected) {
         stompClient.send(`/pub/chat/message`, {}, JSON.stringify({
           messageType: 'OPEN_TALK',
@@ -130,22 +129,26 @@ function ChattingArea({ openChatId }) {
           message: inputMyText,
         }));
       }
+      setInputMyText('');
     }
   };
 
   return (
     <div style={chatContainerStyle}>
-      <div>
-        {messages.map((message, index) =>
-          message.sender === sender ? (
-            <MyTalk key={index} talk={message.message} />
-          ) : (
-            <OpponentTalk key={index} talk={message.message} />
-          )
-        )}
+      <div 
+        style={chatAreaStyle}
+        ref={chatAreaRef}
+      >
+      {messages.map((message, index) => {
+        return message.sender === sender ? (
+          <MyTalk key={index} talk={message.message} />
+        ) : (
+          <OpponentTalk key={index} talk={message.message} />
+        );
+      })}
       </div>
       <hr />
-      <form onSubmit={handleFormSubmit}>
+      <form onSubmit={handleFormSubmit} style={inputFormStyle}>
         <input
           style={inputStyle}
           type="text"
@@ -153,6 +156,9 @@ function ChattingArea({ openChatId }) {
           onChange={(e) => setInputMyText(e.target.value)}
           placeholder="메세지를 입력하세요"
         />
+        <button style={buttonStyle} type="submit">
+          <img style={iconStyle} src={process.env.PUBLIC_URL + '/assets/Chatting/submitIcon.png'} alt="전송" />
+        </button>
       </form>
     </div>
   );

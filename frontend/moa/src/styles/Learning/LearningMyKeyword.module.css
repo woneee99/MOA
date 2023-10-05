@@ -11,8 +11,9 @@
     font-size: 14px;
 }
 
-.display{
+.display {
     margin-top: 42px;
+    font-family: 'Pretendard-Regular'
 }
 
 .container {
@@ -22,10 +23,11 @@
     border-radius: 18px;
     box-shadow: 5px 5px 5px #F3F9FF;
     line-height: 55px;
+    font-family: 'Pretendard-Regular'
 }
 
 .btn {
-    margin-left: 20px;
+    margin-left: 5px;
     width: 350px;
     height: 56px;
     border: none;
@@ -34,6 +36,7 @@
     margin-top: 22px;
     border-radius: 18px;
     background: linear-gradient(132.52deg, #B5CCF9 -0.88%, #6C99F0 126.31%);
+    font-family: 'Pretendard-Regular';
 }
 
 .keywordBtn {
@@ -41,9 +44,33 @@
     height: 56px;
     border: none;
     color: #2C432E;
-    margin-left: 20px;
+    margin-left: 0px;
     font-size: 18px;
     margin-top: 22px;
     border-radius: 18px;
+
+    font-family: 'Pretendard-Regular';
+
     background: rgba(203, 220, 253, 0.79);
+}
+
+.keywordInput {
+
+    width: 350px;
+    height: 55px;
+    border-radius: 18px;
+    box-shadow: 5px 5px 5px #F3F9FF;
+    line-height: 55px;
+    border: none;
+
+    font-family: 'Pretendard-Regular';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 135%;
+
+    text-align: center;
+    /* or 20px */
+
+    color: #71787d;
 }

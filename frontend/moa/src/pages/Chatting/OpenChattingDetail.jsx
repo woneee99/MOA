@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { openChatApi } from '../../api/chatApi';
 
 import BackButton from '../../components/Buttons/BackButton';
 import ChattingArea from '../../components/Chatting/ChattingArea';
 
+const openChatRoomStyle = {
+  height: '100vh',
+  backgroundImage: `
+    url(${process.env.PUBLIC_URL}/assets/Background/chatting_background.png)
+  `,
+  backgroundSize: 'cover', // 배경 이미지 크기 조절
+  backgroundRepeat: 'no-repeat', // 배경 이미지 반복 없음
+  backgroundPosition: 'center', // 배경 이미지 중앙 정렬
+};
+
 const titleBarStyle = {
+  background: 'white',
   padding: '0 10px',
   display: 'flex',
   boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
@@ -50,23 +61,23 @@ function OpenChattingDetail(props) {
     })
   }, [openChatId]);
 
-  const deleteOpenChat = () => {
-    openChatApi.deleteOpenChatRoom(openChatId)
-    .then((response) => {
-      alert('오픈채팅방이 삭제되었습니다');
-      navigate('/chatting');
-    })
-  };
+  // const deleteOpenChat = () => {
+  //   openChatApi.deleteOpenChatRoom(openChatId)
+  //   .then((response) => {
+  //     alert('오픈채팅방이 삭제되었습니다');
+  //     navigate('/chatting');
+  //   })
+  // };
 
   return (
-    <div>
-      <button onClick={deleteOpenChat}>오픈채팅방 삭제</button>
+    <div style={openChatRoomStyle}>
       <div style={titleBarStyle}>
         <div style={backButtonContainerStyle}>
           <BackButton text='←' />
         </div>
         <p style={titleStyle}>{ title }</p>
         <p style={memberCountStyle}>{ memberCount }</p>
+        {/* <button onClick={deleteOpenChat}>오픈채팅방 삭제</button> */}
       </div>
       <ChattingArea
         openChatId={openChatId}

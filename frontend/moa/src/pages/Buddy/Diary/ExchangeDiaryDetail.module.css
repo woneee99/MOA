@@ -59,6 +59,8 @@
     overflow-y: auto;
 
     text-align: left;
+
+    white-space: pre-line;
 }
 
 .diaryContentInput::-webkit-scrollbar {
@@ -99,8 +101,8 @@
 
 .diaryNoContent {
     position: absolute;
-    left: 80px;
-    top: 140px;
+    left: 120px;
+    top: 170px;
 }
 
 .diaryNoContentDesc {
