@@ -8,8 +8,6 @@ import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 
 const chatContainerStyle = {
-  margin: '20px',
-  border: '1px solid #ccc',
   padding: '20px',
   borderRadius: '5px',
 };
@@ -22,7 +20,7 @@ const chatAreaStyle = {
 const inputStyle = {
   margin: '10px',
   padding: '10px',
-  width: '90%',
+  width: '80%',
   backgroundColor: '#f2f2f2',
   borderRadius: '32px',
   border: 'none',
@@ -35,7 +33,6 @@ const inputFormStyle = {
   background: '#F2F2F2',
   borderRadius: '30px',
 };
-
 
 const buttonStyle = {
   marginRight: '10px',
@@ -108,14 +105,14 @@ function ChattingArea({ openChatId }) {
         }, {});
 
         stompClient.send(`/pub/chat/message`, {},
-        JSON.stringify({
-          messageType: 'OPEN_ENTER',
-          roomType: 1,
-          roomId: openChatId,
-          sender: sender,
-          message: null,
-        })
-      );
+          JSON.stringify({
+            messageType: 'OPEN_ENTER',
+            roomType: 1,
+            roomId: openChatId,
+            sender: sender,
+            message: null,
+          })
+        );
       });
     }
 
@@ -158,18 +155,18 @@ function ChattingArea({ openChatId }) {
 
   return (
     <div style={chatContainerStyle}>
-      <div 
+      <div
         style={chatAreaStyle}
         ref={chatAreaRef}
         onScroll={handleScroll}
       >
-      {messages.map((message, index) => {
-        return message.sender === sender ? (
-          <MyTalk key={index} talk={message.message} />
-        ) : (
-          <OpponentTalk key={index} talk={message.message} />
-        );
-      })}
+        {messages.map((message, index) => {
+          return message.sender === sender ? (
+            <MyTalk key={index} talk={message.message} />
+          ) : (
+            <OpponentTalk key={index} talk={message.message} />
+          );
+        })}
       </div>
       <hr />
       <form onSubmit={handleFormSubmit} style={inputFormStyle}>
