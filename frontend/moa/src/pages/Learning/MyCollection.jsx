@@ -61,17 +61,21 @@ function MyCollection(props) {
         <div className={Style.background}>
             <MenuHeader title="스크랩북" />
             <div >
-                <div className={Style.wordContainer}>
+                <div className={Style.scrapBoxContainer}>
                     <div className={Style.fontContainer}>
                         <div className={Style.wordFont}>단어장</div>
-                        <div className={Style.plusFont} onClick={handleWord}>more</div>
+                        { word.length > 2 && (
+                            <div className={Style.plusFont} onClick={handleWord}>more</div>
+                        )}
                     </div>
                     <WordLearning word={twoword}/>
                 </div>
-                <div className={Style.wordContainer}>
+                <div className={Style.scrapBoxContainer}>
                     <div className={Style.fontContainer}>
                         <div className={Style.wordFont}>나의 뉴스</div>
-                        <div className={Style.plusFont} onClick={handleArticles}>more</div>
+                        { news.length > 2 && (
+                            <div className={Style.plusFont} onClick={handleArticles}>more</div>
+                        )}
                     </div>
                     <NewsLearning news={twoNews}/>
                 </div>
