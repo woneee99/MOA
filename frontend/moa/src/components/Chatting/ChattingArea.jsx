@@ -62,6 +62,7 @@ function ChattingArea({ openChatId }) {
   const userInfo = state.userInfo;
   const sender = JSON.parse(userInfo).memberId.toString();
 
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const chatAreaRef = useRef();
 
   useEffect(() => {
@@ -69,15 +70,25 @@ function ChattingArea({ openChatId }) {
     .then((response) => {
       const res = response.data.response;
       setMessages(res.reverse());
-      if (chatAreaRef.current) {
-        chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
-      };
     })
     .catch((error) => {
       console.log('오픈 채팅기록 소환 에러 발생');
       console.log(error);
     })
   }, [messages]);
+
+  useEffect(() => {
+    // 새 메시지가 도착할 때마다 자동으로 스크롤됩니다.
+    if (shouldScrollToBottom) {
+      scrollToBottom();
+    }
+  }, [messages, shouldScrollToBottom]);
+
+  const scrollToBottom = () => {
+    if (chatAreaRef.current) {
+      chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
+    }
+  };
 
   useEffect(() => {
     setStompClient(
@@ -130,6 +141,18 @@ function ChattingArea({ openChatId }) {
         }));
       }
       setInputMyText('');
+      setShouldScrollToBottom(true);
+    }
+  };
+
+  const handleScroll = () => {
+    // 사용자가 수동으로 스크롤할 때 자동 스크롤을 비활성화합니다.
+    if (
+      chatAreaRef.current &&
+      chatAreaRef.current.scrollHeight - chatAreaRef.current.scrollTop !==
+        chatAreaRef.current.clientHeight
+    ) {
+      setShouldScrollToBottom(false);
     }
   };
 
@@ -138,6 +161,7 @@ function ChattingArea({ openChatId }) {
       <div 
         style={chatAreaStyle}
         ref={chatAreaRef}
+        onScroll={handleScroll}
       >
       {messages.map((message, index) => {
         return message.sender === sender ? (
