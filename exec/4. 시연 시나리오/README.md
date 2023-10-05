@@ -139,6 +139,47 @@
 - 오늘 일기를 쓰지 않았다면 일기를 쓸 수 있다.
 - 사진과 버디에게 하고 싶은 말을 담아 일기를 쓸 수 있다.
 
+<br/>
 
+## 버디와 밸런스 게임
+
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/3411d388-7415-43c3-a0da-4cc1c464dcd5)
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/fecc8a47-ee93-4194-8759-750ea002026f)
+
+- 버디와 밸런스게임을 통해 서로의 취향을 공유하며 더욱 가까워질 수 있다.
+- 외국인 버디는 밸런스게임을 통한 새로운 한국어를 학습할 수 있다.
+
+<br/>
+
+## 한국 문화 탐방
+
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/9c622e64-e935-4ccf-b7ed-1994f8c80a32)
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/517e75b4-a491-475e-8e2d-f678e9999968)
+
+- 외국인 이용자는 한국 미디어 콘텐츠(K-Drama, K-POP)을 검색하여 해당 미디어에 노출된 장소 정보를 볼 수 있다.
+
+
+<br/>
+
+## 채팅
+
+### 버디 채팅
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/19ae1079-6ca9-4cda-93ef-05e9696050f9)
+
+- 버디와 함께 1:1 채팅이 가능하다.
+
+<br/>
+
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/9185c220-a6ae-4ab8-ac62-d8294810e507)
+
+- 오픈 채팅을 통해 다양한 국적의 사람들과 한국에서의 팁을 공유할 수 있다.
+
+<br/>
+
+## 회원 정보
+
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/5471608e-b828-4999-ac9a-ae9da50f4792)
+
+- 회원 정보를 조회할 수 있다. 
 
 
