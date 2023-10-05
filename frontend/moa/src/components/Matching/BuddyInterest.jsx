@@ -53,7 +53,7 @@ const selectRightStyle = {
   width: '50%',
 };
 
-function BuddyInterest(){
+function BuddyInterest(props){
   const [selectedButtons, setSelectedButtons] = useState([]);
 
   const handleButtonClick = (number) => {
@@ -68,6 +68,7 @@ function BuddyInterest(){
 
   useEffect(() => {
     console.log(selectedButtons)
+    props.setSelectedInterest(selectedButtons);
   }, [selectedButtons])
 
   return(

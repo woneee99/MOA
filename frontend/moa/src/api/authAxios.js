@@ -2,7 +2,7 @@ import baseAxios from 'axios';
 import store from '../store'; // Redux 스토어를 import 해야 합니다
 
 export const authAxios = baseAxios.create({
-  baseURL: "https://moamore.site:8589/",
+  baseURL: "https://localhost:8080/",
 });
 
 const AuthInterceptor = (config) => {
