@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import store from '../store';
+import store, { useAppDispatch, useAppSelector, setIsMatching } from '../store';
 import Swal from "sweetalert2";
 import { matchingApi } from "../api/matchingApi";
 
@@ -53,6 +53,8 @@ function Matching() {
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedNation, setSelectedNation] = useState(null);
 
+  const [buddyId, setBuddyId] = useState(null);
+
   const [isAlert, setIsAlert] = useState(false);
 
   if (!isAlert) {
@@ -95,7 +97,7 @@ function Matching() {
     <BuddyInterest setSelectedInterest={ setSelectedInterest} />,
     <BuddyGender setSelectedGender={ setSelectedGender} />,
     <LoadingMatching />,
-    <SuccessMatching />,
+    <SuccessMatching buddyId={ buddyId} />,
   ];
 
   const handlePrevClick = () => {
@@ -110,6 +112,7 @@ function Matching() {
     }
   };
 
+  const dispatch = useAppDispatch();
   const handleMatching = () => {
     if (isForeigner == "false") {
       const data = {
@@ -122,9 +125,9 @@ function Matching() {
         console.log(response);
         matchingApi.matching().then((response) => {
           console.log(response);
+          dispatch(setIsMatching("true"));
+          setBuddyId(response.data.response);
           setCurrentStep(currentStep + 1);
-          // alert('게임이 생성되었습니다!');
-          // navigate('/buddy/balancegame/');
         })
         .catch((error) => {
           console.log('버디 매칭 오류 발생');
@@ -136,17 +139,18 @@ function Matching() {
           console.log(error);
         })
     }
-
-    // matchingApi.matching().then((response) => {
-    //   console.log(response);
-    //   setCurrentStep(currentStep + 1);
-    //   // alert('게임이 생성되었습니다!');
-    //   // navigate('/buddy/balancegame/');
-    // })
-    // .catch((error) => {
-    //   console.log('버디 매칭 오류 발생');
-    //   console.log(error);
-    // })
+    else {
+      matchingApi.matching().then((response) => {
+        console.log(response);
+        dispatch(setIsMatching(true));
+        setBuddyId(response.data.response);
+        setCurrentStep(currentStep + 1);
+      })
+      .catch((error) => {
+        console.log('버디 매칭 오류 발생');
+        console.log(error);
+      })
+    }
   };
 
   const translateValue = -currentStep * 100; // 슬라이딩을 위한 변환값 계산

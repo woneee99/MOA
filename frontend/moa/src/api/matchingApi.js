@@ -9,7 +9,7 @@ export const matchingApi = {
   foreignerInfo : (data) => nonAuthAxios.post('buddy/foreigner', data),
 
   // 매칭
-  matching : (data) => authAxios.post('buddy/match', data),
+  matching : () => authAxios.post('buddy/match'),
 
   // 매칭 여부 조회:
   isMatching: () => authAxios.get('buddy/whether'),
