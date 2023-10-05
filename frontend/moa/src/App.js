@@ -19,6 +19,9 @@ import LearningKeyword from './pages/Learning/LearningMyKeyword';
 import WordLearning from './pages/Learning/WordLearning';
 import KoreanLearningDefault from './pages/Learning/KoreanLearningDefault';
 import NewsPlus from './pages/Learning/NewsPlus';
+import MyCollection from './pages/Learning/MyCollection';
+import MyWord from './pages/Learning/MyWord';
+import MyArticles from './pages/Learning/MyArticles';
 // import QnABoard from './pages/QnA/QnABoard';
 import Quiz from './pages/Quiz/Quiz';
 import QuestionPage from './pages/Quiz/QuestionPage';
@@ -63,7 +66,6 @@ function App() {
 
   return (
     <div className="App">
-      {isLoading ? <Loading /> : (
       <BrowserRouter>
         <Routes>
           {refreshToken ? ( // refreshToken이 있는 경우
@@ -83,6 +85,9 @@ function App() {
               <Route path='/koreanlearning/word/news/:articleId' element={<NewsArticle />} />
               <Route path='/koreanlearning/keyword' element={<LearningKeyword />} />
               <Route path='/koreanlearning/default' element={<KoreanLearningDefault />} />
+              <Route path='/koreanlearning/collection' element={<MyCollection />} />
+              <Route path='/koreanlearning/myWord' element={<MyWord />} />
+              <Route path='/koreanlearning/myArticles' element={<MyArticles />} />
 
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/quiz/question-page" element={<QuestionPage />} />
@@ -118,7 +123,6 @@ function App() {
           )}
         </Routes>
       </BrowserRouter>
-      )}
     </div>
   );
 }
