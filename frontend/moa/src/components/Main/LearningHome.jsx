@@ -8,6 +8,9 @@ function LearningHome(props) {
   const handleClick = () => {
     navigate('/koreanlearning')
   }
+  const navigateTo = (path) => {
+      navigate(path); // 3초 후에 페이지 이동
+  };
 
   return (
     <div>
@@ -27,7 +30,7 @@ function LearningHome(props) {
       </div>
 
 
-      <div className={styles.subCardContainer}>
+      <div className={styles.subCardContainer} onClick={() => navigateTo('/koreanlearning/collection')}>
         <img
           src={process.env.PUBLIC_URL + '/assets/Background/card1-1.png'}
           alt="뉴스보기"

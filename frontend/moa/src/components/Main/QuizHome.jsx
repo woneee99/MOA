@@ -8,6 +8,9 @@ function QuizHome(props) {
   const handleQuizClick = () => {
     navigate('/quiz')
   }
+  const navigateTo = (path) => {
+    navigate(path); // 3초 후에 페이지 이동
+  };
 
   return (
     <div>
@@ -27,7 +30,7 @@ function QuizHome(props) {
       </div>
 
 
-      <div className={styles.subCardContainer}>
+      <div className={styles.subCardContainer} onClick={() => navigateTo('/quiz/incorrect-note')}>
         <img
           src={process.env.PUBLIC_URL + '/assets/Background/card2-1.png'}
           alt="오답노트"
