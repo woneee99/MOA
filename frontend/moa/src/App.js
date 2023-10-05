@@ -40,7 +40,6 @@ import UpdateBalanceGame from './pages/Buddy/BalanceGame/UpdateBalanceGame';
 import KoreaTour from './pages/Buddy/KoreaTour/KoreaTour';
 import KoreaTourResult from './pages/Buddy/KoreaTour/KoreaTourResult';
 import NotFound404 from './pages/NotFound404';
-import RelatedNews from './components/Learning/RelatedNews';
 import NewsArticle from './pages/Learning/NewsArticle';
 import ExchangeDiaryContent from './pages/Buddy/Diary/ExchangeDiaryContent';
 
@@ -75,11 +74,8 @@ function App() {
 
               <Route path="/matching" element={<Matching />} />
 
-              {/* {!isMatching && <Route path="/matching" element={<Matching />} />} */}
-
               <Route path="/chatting" element={<ChattingHome />} />
               <Route path="/chatting/buddy" element={isMatching!=="false" ? <BuddyChattingModal /> : <Navigate to="/matching" />} />
-              {/* <Route path="/chatting/buddy" element={<BuddyChattingModal />} /> */}
               <Route path="/chatting/openchat" element={<OpenChattingModal />} />
               <Route path="/chatting/openchat/:id" element={<OpenChattingDetail />} />
 
@@ -101,14 +97,12 @@ function App() {
               <Route path="/quiz/quiz-result" element={<QuizResult />} />
 
               <Route path="/buddy/exchangediary" element={isMatching!=="false" ? <ExchangeDiary /> : <Navigate to="/matching" />} />
-              {/* <Route path="/buddy/exchangediary" element={<ExchangeDiary />} /> */}
               <Route path="/buddy/exchangediary/:exchangeDiaryDate" element={<ExchangeDiaryDetail />} />
               <Route path="/buddy/exchangediary/content" element={<ExchangeDiaryContent />} />
               <Route path="/buddy/exchangediary/create" element={<CreateExchangeDiary />} />
               <Route path="/buddy/exchangediary/:id/update" element={<UpdateExchangeDiary />} />
 
               <Route path="/buddy/balancegame" element={isMatching!=="false" ? <BalanceGame /> : <Navigate to="/matching" />} />
-              {/* <Route path="/buddy/balancegame" element={<BalanceGame />} /> */}
               <Route path="/buddy/balancegame/:id" element={<BalanceGameDetail />} />
               <Route path="/buddy/balancegame/create" element={<CreateBalanceGame />} />
               <Route path="/buddy/balancegame/:id/update" element={<UpdateBalanceGame />} />

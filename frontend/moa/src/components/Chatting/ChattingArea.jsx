@@ -16,6 +16,7 @@ const chatContainerStyle = {
 
 const chatAreaStyle = {
   height: '70vh',
+  overflowY: 'auto',
 };
 
 const inputStyle = {
@@ -27,6 +28,31 @@ const inputStyle = {
   border: 'none',
 };
 
+const inputFormStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  background: '#F2F2F2',
+  borderRadius: '30px',
+};
+
+
+const buttonStyle = {
+  marginRight: '10px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  border: 'none',
+  padding: '5px',
+  background: 'transparent',
+};
+
+const iconStyle = {
+  width: '100%',
+  height: '100%',
+};
+
+
 function ChattingArea({ openChatId }) {
   const [inputMyText, setInputMyText] = useState(''); // 나의 텍스트 입력 상태
   const [messages, setMessages] = useState([]); // 대화 메세지 저장용
@@ -34,13 +60,18 @@ function ChattingArea({ openChatId }) {
 
   const state = store.getState();
   const userInfo = state.userInfo;
-  const sender = JSON.parse(userInfo).memberName;
+  const sender = JSON.parse(userInfo).memberId.toString();
+
+  const chatAreaRef = useRef();
 
   useEffect(() => {
     openChatApi.openChatLog(openChatId)
     .then((response) => {
       const res = response.data.response;
       setMessages(res.reverse());
+      if (chatAreaRef.current) {
+        chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
+      };
     })
     .catch((error) => {
       console.log('오픈 채팅기록 소환 에러 발생');
@@ -104,17 +135,20 @@ function ChattingArea({ openChatId }) {
 
   return (
     <div style={chatContainerStyle}>
-      <div style={chatAreaStyle}>
-        {messages.map((message, index) =>
-          message.sender === sender ? (
-            <MyTalk key={index} talk={message.message} />
-          ) : (
-            <OpponentTalk key={index} talk={message.message} />
-          )
-        )}
+      <div 
+        style={chatAreaStyle}
+        ref={chatAreaRef}
+      >
+      {messages.map((message, index) => {
+        return message.sender === sender ? (
+          <MyTalk key={index} talk={message.message} />
+        ) : (
+          <OpponentTalk key={index} talk={message.message} />
+        );
+      })}
       </div>
       <hr />
-      <form onSubmit={handleFormSubmit}>
+      <form onSubmit={handleFormSubmit} style={inputFormStyle}>
         <input
           style={inputStyle}
           type="text"
@@ -122,6 +156,9 @@ function ChattingArea({ openChatId }) {
           onChange={(e) => setInputMyText(e.target.value)}
           placeholder="메세지를 입력하세요"
         />
+        <button style={buttonStyle} type="submit">
+          <img style={iconStyle} src={process.env.PUBLIC_URL + '/assets/Chatting/submitIcon.png'} alt="전송" />
+        </button>
       </form>
     </div>
   );

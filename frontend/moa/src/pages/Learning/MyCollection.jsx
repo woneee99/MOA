@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Style from '../../styles/Learning/MyCollection.module.css';
-import CollectionLogo from '../../components/Learning/CollectionLogo';
+import MenuHeader from '../../components/ETC/MenuHeader'
 import { WordLearning, NewsLearning } from '../../components/Learning/ScrapMore';
 import { useLocation, useNavigate  } from 'react-router-dom';
 import { learningApi } from '../../api/learningApi';
@@ -59,19 +59,23 @@ function MyCollection(props) {
 
     return (
         <div className={Style.background}>
-            <CollectionLogo logo="스크랩북"/>
+            <MenuHeader title="스크랩북" />
             <div >
-                <div className={Style.wordContainer}>
+                <div className={Style.scrapBoxContainer}>
                     <div className={Style.fontContainer}>
                         <div className={Style.wordFont}>단어장</div>
-                        <div className={Style.plusFont} onClick={handleWord}>more</div>
+                        { word.length > 2 && (
+                            <div className={Style.plusFont} onClick={handleWord}>more</div>
+                        )}
                     </div>
                     <WordLearning word={twoword}/>
                 </div>
-                <div className={Style.wordContainer}>
+                <div className={Style.scrapBoxContainer}>
                     <div className={Style.fontContainer}>
                         <div className={Style.wordFont}>나의 뉴스</div>
-                        <div className={Style.plusFont} onClick={handleArticles}>more</div>
+                        { news.length > 2 && (
+                            <div className={Style.plusFont} onClick={handleArticles}>more</div>
+                        )}
                     </div>
                     <NewsLearning news={twoNews}/>
                 </div>
