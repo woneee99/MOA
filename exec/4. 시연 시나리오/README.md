@@ -64,6 +64,14 @@
 
 <br/>
 
+### 스크랩북
+
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/ad4eeb6d-87a6-4c8c-a06e-5704fa39b5af)
+
+- 공부하며 저장한 단어와 뉴스를 확인할 수 있다. 
+
+<br/>
+
 ## 퀴즈 풀기
 
 ![image](https://github.com/harinplz/algorithm_study/assets/62701446/e38f7036-54e1-48d1-8b8e-eacd6456693a)
@@ -80,6 +88,56 @@
 ![image](https://github.com/harinplz/algorithm_study/assets/62701446/6189496b-e9e1-4073-a035-e2a830a0a5b1)
 
 - 영어 단어를 보고 한국어 뜻 맞추기, 한국어 소리를 듣고 뜻 맞추기 종류의 퀴즈를 랜덤으로 15개 풀 수 있다.
+
+<br/>
+
+### 문장퀴즈
+
+
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/ceb00500-cae0-40e4-be4c-ee801f822231)
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/5c62405a-3484-4f39-a476-719004f9cfd6)
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/b89e5d93-1dbb-4cbd-9683-53a72166adc3)
+
+- 영어 문장을 본 후 한국어 문장 순서 맞추기, 듣고 한국어 문장 순서 맞추기 종류의 퀴즈를 랜덤으로 15개 풀 수 있다.
+
+<br/>
+
+### 틀린 문제 다시 풀기
+
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/df4b7507-9fc1-4ba2-9d38-0da0dc934af5)
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/f563990f-f3cf-4b78-b68c-9a6c6945f16f)
+
+- 틀린 문제를 갯수를 정해 랜덤으로 풀 수 있다.
+- 틀린 문제를 맞추면 오답 노트에서 삭제할 지 정할 수 있다.
+
+<br/>
+
+## 버디와 교환일기
+
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/afca9049-1b91-4c45-9151-bb59a1dfac5e)
+
+- 버디와 매칭된 상태라면 교환일기를 이용할 수 있다.
+
+<br/>
+
+### 교환일기 조회
+
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/447e4602-7512-4c88-ac1a-68a7721168b1)
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/1486701f-3136-40de-92fb-9e330ddfd5f9)
+
+- 한 눈에 교환일기를 달 단위로 볼 수 있다.
+- 해당 날짜를 클릭하면 그 날에 쓴 버디와 나의 일기를 조회할 수 있다.
+
+<br/>
+
+### 교환일기 등록
+
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/0bb8ec97-299e-479c-a8b0-188c5eab5231)
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/87c4712e-823c-4ddf-8b69-366936531376)
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/272e94e8-4d48-4255-8181-180fee32fb4f)
+
+- 오늘 일기를 쓰지 않았다면 일기를 쓸 수 있다.
+- 사진과 버디에게 하고 싶은 말을 담아 일기를 쓸 수 있다.
 
 
 
