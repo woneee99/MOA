@@ -4,10 +4,10 @@ const myTalkStyle = {
   margin: '5px',
   padding: '10px',
   width: '75%',
-  backgroundColor: 'green',
-  color: 'white',
-  borderRadius: '5px',
+  backgroundColor: 'skyblue',
+  borderRadius: '18px',
   textAlign: 'right',
+  boxShadow: '0px 4px 4px rgba(128.33, 106.45, 128.78, 0.10)',
 };
 
 const myTalkWrapperStyle = {

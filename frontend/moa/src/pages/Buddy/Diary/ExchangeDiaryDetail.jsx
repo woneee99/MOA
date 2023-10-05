@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 import { diaryApi } from '../../../api/diaryApi';
 import { userApi } from '../../../api/userApi';
 
@@ -109,7 +109,7 @@ function ExchangeDiaryDetail() {
                   </div>
 
                   <div className={styles.diaryContent}>
-                    {myDiary.exchangeDiaryContent}
+                    {myDiary.exchangeDiaryContent.replace(/<br>/g, "\n")}
                   </div>
 
                   <div className={styles.moveToNextPage}
@@ -133,10 +133,10 @@ function ExchangeDiaryDetail() {
                       일기를 <br />
                       작성하지 않았어요
                     </div>
-                    <Link to="/buddy/exchangediary/create">
+                    {/* <Link to="/buddy/exchangediary/create">
                       <button
                         className={styles.diaryNoContentBtn}>일기쓰기</button>
-                    </Link>
+                    </Link> */}
                   </div>
 
                   <div className={styles.moveToNextPage}
@@ -164,7 +164,7 @@ function ExchangeDiaryDetail() {
                   </div>
 
                   <div className={styles.diaryContent}>
-                    {buddyDiary.exchangeDiaryContent}
+                    {buddyDiary.exchangeDiaryContent.replace(/<br>/g, "\n")}
                   </div>
 
                   <div className={styles.moveToNextPage}
@@ -188,8 +188,8 @@ function ExchangeDiaryDetail() {
                       버디가 일기를 <br />
                       작성하지 않았어요
                     </div>
-                    <button
-                      className={styles.diaryNoContentBtn}>버디에게 채팅하기</button>
+                    {/* <button
+                      className={styles.diaryNoContentBtn}>버디에게 채팅하기</button> */}
                   </div>
 
                   <div className={styles.moveToNextPage}

@@ -28,7 +28,12 @@ export const quizApi = {
   },
 
   // 랜덤으로 틀린 문제 가져오기
-  getRandomWrongAnswer: (data) => {
-    return authAxios.post('/quiz/wrong-answer', data);
+  getRandomWrongAnswer: (quizWrongCount) => {
+    return authAxios.post('/quiz/wrong-answer', quizWrongCount);
+  },
+
+  // 다시풀기 문제 삭제
+  deleteWrongAnswer: (quizId) => {
+    return authAxios.delete(`/quiz/wrong-answer/${quizId}`);
   },
 };

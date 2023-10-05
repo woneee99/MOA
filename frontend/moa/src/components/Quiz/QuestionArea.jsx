@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import MenuHeader from '../ETC/MenuHeader';
 import styles from '../../styles/Quiz/WordQuiz.module.css'
-import TimeBar from './TimeBar';
+// import TimeBar from './TimeBar';
 
 function QuestionArea(props) {
   const [quizData, setQuizData] = useState([]);
@@ -19,8 +19,6 @@ function QuestionArea(props) {
   const [isCorrect, setIsCorrect] = useState(null);
   const [correctAnswers, setCorrectAnswers] = useState(0);
 
-  const [currentTime, setCurrentTime] = useState(15)
-  const [isTimeOut, setIsTimeOut] = useState(false);
 
   const [isButtonSelected, setIsButtonSelected] = useState(null);
 
@@ -170,7 +168,7 @@ function QuestionArea(props) {
       <MenuHeader title="단어퀴즈"/>
       {currentQuiz ? (
         <div>
-          <TimeBar totalTime={currentTime} handleTimeOut={handleTimeOut} handleNextQuiz={handleNextQuiz}/>
+          {/* <TimeBar totalTime={15} /> */}
           {currentQuiz.quizCategoryId === 2 ? (
             <div>
               <p className={styles.quizTitle}>{currentQuizIndex + 1}. 다음 단어를 듣고 맞혀보세요</p>
