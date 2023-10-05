@@ -11,11 +11,11 @@ function BuddyChattingModal(props) {
   const location = useLocation();
   const state = location.state;
   const buddyId = state.buddyId;
-  
+
   return (
     <div style={buddyChatStyle}>
-      <MenuHeader title="버디 채팅"/>
-      <BuddyChatArea buddyId={buddyId}/>
+      <MenuHeader title="버디 채팅" />
+      <BuddyChatArea buddyId={buddyId} />
     </div>
   );
 }
