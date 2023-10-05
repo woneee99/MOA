@@ -178,7 +178,7 @@
 
 ## 회원 정보
 
-![image](https://github.com/harinplz/algorithm_study/assets/62701446/5471608e-b828-4999-ac9a-ae9da50f4792)
+![image](https://github.com/harinplz/algorithm_study/assets/62701446/2dc33da3-9247-455e-9a71-51665483e9fe)
 
 - 회원 정보를 조회할 수 있다. 
 
