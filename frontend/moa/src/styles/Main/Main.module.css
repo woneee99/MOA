@@ -1,7 +1,7 @@
 .mainPageStyle{
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  /* min-height: 100vh; */
 }
 
 /* .appBarContainer{
@@ -12,7 +12,7 @@
 } */
 
 .mainContainer{
-  margin: 40px 0px 0;
+  margin: 40px 0 0;
 }
 
 .userNameStyle{
@@ -22,6 +22,7 @@
   font-size: 22px;
   font-weight: bold;
 }
+
 
 /* 메인 카드 */
 .cardContainer{
@@ -65,9 +66,8 @@
   position: absolute;
   text-align: start;
   z-index: 1;
-  
-  /* margin-left: 27px; */
-  /* top: 60px; */
+  margin-left: 27px;
+  top: 40px;
 }
 
 /* 카드  스타일링 */
