@@ -10,6 +10,8 @@ function NewsArticle(props) {
 
     const { articleId } = useParams();
 
+    const [isSpeech, setIsSpeech] = useState(true);
+
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
     const [translatedSentence, setTranslatedSentence] = useState('');
     const [translatedWord, setTranslatedWord] = useState('');
@@ -140,6 +142,16 @@ function NewsArticle(props) {
 
     //TTS
 
+    const clickSpeech = () => {
+        setIsSpeech(!isSpeech);
+        if(isSpeech){
+            speech(articleSentences[currentSentenceIndex]);                    
+        }
+        else {
+            window.speechSynthesis.cancel();
+        }
+    };
+
     useEffect(() => {
         setVoiceList();
     })
@@ -230,8 +242,7 @@ function NewsArticle(props) {
 
                 <div className={styles.articleTitle}>{articleTitle}</div>
                 <div className={styles.articleDate}>{articleDate}</div>
-                <button className={styles.listenToSound} onClick={() =>
-                    speech(articleSentences[currentSentenceIndex])}>
+                <button className={styles.listenToSound} onClick={clickSpeech}>
                     <img src="../../../assets/NewsArticle/listen-to-sound.png"
                         style={{ width: "35px", height: "35px", paddingTop: "5px" }} alt=""></img>
                 </button>
