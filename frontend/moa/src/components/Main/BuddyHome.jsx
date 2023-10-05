@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { setIsLoading } from '../../store/isLoading';
 import { useAppDispatch } from '../../store';
+import styles from '../../styles/Main/Main.module.css';
 
 
 const linkStyle = {
@@ -79,38 +80,78 @@ function BuddyHome(props) {
   };
 
   return (
-    <div style={buddyHomeStyle}>
-      <div style={buttonContainerStyle}>
-      {/* <Link to="/buddy/exchangediary" style={linkStyle} onClick={() => navigateTo('/buddy/exchangediary')}> */}
-        <div className="diary-button" style={diaryButtonStyle} onClick={() => navigateTo('/buddy/exchangediary')}>
-          <p style={buttonTitleStyle}>버디와 교환일기</p>
-          <p style={buttonContentStyle}>
+    <div>
+      <div className={styles.cardContainer} onClick={() => navigateTo('/buddy/exchangediary')}>
+        <img
+          src={process.env.PUBLIC_URL + '/assets/Background/card3.png'}
+          alt="교환일기 보기"
+        />
+        <div className={styles.textContainer}>
+          <p className={styles.homeTitleFont}>버디와 교환일기</p>
+          <p className={styles.homeSubFont}>
             오늘 하루 어떤 일이 있었나요?
             <br />
-            버디와 하루를 기록하고 공유해요
+            버디와 일상을 기록하고 공유해요
           </p>
         </div>
-      {/* </Link> */}
       </div>
 
-      <div onClick={() => navigateTo('/buddy/balancegame')}>
-        <Link to="/buddy/balancegame" style={linkStyle}>
-          <div className="balance-game-button" style={balanceGameButtonStyle}>
-            <p style={buttonTitleStyle}>밸런스게임</p>
-            <p style={buttonContentStyle}>설명</p>
+      <div className={styles.buddyCards}>
+        <div className={styles.subBuddyContainer} onClick={() => navigateTo('/buddy/balancegame')}>
+          <img
+            src={process.env.PUBLIC_URL + '/assets/Background/card3-1.png'}
+            alt="밸런스게임보기"
+          />
+          <div className={styles.subTextContainer}>
+            <p className={styles.buddyTitleFont}>밸런스게임</p>
+            <p className={styles.buddySubFont}>
+              A vs B ?!
+              <br />
+              버디와 놀기
+            </p>
           </div>
-        </Link>
+        </div>
+        
+        <div className={styles.subBuddyContainer} onClick={() => navigateTo('/buddy/koreatour')}>
+          <img
+            src={process.env.PUBLIC_URL + '/assets/Background/card3-2.png'}
+            alt="한국여행보기"
+          />
+          <div className={styles.subTextContainer}>
+            <p className={styles.buddyTitleFont}>한국여행</p>
+            <p className={styles.buddySubFont}>
+              내가 찾던
+              <br />
+              바로 그 장소
+            </p>
+          </div>
+        </div>
+
       </div>
 
-      <div onClick={() => navigateTo('/buddy/balancegame')}>     
-        <Link to="/buddy/koreatour" style={linkStyle}>
-          <div className="korea-tour-button" style={koreaTourButtonStyle}>
-            <p style={buttonTitleStyle}>랜선여행</p>
-            <p style={buttonContentStyle}>설명</p>
-          </div>
-        </Link>
-      </div>
     </div>
+    // <div style={buddyHomeStyle}>
+    //   <div style={buttonContainerStyle}>
+
+
+    //   <div onClick={() => navigateTo('/buddy/balancegame')}>
+    //     <Link to="/buddy/balancegame" style={linkStyle}>
+    //       <div className="balance-game-button" style={balanceGameButtonStyle}>
+    //         <p style={buttonTitleStyle}>밸런스게임</p>
+    //         <p style={buttonContentStyle}>설명</p>
+    //       </div>
+    //     </Link>
+    //   </div>
+
+    //   <div onClick={() => navigateTo('/buddy/balancegame')}>     
+    //     <Link to="/buddy/koreatour" style={linkStyle}>
+    //       <div className="korea-tour-button" style={koreaTourButtonStyle}>
+    //         <p style={buttonTitleStyle}>랜선여행</p>
+    //         <p style={buttonContentStyle}>설명</p>
+    //       </div>
+    //     </Link>
+    //   </div>
+    // </div>
   );
 }
 

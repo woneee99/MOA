@@ -77,7 +77,6 @@
   font-weight: bold;
   color: #284657;
   margin: 0 0 7px;
-  
 }
 
 .homeSubFont{
@@ -86,4 +85,33 @@
   font-weight: bold;
   color: #284657;
   margin: 0;
+}
+
+/* 버디 서브 카드 */
+.buddyCards{
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin: 28px 20px 0;
+}
+
+.buddyTitleFont{
+  width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  color: #284657;
+  margin: 0 0 7px;
+}
+
+.buddySubFont{
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  color: #284657;
+  margin: 0;
+}
+
+.subBuddyContainer{
+  display: inline-block;
+  position: relative;
 }
