@@ -8,36 +8,12 @@
 
 ## 팀원 소개
 
-### 이진형👑
-- 팀장
-- FrontEnd
-- UI/UX
-
-### 노창현
-- FrontEnd
-- Data
-
-### 박진희
-- FrontEnd
-- 디자인 및 UI/UX
-
-### 이하린
-- BackEnd
-- FrontEnd - 뉴스, 교환일기
-
-### 정효인
-- BackEnd, Infra
-- FrontEnd - 한국여행
-
-### 황주원
-- BackEnd
-- FrontEnd - 뉴스
-
-<!-- 
 |   **Name**   |               이진형👑                 |                노창현                |                  박진희                   |               이하린                |                 정효인                  |               황주원                |
 | :----------: | :-----------------------------------: | :----------------------------------: | :---------------------------------------: | :---------------------------------: | :-------------------------------------: | :---------------------------------: |
 | **Profile**  |  <img src="https://avatars.githubusercontent.com/u/122415954?v=4" width="100" height="100"/>   |  <img src="https://avatars.githubusercontent.com/u/116616569?v=4" width="100" height="100"/>  |    <img src="https://avatars.githubusercontent.com/u/122415844?v=4" width="100" height="100"/>     | <img src="https://avatars.githubusercontent.com/u/62701446?v=4" width="100" height="100"/>  |   <img src="https://avatars.githubusercontent.com/u/52451420?v=4" width="100" height="100"/>    | <img src="https://avatars.githubusercontent.com/u/87613419?v=4" width="100" height="100"/>  |
-| **Position** |          FrontEnd <br> UI/UX           |          FrontEnd <br> Data           |           FrontEnd <br> Design <br> UI/UX           |        Backend <br> FrontEnd - 뉴스, 교환일기         |            BackEnd <br> Infra <br> FrontEnd - 한국여행             |         Backend <br> FrontEnd - 뉴스         | -->
+| **Position** |          FrontEnd <br> UI/UX           |          FrontEnd <br> Data           |           FrontEnd <br> Design        |        BackEnd <br> FrontEnd         |            BackEnd <br> Infra  <br> FrontEnd           |         Backend <br> FrontEnd         |
+|   **Git**    | [GitHub](https://github.com/LeeJ1nHyeong) | [GitHub](https://github.com/stubborngastropod) | [GitHub](https://github.com/sokurii) | [GitHub](https://github.com/harinplz) | [GitHub](https://github.com/HyoinJeong) | [GitHub](https://github.com/woneee99) |
+
 
 <br/>
 
