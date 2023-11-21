@@ -109,3 +109,124 @@
 ### 프론트엔드
 - WebSocket & Stomp를 활용하여 실시간 채팅 구현
 - API 모듈화로 재사용성 용이
+
+<br/>
+
+## 시연 시나리오
+
+### 회원가입 및 로그인
+
+<div>
+<img src="./assets/gif/1_회원가입_1.gif" alt="signup1" width="200">
+    &nbsp;
+<img src="./assets/gif/1_회원가입_2.gif" alt="signup2" width="200">
+     &nbsp;
+<img src="./assets/gif/2_로그인.gif" alt="login" width="200">
+</div>
+
+<br/>
+
+- 회원가입시 한국인/외국인, 이름, 국적, 이메일, 비밀번호를 등록한다.
+- 회원가입 후 로그인으로 서비스 이용이 가능하다.
+
+<br/>
+
+### 뉴스
+<div>
+    <img src="./assets/gif/3_뉴스_1.gif" alt="news1" width="200">
+    &nbsp;
+    <img src="./assets/gif/3_뉴스_2.gif" alt="news2" width="200">
+    &nbsp;
+    <img src="./assets/gif/3_뉴스_3.gif" alt="news3" width="200">
+</div>
+
+<br/>
+
+- 오늘 뉴스에서 많이 언급된 단어를 워드클라우드로 쉽게 볼 수 있다.
+- 뉴스 기사를 문장 단위로 영어, 한국어 해석을 동시에 볼 수 있다.
+- 뉴스를 문장 단위로 읽을 수 있으며, 해당 뉴스를 스크랩할 수 있다.
+- 하이라이트된 주요 단어를 클릭하면 뜻을 알 수 있고, 심화로 chat GPT에게 질문하여 더 자세한 뜻을 알 수 있다.
+- 공부하며 저장한 단어와 뉴스를 확인할 수 있다.
+
+<br/>
+
+### 퀴즈
+
+<div>
+    <img src="./assets/gif/4_퀴즈_1.gif" alt="quiz1" width="200">
+    &nbsp;
+    <img src="./assets/gif/4_퀴즈_2.gif" alt="quiz2" width="200">
+    &nbsp;
+    <img src="./assets/gif/4_퀴즈_3.gif" alt="quiz3" width="200">
+</div>
+
+<br/>
+
+- 공부하며 저장한 단어와 뉴스를 확인할 수 있다.
+- 일상에서 쓰이는 말뭉치 데이터를 통해 단어퀴즈, 문장퀴즈를 풀 수 있다.
+- [단어퀴즈] 영어 단어를 보고 한국어 뜻 맞추기, 한국어 소리를 듣고 뜻 맞추기 종류의 퀴즈를 랜덤으로 15개 풀 수 있다.
+- [문장퀴즈] 영어 문장을 본 후 한국어 문장 순서 맞추기, 듣고 한국어 문장 순서 맞추기 종류의 퀴즈를 랜덤으로 15개 풀 수 있다.
+- [오답노트] 틀린 문제 풀이를 통해 내가 모르는 단어와 문장을 다시 복습할 수 있다.
+
+<br/>
+
+### 교환일기
+
+<div>
+    <img src="./assets/gif/5_교환일기_1.gif" alt="diary1" width="200">
+    &nbsp;
+    <img src="./assets/gif/5_교환일기_2.gif" alt="diary2" width="200">
+</div>
+
+<br/>
+
+- 버디와 매칭된 상태라면 교환일기를 이용할 수 있다.
+- [교환일기 조회] 한 눈에 교환일기를 달 단위로 볼 수 있으며, 날짜를 클릭하면 그 날에 쓴 버디와 나의 일기를 조회할 수 있다.
+- [교환일기 등록] 오늘 일기를 쓰지 않았다면 사진과 버디에게 하고 싶은 말을 담아 일기를 쓸 수 있다.
+
+<br/>
+
+### 밸런스게임
+
+<div>
+    <img src="./assets/gif/6_밸런스게임_1.gif" alt="balance1" width="200">
+    &nbsp;
+    <img src="./assets/gif/6_밸런스게임_2.gif" alt="balance2" width="200">
+</div>
+
+<br/>
+
+- 버디와 밸런스게임을 통해 서로의 취향을 공유하며 더욱 가까워질 수 있다.
+- 외국인 버디는 밸런스게임을 통한 새로운 한국어를 학습할 수 있다.
+
+<br/>
+
+### 한국 문화 탐방
+
+<div>
+    <img src="./assets/gif/7_한국여행_1.gif" alt="travel1" width="200">
+    &nbsp;
+    <img src="./assets/gif/7_한국여행_2.gif" alt="travel2" width="200">
+</div>
+
+<br/>
+
+- 외국인 이용자는 한국 미디어 콘텐츠(K-Drama, K-POP)을 검색하여 해당 미디어에 노출된 장소 정보를 볼 수 있다.
+
+<br/>
+
+### 채팅
+
+<div>
+    <img src="./assets/gif/8_버디채팅.gif" alt="buddychat" width="200">
+    &nbsp;
+    <img src="./assets/gif/9_오픈채팅.gif" alt="openchat" width="200">
+</div>
+
+<br/>
+
+- 버디와 함께 1:1 채팅이 가능하다.
+- 오픈 채팅을 통해 다양한 국적의 사람들과 한국에서의 팁을 공유할 수 있다.
+
+<br/>
+
